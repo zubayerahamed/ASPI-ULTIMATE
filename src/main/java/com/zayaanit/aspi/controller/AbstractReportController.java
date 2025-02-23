@@ -15,11 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,7 +25,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.xml.sax.SAXException;
 
 import com.zayaanit.aspi.entity.Zbusiness;
 import com.zayaanit.aspi.enums.ReportMenu;
@@ -173,32 +167,32 @@ public abstract class AbstractReportController extends KitController {
 		}
 
 		// FOP
-		if(rm.isEnabledFop()) {
-			try {
-				reportName = new StringBuilder(this.getClass().getClassLoader().getResource("static").toURI().getPath())
-								.append(File.separator).append("xsl").append(File.separator)
-								.append(rm.name() + ".xsl").toString();
-			} catch (URISyntaxException e) {
-				log.error(ERROR, e.getMessage(), e);
-			}
-
-			byte[] byt = null;
-			try {
-				byt = getReportFieldService(rm).getPDFReportByte(reportName, reportParams);
-			} catch (JAXBException | ParserConfigurationException | SAXException | TransformerFactoryConfigurationError
-					| TransformerException e) {
-				log.error(ERROR, e.getMessage(), e);
-			} catch (ParseException e) {
-				log.error(ERROR, e.getMessage(), e);
-			}
-			if(byt == null) {
-				String encodedString = Base64.getEncoder().encodeToString(message.getBytes());
-				return new ResponseEntity<>(encodedString, headers, HttpStatus.OK);
-			}
-
-			String encodedString = Base64.getEncoder().encodeToString(byt);
-			return new ResponseEntity<>(encodedString, headers, HttpStatus.OK);
-		}
+//		if(rm.isEnabledFop()) {
+//			try {
+//				reportName = new StringBuilder(this.getClass().getClassLoader().getResource("static").toURI().getPath())
+//								.append(File.separator).append("xsl").append(File.separator)
+//								.append(rm.name() + ".xsl").toString();
+//			} catch (URISyntaxException e) {
+//				log.error(ERROR, e.getMessage(), e);
+//			}
+//
+//			byte[] byt = null;
+//			try {
+//				byt = getReportFieldService(rm).getPDFReportByte(reportName, reportParams);
+//			} catch (JAXBException | ParserConfigurationException | SAXException | TransformerFactoryConfigurationError
+//					| TransformerException e) {
+//				log.error(ERROR, e.getMessage(), e);
+//			} catch (ParseException e) {
+//				log.error(ERROR, e.getMessage(), e);
+//			}
+//			if(byt == null) {
+//				String encodedString = Base64.getEncoder().encodeToString(message.getBytes());
+//				return new ResponseEntity<>(encodedString, headers, HttpStatus.OK);
+//			}
+//
+//			String encodedString = Base64.getEncoder().encodeToString(byt);
+//			return new ResponseEntity<>(encodedString, headers, HttpStatus.OK);
+//		}
 
 		// CRISTAL
 		byte[] byt = null;
