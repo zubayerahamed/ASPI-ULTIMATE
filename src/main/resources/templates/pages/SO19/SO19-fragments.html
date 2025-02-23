@@ -1,0 +1,396 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/SO19/store}" th:object="${searchParam}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="xfdate" 
+										id="xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required="required"
+										th:value="${searchParam.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(searchParam.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="xtdate" 
+										id="xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required="required"
+										th:value="${searchParam.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(searchParam.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xbuid">
+								<input 	type="hidden" class="search-val" name="xbuid" th:value="${searchParam.xbuid ne null ? searchParam.xbuid + ' - ' + searchParam.businessUnitName : ''}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Outlet/Store</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xwh">
+								<input 	type="hidden" class="search-val" name="xwh" th:value="${searchParam.xwh ne null ? searchParam.xwh + ' - ' + searchParam.warehouseName : ''}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD11/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xwh',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Status</label>
+							<select class="form-control select" th:field="*{xstatusim}">
+								<option value="">-- Select --</option>
+								<option value="Open">Open</option>
+								<option value="Confirmed">Confirmed</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/SO19', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button type="submit" class="btn btn-primary btn-sm btn-search-vouchers ms-1"><i class="ph-magnifying-glass me-2"></i> Search</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				$('.header-table-container').html("");
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-search-vouchers').off('click').on('click', function(e){
+				e.preventDefault();
+				console.log("here");
+
+				var targettedForm = $('form#mainform');
+				if(!targettedForm.smkValidate()) return;
+
+				sectionReloadAjaxPostReq({
+					id : 'header-table-container',
+					url : '/SO19/header-table'
+				},{
+					"xfdate" : $('#xfdate').val(),
+					"xtdate" : $('#xtdate').val(),
+					"xbuid" : $('input[name="xbuid"]').val(),
+					"xwh" : $('input[name="xwh"]').val(),
+					"xstatusim" :  $('#xstatusim').val(),
+				});
+			});
+		})
+	</script>
+</div>
+
+
+
+
+<div th:fragment="header-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex justify-content-center align-items-sm-center p-2">
+			<button class="btn btn-light btn-sm selection-counter mb-1 d-none"></button>
+			<button class="btn btn-success btn-sm btn-confirm-all ms-1 mb-1"><i class="ph-check-square-offset me-2"></i> Confirm All Selected</button>
+			<button class="btn btn-danger btn-sm btn-delete-all ms-1 mb-1"><i class="ph-trash me-2"></i> Delete All Selected</button>
+		</div>
+
+		<input type="hidden" id="xfdate" th:with="df=${'yyyy-MM-dd'}" th:value="${searchParam.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(searchParam.xfdate, df)}"/>
+		<input type="hidden" id="xtdate"  th:with="df=${'yyyy-MM-dd'}" th:value="${searchParam.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(searchParam.xtdate, df)}"/>
+		<input type="hidden" id="xbuid" th:value="${searchParam.xbuid}"/>
+		<input type="hidden" id="xwh" th:value="${searchParam.xwh}"/>
+		<input type="hidden" id="xstatusim" th:value="${searchParam.xstatusim}"/>
+
+		<div class="table-responsive">
+			<table class="table datatable" style="white-space: nowrap;">
+				<thead>
+					<tr>
+						<th>
+							<input type="checkbox" id="select-all-rows">
+						</th>
+						<th>Invoice</th>
+						<th>Date</th>
+						<th>Business Unit</th>
+						<th>Outlet/Store</th>
+						<th>Amount</th>
+						<th>Status</th>
+						<th>GL Voucher</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			var selectedInvoices = [];
+			var xfdate = $("#xfdate").val();
+			var xtdate = $("#xtdate").val();
+			var xbuid = $("#xbuid").val();
+			var xwh = $("#xwh").val();
+			var xstatusim = $("#xstatusim").val();
+
+			var dt = $('.datatable').DataTable({
+				"deferLoading": true,
+				"processing" : true,
+				"serverSide" : true,
+				"stateSave" : false,
+				"order" : [0, 'desc'],
+				"responsive": true,
+				"lengthChange": true,
+				"columnDefs": [
+					{ "name": "xdornum",   "targets": 0 },
+					{ "name": "xdornum",   "targets": 1 },
+					{ "name": "xdate",   "targets": 2 },
+					{ "name": "xbuid",   "targets": 3 },
+					{ "name": "xwh",  "targets": 4 },
+					{ "name": "xtotamt",  "targets": 5 },
+					{ "name": "xstatusim",  "targets": 6 },
+					{ "name": "xvoucher",  "targets": 7 },
+					{ "name": "xdate",  "targets": 8 }
+				],
+				"ajax" : getBasepath() + "/SO19/all?xfdate=" + xfdate + "&xtdate=" + xtdate + "&xbuid=" + xbuid + "&xwh=" + xwh + "&xstatusim=" + xstatusim,
+				"columns": [
+					{ 
+						"data": "xdornum", 
+						"orderable": false,
+						"searchable": false,
+						render: function(data, type, row, meta) {
+							return '<input type="checkbox" class="invoice-selection" data-xdornum="'+ data +'">';
+						},
+					},
+					{ "data": "xdornum" },
+					{ 
+						"data": "xdate" ,
+						render: function(data, type, row, meta) {
+							return data;
+						},
+					},
+					{ 
+						"data": "xbuid",
+						render: function(data, type, row, meta) {
+							return data + ' - ' +  row['businessUnitName'];
+						},
+					},
+					{ 
+						"data": "xwh",
+						render: function(data, type, row, meta) {
+							return data + ' - ' +  row['warehouseName'];
+						},
+					},
+					{ "data": "xtotamt" },
+					{ "data": "xstatusim" },
+					{ "data": "xvoucher" },
+					{ 
+						"data": "xdate" ,
+						"width": '550px',
+						"orderable": false,
+						"searchable": false,
+						"class": "text-center",
+						render: function(data, type, row, meta) {
+
+							var actions = '<button data-url="/report/print", data-param2="'+row['xdornum']+'", data-rptcode="oppos" type="button" class="btn btn-light btn-sm btn-print mx-1"><i class="ph-printer me-2"></i>Print</button>';
+
+							if(row['xstatus'] == 'Confirmed' && row['xstatusim'] == 'Open'){
+								actions += '<a class="btn btn-sm btn-primary mx-1 btn-invoice-confirm" data-xdornum="'+ row['xdornum'] +'" href="#">Confirm</a>';
+							}
+
+							if(row['xstatus'] == 'Confirmed' && row['xstatusim'] == 'Open'){
+								actions += '<a class="btn btn-sm btn-danger mx-1 btn-dismiss-req" data-xdornum="'+ row['xdornum'] +'" href="#">Delete</a>';
+							}
+
+							return actions;
+						}
+					}
+				]
+			});
+
+			dt.draw();
+
+			$('.datatable').on('click', '.btn-print', function(e){
+				e.preventDefault();
+
+				var params = {};
+				params.reportCode = $(this).data('rptcode');
+				params.reportType = "PDF";
+				params.param1 = $("#businessZid").val();
+
+				var i = 2;
+				while(i <= 30){
+					params['param' + i] = $(this).data('param' + i);
+					i++;
+				}
+
+				generateOnScreenReport(getBasepath() + $(this).data('url'), params);
+			});
+
+			$('#select-all-rows').on('click', function(){
+				if($(this).is(":checked")){
+					$('.invoice-selection').each(function(i, item){
+						$(item).prop('checked', true);
+						var xdornum = $(item).data('xdornum');
+						if (!selectedInvoices.includes(xdornum)) {
+							selectedInvoices.push(xdornum); // Add only if not already in array
+						}
+					})
+				} else {
+					$('.invoice-selection').each(function(i, item){
+						$(item).prop('checked', false);
+						var xdornum = $(item).data('xdornum');
+						selectedInvoices = selectedInvoices.filter(function(item) {
+							return item !== xdornum; // Remove the unchecked voucher
+						});
+					})
+				}
+
+				if(selectedInvoices.length > 0){
+					$('.selection-counter').removeClass('d-none');
+					$('.selection-counter').html(selectedInvoices.length + ' Selected');
+				} else {
+					$('.selection-counter').addClass('d-none');
+				}
+			});
+
+			$('.datatable').on('change', '.invoice-selection', function(e){
+				var xdornum = $(this).data('xdornum');
+				if ($(this).is(':checked')) {
+					if (!selectedInvoices.includes(xdornum)) {
+						selectedInvoices.push(xdornum); // Add only if not already in array
+					}
+				} else {
+					selectedInvoices = selectedInvoices.filter(function(item) {
+						return item !== xdornum; // Remove the unchecked voucher
+					});
+				}
+
+				if(selectedInvoices.length > 0){
+					$('.selection-counter').removeClass('d-none');
+					$('.selection-counter').html(selectedInvoices.length + ' Selected');
+				} else {
+					$('.selection-counter').addClass('d-none');
+				}
+			});
+
+			$('.datatable').on('click', 'a.btn-dismiss-req', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+
+				actionPostRequest(getBasepath() + '/SO19/invoice-delete', {
+					"xdornum" : $(this).data('xdornum'),
+					"xfdate" : xfdate,
+					"xtdate" : xtdate,
+					"xbuid" : xbuid,
+					"xwh" : xwh,
+					"xstatusim" : xstatusim
+				});
+			});
+
+			$('.datatable').on('click', 'a.btn-invoice-confirm', function(e){
+				e.preventDefault();
+
+				actionPostRequest(getBasepath() + '/SO19/invoice-confirm', {
+					"xdornum" : $(this).data('xdornum'),
+					"xfdate" : xfdate,
+					"xtdate" : xtdate,
+					"xbuid" : xbuid,
+					"xwh" : xwh,
+					"xstatusim" : xstatusim
+				});
+			});
+
+			$('.btn-confirm-all').off('click').on('click', function(e){
+				e.preventDefault();
+
+				actionPostRequest(getBasepath() + '/SO19/confirm-all', {
+					"selectedInvoices" : selectedInvoices.length > 0 ? selectedInvoices.join(',') : "",
+					"xfdate" : xfdate,
+					"xtdate" : xtdate,
+					"xbuid" : xbuid,
+					"xwh" : xwh,
+					"xstatusim" : xstatusim
+				});
+			});
+
+			$('.btn-delete-all').off('click').on('click', function(e){
+				e.preventDefault();
+
+				if(!confirm("Are you sure, to delete all Balanced & Suspended vouchers?")){
+					return;
+				}
+
+				actionPostRequest(getBasepath() + '/SO19/delete-all', {
+					"selectedInvoices" : selectedInvoices.length > 0 ? selectedInvoices.join(',') : "",
+					"xfdate" : xfdate,
+					"xtdate" : xtdate,
+					"xbuid" : xbuid,
+					"xwh" : xwh,
+					"xstatusim" : xstatusim
+				});
+			});
+		})
+	</script>
+</div>

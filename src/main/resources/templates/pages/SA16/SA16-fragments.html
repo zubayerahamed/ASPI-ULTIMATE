@@ -1,0 +1,93 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/SA16/store}" th:object="${db}" method="POST">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">File Name</label>
+							<input type="text" class="form-control" th:field="*{xorg}" required="required">
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/SA16', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button type="submit" class="btn btn-warning btn-sm btn-submit"><i class="ph-cloud-arrow-down me-2"></i> Process</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="card-footer" th:if="${not #lists.isEmpty(backups)}">
+			<h6 class="py-sm-3 mb-sm-auto">Backups</h6>
+
+			<div class="table-responsive" th:if="${not #lists.isEmpty(backups)}">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>
+								Action
+							</th>
+							<th>File</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="x : ${backups}">
+							<td>
+								<a th:href="@{/SA16/download?filename=} + ${x}" class="btn btn-primary btn-sm btn-doc-download" target="_blank"><i class="ph-download-simple"></i></a>
+								<button th:attr="
+											data-url=@{/SA16/delete?filename=} + ${x}, 
+											data-mainreloadid='main-form-container',
+											data-mainreloadurl='/SA16'" 
+										type="button" 
+										class="btn btn-danger btn-sm btn-doc-delete">
+									<i class="ph-trash"></i>
+								</button>
+							</td>
+							<td th:text="${x}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-doc-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+
+				var data = {
+					'mainreloadid' : $(this).data("mainreloadid"),
+					'mainreloadurl' : $(this).data("mainreloadurl")
+				}
+				deleteRequest($(this).data('url'), data);
+			});
+		})
+	</script>
+</div>
+

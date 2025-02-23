@@ -1,0 +1,206 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/AD11/store}" th:object="${business}" method="POST">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Company Name</label>
+							<input type="text" class="form-control" th:field="*{zorg}" required="required">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Phone Number</label>
+							<input type="text" class="form-control" th:field="*{xphone}">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Email</label>
+							<input type="email" class="form-control" th:field="*{xemail}">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Mailing Address</label>
+							<textarea rows="1" cols="" th:field="*{xmadd}" class="form-control" required></textarea>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">TIN</label>
+							<input type="text" class="form-control" th:field="*{xtin}">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">VAT Reg No.</label>
+							<input type="text" class="form-control" th:field="*{xvatregno}">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Max File Size (KB)</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xfilesize}" scroller="hide" required="required" min="0">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Document Path</label>
+							<input type="text" class="form-control" th:field="*{xdocpath}" placeholder="C:\Contents" required="required">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Supporting Documents (,)</label>
+							<input type="text" class="form-control" th:field="*{xdoctypes}" placeholder=".pdf,.jpg,.jpeg,.png" required="required">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Report Path</label>
+							<input type="text" class="form-control" th:field="*{xrptpath}" placeholder="C:\Reports" required>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">POS Default Customer</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xposcus"
+										th:value="${business.xposcus != null ? business.xposcus + ' - ' + business.customerName : ''}">
+								<input 	type="hidden" class="search-val" name="xposcus" th:value="*{xposcus}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA14/1?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xposcus',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<!--<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Supporting Documents (,)</label>
+							<select class="form-control multiselect" multiple="multiple" name="xdoctypes" required="required" data-include-select-all-option="true">
+								<option value=".pdf" th:selected="${doctypesList.contains('.pdf')}">.pdf</option>
+								<option value=".jpg" th:selected="${doctypesList.contains('.jpg')}">.jpg</option>
+								<option value=".jpeg" th:selected="${doctypesList.contains('.jpeg')}">.jpeg</option>
+								<option value=".png" th:selected="${doctypesList.contains('.png')}">.png</option>
+							</select>
+						</div>
+					</div>-->
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Default Session Time (Seconds)</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xsessiontime}" min="0" step="1" required>
+						</div>
+					</div>
+					<div class="col-md-4" th:if="${loggedInUser.admin}">
+						<div class="mb-3 form-group">
+							<label class="form-label d-block" for="xisaudit">Enable Audit?</label>
+							<input type="checkbox" id="xisaudit" th:field="*{xisaudit}">
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label d-block" for="xisspeech">Active Speech?</label>
+							<input type="checkbox" id="xisspeech" th:field="*{xisspeech}">
+						</div>
+					</div>
+					
+				</div>
+				<div class="d-flex justify-content-between align-items-center mt-2">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/AD11', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(business.zid)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+	
+		})
+	</script>
+</div>
+
+
+
+<div th:fragment="logo-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-body">
+			<h4 class="mt-0 text-muted text-center">Logo</h4>
+		
+			<form id="logoform" class="form-validate-jquery" th:action="@{/AD11/logo}" th:object="${business}" method="POST" enctype="multipart/form-data">
+				<div class="col-md-12 bg-dark" style="overflow: hidden;">
+					<input th:if="${business.xlogo ne null}" type="hidden" id="imageBase64" th:value="${business.imageBase64}" readonly></input>
+					<img th:if="${business.xlogo ne null}" class="m-auto p-3" id="imagePreview" src="#" alt="Report logo" style="width: 100%; height: auto;"/>
+				</div>
+
+				<div class="col-md-12 mt-2">
+					<div class="form-group mb-3">
+						<input type="file" name="file" id="fileuploader" class="form-control" accept="image/*">
+						<div class="form-text text-muted text-center">Accepted: png, jpg. Max file size 2Mb</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center mt-2">
+					<div>
+						<button th:if="${not #strings.isEmpty(business.zid) and business.xlogo ne null}" th:attr="data-url=@{/AD11/logo}" type="button" class="btn btn-danger btn-sm btn-logo-delete"><i class="ph-trash me-2"></i> Delete</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(business.zid)}" type="submit" class="btn btn-primary btn-sm btn-logo-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			var imageBase64 = $('#imageBase64').val();
+			var imagePreview= document.getElementById('imagePreview');
+			if(imagePreview) {
+				imagePreview.src = "data:image/png;base64," + imageBase64;
+			}
+
+			$('.btn-logo-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm($('form#logoform').attr('action'), $('form#logoform'));
+			});
+
+			$('.btn-logo-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+		})
+	</script>
+</div>

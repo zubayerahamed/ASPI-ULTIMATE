@@ -1,0 +1,122 @@
+<!-- Inner content -->
+<div class="content-inner" xmlns:th="http://www.thymeleaf.org">
+
+	<!-- Page header -->
+	<div class="page-header-container">
+		<div th:remove="tag" th:include="commons :: page-header"></div>
+	</div>
+	<!-- /page header -->
+
+	<!-- Content area -->
+	<div class="content">
+
+		<img th:src="@{/assets/images/excel_sample.png}" class="d-none excel-image-link">
+		<style>
+			.sheet-selection-container {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 15px;
+			}
+
+			.sheet-option {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 10px;
+				cursor: pointer;
+				padding: 10px;
+				border: 2px solid transparent;
+				border-radius: 10px;
+				transition: all 0.3s ease-in-out;
+			}
+
+			.sheet-option input {
+				display: none;
+			}
+
+			.sheet-option img {
+				width: 150px;
+				height: 150px;
+				object-fit: contain;
+			}
+
+			.sheet-option label {
+				font-size: 18px;
+				font-weight: 500;
+				cursor: pointer;
+			}
+
+			.sheet-option.selected {
+				border-color: #007bff;
+				background-color: rgba(0, 123, 255, 0.1);
+			}
+		</style>
+
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="card card-body">
+					<ul class="nav nav-tabs nav-tabs-highlight" id="pills-tab" role="tablist">
+						<li class="nav-item" role="presentation">
+							<a href="#" class="nav-link" th:classappend="${deftab eq 'tab1' ? 'active' : ''}" id="pills-import-tab" data-bs-toggle="pill" data-bs-target="#pills-import" type="button" role="tab" aria-controls="pills-import" aria-selected="true">
+								<i class="ph-file-arrow-up me-2"></i>
+								Import Voucher
+							</a>
+						</li>
+						<li class="nav-item" role="presentation">
+							<a href="#" class="nav-link" th:classappend="${deftab eq 'tab2' ? 'active' : ''}" id="pills-voucher-tab" data-bs-toggle="pill" data-bs-target="#pills-voucher" type="button" role="tab" aria-controls="pills-voucher" aria-selected="false">
+								Imported Voucher
+							</a>
+						</li>
+					</ul>
+
+					<div class="tab-content" id="pills-tabContent">
+						<div class="tab-pane fade" th:classappend="${deftab eq 'tab1' ? 'show active' : ''}" id="pills-import" role="tabpanel" aria-labelledby="pills-import-tab">
+							<div class="import-table-container mt-3">
+								<div th:remove="tag" th:include="pages/FA16/FA16-fragments :: import-table"></div>
+							</div>
+						</div>
+
+						<div class="tab-pane fade" th:classappend="${deftab eq 'tab2' ? 'show active' : ''}" id="pills-voucher" role="tabpanel" aria-labelledby="pills-voucher-tab">
+							<div class="main-form-container mt-3">
+								<div th:remove="tag" th:include="pages/FA16/FA16-fragments :: main-form"></div>
+							</div>
+
+							<div class="detail-table-container mt-3">
+								<div th:remove="tag" th:include="pages/FA16/FA16-fragments :: detail-table"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+<!--		<div class="row">
+			<div class="col-xl-12">
+				<div class="main-form-container">
+					<div th:remove="tag" th:include="pages/FA16/FA16-fragments :: main-form"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="detail-table-container">
+					<div th:remove="tag" th:include="pages/FA16/FA16-fragments :: detail-table"></div>
+				</div>
+			</div>
+		</div>-->
+
+	</div>
+	<!-- /content area -->
+
+	<!-- Footer -->
+	<div th:remove="tag" th:include="commons :: footer-section"></div>
+	<!-- /footer -->
+
+	<script type="text/javascript">
+		var selectedVouchers = [];
+	</script>
+
+</div>
+<!-- /inner content -->

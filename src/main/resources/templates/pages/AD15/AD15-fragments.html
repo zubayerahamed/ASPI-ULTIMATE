@@ -1,0 +1,70 @@
+<div th:fragment="info-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-flex align-items-center">
+			<h5 class="mb-0">Account Information</h5>
+		</div>
+
+		<div class="card-body">
+			<table class="table table-bordered">
+				<tbody>
+					<tr>
+						<th>Employee</th>
+						<td width="5px" class="text-center">:</td>
+						<td th:text="${user.xstaff ne null ? user.xstaff + ' - ' + user.employeeName : user.zemail}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="cp-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-flex align-items-center">
+			<h5 class="mb-0">Change Password</h5>
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/AD15/cp/store}" th:object="${user}" method="POST">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Old Password</label>
+							<input type="password" class="form-control" name="oldPass" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">New Password</label>
+							<input type="password" class="form-control" name="newPass" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Confirm Password</label>
+							<input type="password" class="form-control" name="confirmPass" required="required">
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+		})
+	</script>
+</div>
+

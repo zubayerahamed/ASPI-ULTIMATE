@@ -1,0 +1,68 @@
+<!-- Inner content -->
+<div class="content-inner" xmlns:th="http://www.thymeleaf.org">
+
+	<!-- Page header -->
+	<div class="page-header-container">
+		<div th:remove="tag" th:include="commons :: page-header"></div>
+	</div>
+	<!-- /page header -->
+
+	<!-- Content area -->
+	<div class="content">
+
+		<div class="row">
+			<!-- 1st Column -->
+			<div class="col-lg-12 col-xl-6">
+				<div class="row">
+					<div class="col-sm-6 col-xl-6">
+						<div class="AD05WG01-container">
+							<div th:remove="tag" th:include="pages/AD05/AD05-fragments :: AD05WG01"></div>
+						</div>
+					</div>
+
+					<div class="col-sm-6 col-xl-6">
+						<div class="AD05WG02-container">
+							<div th:remove="tag" th:include="pages/AD05/AD05-fragments :: AD05WG02"></div>
+						</div>
+					</div>
+
+					<div class="col-sm-6 col-xl-6">
+						<div class="AD05WG03-container">
+							<div th:remove="tag" th:include="pages/AD05/AD05-fragments :: AD05WG03"></div>
+						</div>
+					</div>
+
+					<div class="col-sm-6 col-xl-6">
+						<div class="AD05WG04-container">
+							<div th:remove="tag" th:include="pages/AD05/AD05-fragments :: AD05WG04"></div>
+						</div>
+					</div>
+
+					
+				</div>
+			</div>
+
+			<!-- 2nd Column -->
+			<div class="col-lg-12 col-xl-6">
+				<div class="row">
+					<div class="col-sm-12 col-xl-12">
+						<div class="AD05WG05-container">
+							<div th:remove="tag" th:include="pages/AD05/AD05-fragments :: AD05WG05"></div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+
+	</div>
+	<!-- /content area -->
+
+	<!-- Footer -->
+	<div th:remove="tag" th:include="commons :: footer-section"></div>
+	<!-- /footer -->
+
+</div>
+<!-- /inner content -->

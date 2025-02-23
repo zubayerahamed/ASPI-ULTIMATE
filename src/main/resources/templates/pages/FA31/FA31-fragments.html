@@ -1,0 +1,265 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/FA31/store}" th:object="${potogli}" method="POST">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${not #strings.isEmpty(potogli.xtype)}" th:field="*{xtype}">
+				<input type="hidden" th:if="${not #strings.isEmpty(potogli.xgsup)}" th:field="*{xgsup}">
+				<input type="hidden" th:if="${not #strings.isEmpty(potogli.xgitem)}" th:field="*{xgitem}">
+
+				<div class="row">
+
+					<div class="col-md-3" th:if="${#strings.isEmpty(potogli.xtype)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="xtype" name="xtype" th:field="*{xtype}" required="required">
+								<option value="Purchase">Purchase</option>
+								<option value="Purchase Return">Purchase Return</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${not #strings.isEmpty(potogli.xtype)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<input type="text" class="form-control" th:value="${potogli.xtype}" disabled="disabled">
+						</div>
+					</div>
+
+					<div class="col-md-3" th:if="${#strings.isEmpty(potogli.xgsup)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Supplier Group</label>
+							<select class="form-control select" id="xgsup" name="xgsup" th:field="*{xgsup}" required="required">
+								<option th:each="sg : ${supGrps}" th:value="${sg.xcode}" th:text="${sg.xcode}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${not #strings.isEmpty(potogli.xgsup)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Supplier Group</label>
+							<input type="text" class="form-control" th:value="${potogli.xgsup}" disabled="disabled">
+						</div>
+					</div>
+
+					<div class="col-md-3" th:if="${#strings.isEmpty(potogli.xgitem)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Item Group</label>
+							<select class="form-control select" id="xgitem" name="xgitem" th:field="*{xgitem}" required="required">
+								<option value="Services">Services</option>
+								<option th:each="ig : ${itemGrps}" th:value="${ig.xcode}" th:text="${ig.xcode}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${not #strings.isEmpty(potogli.xgitem)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Item Group</label>
+							<input type="text" class="form-control" th:value="${potogli.xgitem}" disabled="disabled">
+						</div>
+					</div>
+
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Debit Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xaccdr"
+										th:value="${potogli.xaccdr != null ? potogli.xaccdr + ' - ' + potogli.debitAccount : ''}">
+								<input 	type="hidden" class="search-val" name="xaccdr" th:value="*{xaccdr}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xaccdr',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Credit Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xacccr"
+										th:value="${potogli.xacccr != null ? potogli.xacccr + ' - ' + potogli.creditAccount : ''}">
+								<input 	type="hidden" class="search-val" name="xacccr" th:value="*{xacccr}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xacccr',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Adjustment Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xaccadj"
+										th:value="${potogli.xaccadj != null ? potogli.xaccadj + ' - ' + potogli.adjustmentAccount : ''}">
+								<input 	type="hidden" class="search-val" name="xaccadj" th:value="*{xaccadj}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xaccadj',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/FA31?xtype=RESET&xgsup=RESET&xgitem=RESET', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(potogli.xtype)}" th:attr="data-url=@{/FA31}, data-xtype=${potogli.xtype}, data-xgsup=${potogli.xgsup}, data-xgitem=${potogli.xgitem}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${not #strings.isEmpty(potogli.xtype)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${#strings.isEmpty(potogli.xtype)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'), {
+					"xtype" : $(this).data('xtype'),
+					"xgsup" : $(this).data('xgsup'),
+					"xgitem" : $(this).data('xgitem'),
+				});
+			});
+	
+		})
+	</script>
+</div>
+
+
+<div th:fragment="header-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">List of <span th:text="${pageTitle}"></span></h6>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table datatable">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>Supplier Group</th>
+						<th>Item Group</th>
+						<th>Debit Account</th>
+						<th>Credit Account</th>
+						<th>Adjustment Account</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			$('.datatable').DataTable({
+				"processing" : true,
+				"serverSide" : true,
+				"stateSave" : true,
+				"lengthMenu": [5000],
+				"columnDefs": [
+					{ "name": "xtype",   "targets": 0 },
+					{ "name": "xgsup",  "targets": 1 },
+					{ "name": "xgitem",  "targets": 2 },
+					{ "name": "xaccdr",  "targets": 3 },
+					{ "name": "xacccr",  "targets": 4 },
+					{ "name": "xaccadj",  "targets": 5 },
+				],
+				"ajax" : getBasepath() + "/FA31/all",
+				"columns": [
+					{
+						"data" : "xtype",
+						render: function(data, type, row, meta) {
+							return '<a style="text-decoration: underline; cursor: pointer;" class="dataindex" reloadid="main-form-container" href="/FA31?xtype='+ data +'&xgsup='+ row['xgsup'] +'&xgitem='+ row['xgitem'] +'">' + data + '</a>';
+						}
+					},
+					{ 
+						"data": "xgsup",
+					},
+					{ 
+						"data": "xgitem",
+					},
+					{ 
+						"data": "xaccdr",
+						render: function(data, type, row, meta) {
+							return data + ' - ' + row['debitAccount'];
+						}
+					},
+					{ 
+						"data": "xacccr",
+						render: function(data, type, row, meta) {
+							return data + ' - ' + row['creditAccount'];
+						}
+					},
+					{ 
+						"data": "xaccadj",
+						render: function(data, type, row, meta) {
+							return data + ' - ' + row['adjustmentAccount'];
+						}
+					 },
+				]
+			});
+
+			$('.datatable').off('click').on('click', 'a.dataindex', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).attr('reloadid'),
+					url : $(this).attr('href')
+				});
+
+
+				
+			})
+		})
+	</script>
+</div>

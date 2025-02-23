@@ -1,0 +1,1215 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center p-0">
+			<button th:if="${acheader.xvoucher ne null}"
+				th:attr="data-url=@{/report/print}, data-param2=${acheader.xvoucher}, data-rptcode='voucher'"
+				type="button" class="btn btn-light btn-sm btn-print my-2 ms-3">
+				<i class="ph-printer me-2"></i> Print
+			</button>
+		</div>
+
+		<div class="card-body">
+			<form 	id="mainform" 
+					class="form-validate-jquery"
+					th:action="@{/FA16/store}" th:object="${acheader}" method="POST"
+					th:with="df=${'yyyy-MM-dd'}">
+
+				<input type="hidden" th:field="*{submitFor}" /> 
+				<input type="hidden" th:if="${acheader.xvoucher ne null}" th:field="*{xvoucher}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Voucher</label>
+							<div class="input-group">
+								<input type="text" class="form-control searchsuggest2"
+									name="xvoucher"
+									th:value="${acheader.xvoucher ne null ? acheader.xvoucher : ''}"
+									disabled="disabled"> <span
+									class="input-group-text btn-search"
+									th:attr="
+										data-reloadurl='/search/table/LFA15/2?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xvoucher',
+										data-mainscreen=true,
+										data-mainreloadurl='/FA16?xvoucher=',
+										data-mainreloadid='main-form-container',
+										data-detailreloadurl='/FA16/detail-table?xrow=RESET&xvoucher=',
+										data-detailreloadid='detail-table-container'"
+									style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Voucher Date</label>
+							<input type="text" class="form-control" th:value="${acheader.xdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(acheader.xdate, df)}" disabled/>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<input type="text" class="form-control" th:value="${acheader.xbuid != null ? acheader.xbuid + ' - ' + acheader.businessUnitName : ''}" disabled/>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Voucher Type</label> 
+							<select class="form-control select" th:value="*{xvtype}" disabled="disabled">
+								<option value="">-- Select --</option>
+								<option value="Journal Voucher">Journal Voucher</option>
+								<option th:each="vt : ${voucherTypes}" value="${vt.xcode}" th:text="${vt.xcode}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Reference</label> 
+							<input type="text" class="form-control" th:value="*{xref}" disabled="disabled">
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Narration</label>
+							<textarea cols="" rows="1" class="form-control" th:value="*{xnote}" disabled="disabled"></textarea>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Year</label> 
+							<input type="text" class="form-control" th:value="*{xyear}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Period</label> 
+							<input type="text" class="form-control" th:value="*{xper}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">GL Status</label> 
+							<input type="text" class="form-control" th:value="*{xstatusjv}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Prepared By</label> 
+							<input type="text" class="form-control" th:value="${acheader.xstaff + ' - ' + acheader.staffName}" disabled="disabled">
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button 
+							type="reset"
+							th:attr="
+								data-reloadurl='/FA16?xvoucher=RESET', 
+								data-reloadid='main-form-container', 
+								data-detailreloadurl='/FA16/detail-table?xvoucher=RESET&xrow=RESET', 
+								data-detailreloadid='detail-table-container'"
+							class="btn btn-light btn-sm btn-reset">Clear
+						</button>
+					</div>
+					<div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+
+		<div class="card-footer" th:if="${acheader.xvoucher ne null}">
+			<h6 class="py-sm-3 mb-sm-auto">Documents</h6>
+
+			<div class="table-responsive" th:if="${#lists.isEmpty(documents)}">
+				<p class="text-center text-muted">No document added</p>
+			</div>
+
+			<div class="table-responsive"
+				th:if="${not #lists.isEmpty(documents)}">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Action</th>
+							<th>File</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="x : ${documents}">
+							<td><a th:href="@{/AD18/download/} + ${x.xdocid}"
+								class="btn btn-primary btn-sm btn-doc-download" target="_blank"><i
+									class="ph-download-simple"></i></a>
+								<button
+									th:if="${acheader.xvoucher ne null and acheader.xstatusjv ne 'Posted'}"
+									th:attr="
+											data-url=@{/AD18/delete/} + ${x.xdocid}, 
+											data-mainreloadid='main-form-container',
+											data-mainreloadurl='/FA16?xvoucher='"
+									type="button" class="btn btn-danger btn-sm btn-doc-delete">
+									<i class="ph-trash"></i>
+								</button></td>
+							<td><i class="ph-file-dotted me-3"></i> <span
+								th:text="${x.xnameold}"></span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailreloadid'),
+					url : $(this).data('detailreloadurl')
+				});
+			});
+
+		})
+	</script>
+</div>
+
+
+
+
+<div th:fragment="detail-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card" th:if="${acheader.xvoucher ne null}">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto" th:text="${pageTitle + ' Details'}">Voucher Details</h6>
+		</div>
+
+		<div class="table-responsive"
+			th:if="${not #lists.isEmpty(detailList)}">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Account</th>
+						<th>Sub Account</th>
+						<th>Particular</th>
+						<th>Prime Amount</th>
+						<th>Debit</th>
+						<th>Credit</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="x : ${detailList}">
+						<td>
+							<a 	class="detail-dataindex"
+								th:attr="data-reloadid='detail-table-container', data-reloadurl='/FA16/detail-table?xvoucher=' + ${x.xvoucher} + '&xrow=' + ${x.xrow}"
+								th:href="@{/FA16/detail-table?xvoucher=} + ${x.xvoucher} + '&xrow=' + ${x.xrow}"
+								th:text="${x.xacc + ' - ' + x.accountName}">
+							</a>
+						</td>
+						<td th:text="${x.xsub != null ? x.xsub + ' - ' + x.subAccountName : ''}"></td>
+						<td th:text="${x.xnote}"></td>
+						<td th:text="${x.xprime}"></td>
+						<td th:text="${x.xdebit}"></td>
+						<td th:text="${x.xcredit}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+		})
+	</script>
+</div>
+
+
+<tr th:remove="tag" th:fragment="row-actual" xmlns:th="http://www.thymeleaf.org" th:with="df=${'yyyy-MM-dd'}">
+	<td class="text-center" th:classappend="${t.allOk eq false} ? 'bg-danger bg-opacity-25 row-'  + ${t.xrow} : 'row-' + ${t.xrow}">
+		<input type="checkbox" class="row-selection" th:attr="data-xrow=${t.xrow}">
+	</td>
+	<td th:classappend="${'row-' + t.xrow}" th:text="${t.voucherDate == null ? '' : #dates.format(t.voucherDate, df)}"></td>
+	<td th:classappend="${'row-' + t.xrow}" th:text="${t.businessUnit != null ? t.businessUnit + ' - ' + t.businessUnitName : ''}"></td>
+	<td th:classappend="${'row-' + t.xrow}" th:text="${t.debitAcc ne null ? t.debitAcc + ' - ' + t.debitAccountName : ''}"></td>
+	<td th:classappend="${'row-' + t.xrow}" th:text="${t.debitSubAcc ne null ? t.debitSubAcc + ' - ' + t.debitSubAccountName : ''}"></td>
+	<td th:classappend="${'row-' + t.xrow}" th:text="${t.creditAcc ne null ? t.creditAcc + ' - ' + t.creditAccountName : ''}"></td>
+	<td th:classappend="${'row-' + t.xrow}" th:text="${t.creditSubAcc ne null ? t.creditSubAcc + ' - ' + t.creditSubAccountName : ''}"></td>
+	<td th:classappend="${'row-' + t.xrow}" th:text="${t.amount}"></td>
+	<td th:classappend="${'row-' + t.xrow}" th:text="${t.narration}"></td>
+	<td th:classappend="${'row-' + t.xrow}" class="text-end">
+		<button th:if="${t.allOk eq false}" type="button" class="btn btn-sm btn-warning" data-bs-popup="tooltip" th:title="${t.errorDetails}" data-bs-placement="left" id="left"><i class="ph-bug"></i></button>
+		<button th:attr="data-reloadurl='/FA16/import/edit?xrow=' + ${t.xrow}, data-xrow=${t.xrow}" type="button" class="btn btn-primary btn-sm btn-row-edit">
+			<i class="ph-note-pencil"></i>
+		</button>
+		<button th:attr="data-url=@{/FA16/import/delete?xrow=} + ${t.xrow}, data-xrow=${t.xrow}" type="button" class="btn btn-danger btn-sm btn-row-delete">
+			<i class="ph-trash"></i>
+		</button>
+	</td>
+	<td class="d-none" th:classappend="${'row-edit-' + t.xrow}" colspan="10">
+		<div th:classappend="${'row-form-container-' + t.xrow}">
+			
+		</div>
+	</td>
+
+	<script>
+		function tableBtnEvent(){
+			$('.btn-row-edit').off('click').on('click', function(e){
+				e.preventDefault();
+
+				var rowId = $(this).data('xrow');
+
+				$('.row-' + rowId).addClass('d-none');
+				$('.row-edit-' + rowId).removeClass('d-none');
+				disableBtn(['btn-row-edit', 'btn-row-delete']);
+
+				sectionReloadAjaxReq({
+					id : 'row-form-container-' + rowId,
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-row-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			})
+		}
+
+		$(document).ready(function(){
+			tableBtnEvent();
+			rowSelectionEvent();
+		})
+	</script>
+</tr>
+
+<div th:remove="tag" class="row" th:fragment="debitsubacc-field" xmlns:th="http://www.thymeleaf.org">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="mb-3 form-group">
+				<label class="form-label required">Debit Account</label>
+				<div class="input-group">
+					<input 	type="text" 
+							class="form-control searchsuggest2"
+							id="debitAcc"
+							th:value="${t.debitAcc ne null ? t.debitAcc + ' - ' + t.debitAccountName : ''}">
+					<input 	type="hidden" class="search-val" name="debitAcc" th:value="${t.debitAcc}" required/>
+					<span 	class="input-group-text btn-search" 
+							th:attr="
+							data-reloadurl='/search/table/LFA13/0?hint=',  
+							data-reloadid='search-suggest-results-container', 
+							data-fieldid='debitAcc',
+							data-mainscreen=true,
+							data-mainreloadurl='/FA16/subaccount/debit?xrow='+ ${t.xrow} +'&xacc=',
+							data-mainreloadid='debitsubacc-field-container'" 
+							style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+					<span 	class="input-group-text btn-search-clear" 
+							data-dependentfieldsid="debitSubAcc"
+							style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="mb-3 form-group">
+				<label class="form-label">Debit Sub Account</label>
+				<div class="input-group">
+					<input 	type="text" 
+							class="form-control searchsuggest2"
+							id="debitSubAcc"
+							th:value="${t.debitSubAcc ne null ? t.debitSubAcc + ' - ' + t.debitSubAccountName : ''}">
+					<input 	type="hidden" class="search-val" name="debitSubAcc" th:value="${t.debitSubAcc}"/>
+					<span 	class="input-group-text btn-search" 
+							th:attr="
+							data-reloadurl='/search/table/LFA14/5?dependentparam='+${t.debitAcc}+'&hint=', 
+							data-reloadid='search-suggest-results-container', 
+							data-fieldid='debitSubAcc',
+							data-mainscreen=false" 
+							style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+					<span 	class="input-group-text btn-search-clear" 
+							style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+		})
+	</script>
+</div>
+
+<div th:remove="tag" class="row" th:fragment="creditsubacc-field" xmlns:th="http://www.thymeleaf.org">
+	<div class="row">
+		<div class="col-md-6">
+			<div class="mb-3 form-group">
+				<label class="form-label required">Credit Account</label>
+				<div class="input-group">
+					<input 	type="text" 
+							class="form-control searchsuggest2"
+							id="creditAcc"
+							th:value="${t.creditAcc ne null ? t.creditAcc + ' - ' + t.creditAccountName : ''}">
+					<input 	type="hidden" class="search-val" name="creditAcc" th:value="${t.creditAcc}" required/>
+					<span 	class="input-group-text btn-search" 
+							th:attr="
+							data-reloadurl='/search/table/LFA13/0?hint=',  
+							data-reloadid='search-suggest-results-container', 
+							data-fieldid='creditAcc',
+							data-mainscreen=true,
+							data-mainreloadurl='/FA16/subaccount/credit?xrow='+ ${t.xrow} +'&xacc=',
+							data-mainreloadid='creditsubacc-field-container'" 
+							style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+					<span 	class="input-group-text btn-search-clear"
+							data-dependentfieldsid="creditSubAcc"
+							style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="mb-3 form-group">
+				<label class="form-label">Credit Sub Account</label>
+				<div class="input-group">
+					<input 	type="text" 
+							class="form-control searchsuggest2"
+							id="creditSubAcc"
+							th:value="${t.creditSubAcc ne null ? t.creditSubAcc + ' - ' + t.creditSubAccountName : ''}">
+					<input 	type="hidden" class="search-val" name="creditSubAcc" th:value="${t.creditSubAcc}"/>
+					<span 	class="input-group-text btn-search" 
+							th:attr="
+							data-reloadurl='/search/table/LFA14/5?dependentparam='+${t.creditAcc}+'&hint=', 
+							data-reloadid='search-suggest-results-container', 
+							data-fieldid='creditSubAcc',
+							data-mainscreen=false" 
+							style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+					<span 	class="input-group-text btn-search-clear" 
+							style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+		})
+	</script>
+</div>
+
+<div th:fragment="row-edit-form" xmlns:th="http://www.thymeleaf.org" class="bg-primary bg-opacity-25 p-3 border rounded animated bounceIn">
+	<form 	th:attr="id='row-form-' + ${t.xrow}" 
+			class="form-validate-jquery"
+			th:action="@{/FA16/import/update}" th:object="${t}" method="POST"
+			th:with="df=${'yyyy-MM-dd'}">
+
+		<input type="hidden" th:field="*{xrow}"/>
+
+		<div class="row">
+			<div class="col-md-3">
+				<div class="mb-3 form-group">
+					<label class="form-label required">Voucher Date</label>
+					<div class="input-group">
+						<input type="text" name="voucherDate" class="form-control datepicker-date-format" placeholder="yyyy-mm-dd format" required="required" th:value="${t.voucherDate == null ? '' : #dates.format(t.voucherDate, df)}">
+						<span class="input-group-text"> <i class="ph-calendar"></i></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-3">
+				<div class="mb-3 form-group">
+					<label class="form-label required">Business Unit</label>
+					<div class="input-group">
+						<input 	type="text" 
+								class="form-control searchsuggest2"
+								id="businessUnit"
+								th:value="${t.businessUnit != null ? t.businessUnit + ' - ' + t.businessUnitName : ''}">
+						<input 	type="hidden" class="search-val" name="businessUnit" th:value="*{businessUnit}" required /> 
+						<span 	class="input-group-text btn-search"
+								th:attr="
+								data-reloadurl='/search/table/LAD17/0?hint=', 
+								data-reloadid='search-suggest-results-container', 
+								data-fieldid='businessUnit',
+								data-mainscreen=false"
+								style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+						<span 	class="input-group-text btn-search-clear"
+								style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="debitsubacc-field-container">
+					<div th:remove="tag" th:include="pages/FA16/FA16-fragments :: debitsubacc-field"></div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="creditsubacc-field-container">
+					<div th:remove="tag" th:include="pages/FA16/FA16-fragments :: creditsubacc-field"></div>
+				</div>
+			</div>
+
+			<div class="col-md-3">
+				<div class="mb-3 form-group">
+					<label class="form-label required">Amount</label>
+					<input type="number" class="form-control numeric-only" min="0" th:field="*{amount}" required>
+				</div>
+			</div>
+
+			<div class="col-md-3">
+				<div class="mb-3 form-group">
+					<label class="form-label">Narration</label>
+					<textarea cols="" rows="1" class="form-control" th:field="*{narration}"></textarea>
+				</div>
+			</div>
+		</div>
+
+		<div class="d-flex justify-content-between align-items-center">
+			<div>
+				<button type="reset" class="btn btn-light btn-sm btn-edit-form-cancel" th:attr="data-xrow=${t.xrow}">Cancel</button>
+			</div>
+			<div>
+				<button type="submit" class="btn btn-primary btn-sm btn-edit-form-submit" th:attr="data-xrow=${t.xrow}"><i class="ph-floppy-disk me-2"></i> Update</button>
+			</div>
+		</div>
+	</form>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-edit-form-cancel').off('click').on('click', function(e){
+				e.preventDefault();
+
+				var rowId = $(this).data('xrow');
+
+				$('.row-form-container-' + rowId).html("");
+				$('.row-' + rowId).removeClass('d-none');
+				$('.row-edit-' + rowId).addClass('d-none');
+				enableBtn(['btn-row-edit', 'btn-row-delete']);
+			})
+
+			$('.btn-edit-form-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				var rowId = $(this).data('xrow');
+				submitMainForm(null, $('#row-form-' + rowId), null, () => {
+					$('.row-form-container-' + rowId).html("");
+					$('.row-' + rowId).removeClass('d-none');
+					$('.row-edit-' + rowId).addClass('d-none');
+					enableBtn(['btn-row-edit', 'btn-row-delete']);
+				}, null);
+			});
+
+		})
+	</script>
+</div>
+
+
+
+<div th:fragment="import-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex justify-content-center align-items-sm-center p-2">
+			<input type="hidden" class="fa16ImportToken" th:value="${fa16ImportToken}"/>
+			<button class="btn btn-light btn-sm btn-download-template ms-1 mb-1"><i class="ph-download me-2"></i> Download Template</button>
+			<button class="btn btn-primary btn-sm btn-upload-file ms-1 mb-1"><i class="ph-upload me-2"></i> Upload File</button>
+			<button th:if="${not #lists.isEmpty(tempvouchers)}" class="btn btn-info btn-sm btn-confirm-upload ms-1 mb-1" data-post="0"><i class="ph-thumbs-up me-2"></i> Confirm Without Post</button>
+			<button th:if="${not #lists.isEmpty(tempvouchers)}" class="btn btn-info btn-sm btn-confirm-upload ms-1 mb-1" data-post="1"><i class="ph-thumbs-up me-2"></i> Confirm With Post</button>
+			<button th:if="${not #lists.isEmpty(tempvouchers)}" class="btn btn-danger btn-sm btn-delete-all-selected ms-1 mb-1 d-none"><i class="ph-trash me-2"></i> Delete All Selected <span class="selection-counter d-none"></span></button>
+			<button th:if="${not #lists.isEmpty(tempvouchers)}" class="btn btn-danger btn-sm btn-delete-all-rows ms-1 mb-1"><i class="ph-trash me-2"></i> Delete All</button>
+			<button class="btn btn-warning btn-sm btn-terminate-process ms-1 mb-1 d-none"><i class="ph-crosshair me-2"></i> Terminate Process</button>
+		</div>
+
+		<div class="card-body">
+			<input type="file" id="fileInput" class="d-none" accept=".csv, .xlsx" />
+			<div id="progress" class="mt-3" style="display: none;">
+				<p class="m-0 mb-1 p-0 text-center text-muted porogress-text"></p>
+				<div class="progress">
+					<div id="progressBar" class="progress-bar" role="progressbar"
+						style="width: 0%;">0%</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th class="text-center"><input type="checkbox" id="select-all-rows"></th>
+						<th>Voucher Date</th>
+						<th>Business Unit</th>
+						<th>Debit Acc</th>
+						<th>Debit Sub Acc</th>
+						<th>Credit Acc</th>
+						<th>Credit Sub Acc</th>
+						<th>Amount</th>
+						<th>Narration</th>
+						<th class="text-end">Action</th>
+					</tr>
+				</thead>
+				<tbody th:with="df=${'yyyy-MM-dd'}">
+					<tr th:each="t : ${tempvouchers}" th:attr="data-xrow=${t.xrow}" th:classappend="'row-actual-container-' + ${t.xrow}">
+						<div th:remove="tag" th:include="pages/FA16/FA16-fragments :: row-actual"></div>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="card-footer">
+			<p class="text-center" th:if="${totalData > 0}">Showing <span th:text="${startRecord}"></span> to <span th:text="${endRecord}"></span> of <span th:text="${totalData}"></span>
+				records
+			</p>
+
+			<p th:if="${totalData == 0}" class="text-center">No records available</p>
+		
+			<ul class="pagination justify-content-center">
+				<!-- Previous Page Button -->
+				<li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+					<a href="javascript:void(0);" class="page-link"
+						th:attr="onclick=${currentPage > 0} ? 'loadPage(' + (${currentPage} - 1) + ')' : ''">
+						&larr;
+					</a>
+				</li>
+			
+				<!-- First Page -->
+				<li class="page-item" th:classappend="${currentPage == 0} ? 'active'">
+					<a href="javascript:void(0);" class="page-link" th:attr="onclick='loadPage(0)'">1</a>
+				</li>
+			
+				<!-- Dots Before Current Page (if needed) -->
+				<li class="page-item disabled" th:if="${currentPage > 2}">
+					<a href="javascript:void(0);" class="page-link">...</a>
+				</li>
+			
+				<!-- Previous Page (only if not the first two pages) -->
+				<li class="page-item" th:if="${currentPage > 1}">
+					<a href="javascript:void(0);" class="page-link" th:attr="onclick='loadPage(' + (${currentPage} - 1) + ')'">
+						[[${currentPage}]]
+					</a>
+				</li>
+			
+				<!-- Current Page (only if not first or last page) -->
+				<li class="page-item active" th:if="${currentPage > 0 and currentPage < totalPages - 1}">
+					<a href="javascript:void(0);" class="page-link">[[${currentPage + 1}]]</a>
+				</li>
+			
+				<!-- Next Page (only if not the last two pages) -->
+				<li class="page-item" th:if="${currentPage < totalPages - 2}">
+					<a href="javascript:void(0);" class="page-link" th:attr="onclick='loadPage(' + (${currentPage} + 1) + ')'">
+						[[${currentPage + 2}]]
+					</a>
+				</li>
+			
+				<!-- Dots After Current Page (if needed) -->
+				<li class="page-item disabled" th:if="${currentPage < totalPages - 3}">
+					<a href="javascript:void(0);" class="page-link">...</a>
+				</li>
+			
+				<!-- Last Page -->
+				<li class="page-item" th:if="${totalPages > 1}" th:classappend="${currentPage == totalPages - 1} ? 'active'">
+					<a href="javascript:void(0);" class="page-link" th:attr="onclick='loadPage(' + (${totalPages - 1}) + ')'">
+						[[${totalPages}]]
+					</a>
+				</li>
+			
+				<!-- Next Page Button -->
+				<li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+					<a href="javascript:void(0);" class="page-link"
+						th:attr="onclick=${currentPage < totalPages - 1} ? 'loadPage(' + (${currentPage} + 1) + ')' : ''">
+						&rarr;
+					</a>
+				</li>
+			</ul>
+
+		</div>
+
+	</div>
+	<script type="text/javascript">
+	
+		function initRowSelection(){
+			var allSelectedCounter = 0;
+			$('.row-selection').each(function(i, item){
+				var voucher = $(item).data('xrow');
+				if(selectedVouchers.includes(voucher)){
+					$(item).prop('checked', true);
+					allSelectedCounter ++;
+				} else {
+					$(item).prop('checked', false);
+				}
+
+				if(selectedVouchers.length > 0){
+					$('.btn-delete-all-selected').removeClass('d-none');
+					$('.selection-counter').removeClass('d-none');
+					$('.selection-counter').html(' &nbsp; (' + selectedVouchers.length + ')');
+				} else {
+					$('.btn-delete-all-selected').addClass('d-none');
+					$('.selection-counter').addClass('d-none');
+				}
+
+				if(allSelectedCounter == $('.row-selection').length){
+					if(!$('#select-all-rows').is(":checked")){
+						$('#select-all-rows').prop('checked', true);
+					}
+				} else {
+					if($('#select-all-rows').is(":checked")){
+						$('#select-all-rows').prop('checked', false);
+					}
+				}
+			})
+		}
+
+		function rowSelectionEvent(){
+			// Pre select
+			initRowSelection();
+
+			$('#select-all-rows').off('click').on('click', function(){
+				if($(this).is(":checked")){
+					$('.row-selection').each(function(i, item){
+						$(item).prop('checked', true);
+						var voucher = $(item).data('xrow');
+						if (!selectedVouchers.includes(voucher)) {
+							selectedVouchers.push(voucher); // Add only if not already in array
+						}
+					})
+				} else {
+					$('.row-selection').each(function(i, item){
+						$(item).prop('checked', false);
+						var voucher = $(item).data('xrow');
+						selectedVouchers = selectedVouchers.filter(function(item) {
+							return item !== voucher; // Remove the unchecked voucher
+						});
+					})
+				}
+
+				initRowSelection();
+			});
+
+			$('.row-selection').on('change', function(e){
+				var voucher = $(this).data('xrow');
+				if ($(this).is(':checked')) {
+					if (!selectedVouchers.includes(voucher)) {
+						selectedVouchers.push(voucher); // Add only if not already in array
+					}
+				} else {
+					selectedVouchers = selectedVouchers.filter(function(item) {
+						return item !== voucher; // Remove the unchecked voucher
+					});
+				}
+
+				initRowSelection();
+			});
+
+			$('.btn-delete-all-selected').off('click').on('click', function(e){
+				e.preventDefault();
+
+				if(selectedVouchers.length <= 0){
+					showMessage('error', 'Please select vouchers first');
+					return;
+				}
+
+				if(!confirm("Are you sure, to delete all selected vouchers?")){
+					return;
+				}
+
+				actionPostRequest(getBasepath() + '/FA16/import/delete-selected-rows', {
+					"selectedVouchers" : selectedVouchers.length > 0 ? selectedVouchers.join(',') : "",
+				}, null, null, () => {
+					selectedVouchers = [];
+				});
+			});
+
+			$('.btn-delete-all-rows').off('click').on('click', function(e){
+				e.preventDefault();
+
+				if(!confirm("Are you sure, to delete all vouchers?")){
+					return;
+				}
+
+				actionPostRequest(getBasepath() + '/FA16/import/delete-all-rows', null, null, null, () => {
+					selectedVouchers = [];
+				});
+			});
+
+		}
+	
+	
+		function loadPage(page) {
+			sectionReloadAjaxReq({
+				id : 'import-table-container',
+				url : '/FA16/import-table?size=10&page=' + page
+			});
+		}
+
+		function tableBtnEvent(){
+			$('.btn-row-edit').off('click').on('click', function(e){
+				e.preventDefault();
+
+				var rowId = $(this).data('xrow');
+
+				$('.row-' + rowId).addClass('d-none');
+				$('.row-edit-' + rowId).removeClass('d-none');
+				disableBtn(['btn-row-edit', 'btn-row-delete']);
+
+				sectionReloadAjaxReq({
+					id : 'row-form-container-' + rowId,
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-row-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				var rowId = $(this).data('xrow');
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'), null, null, () => {
+					selectedVouchers = selectedVouchers.filter(function(item) {
+						return item !== rowId; // Remove the unchecked voucher
+					});
+				});
+			})
+		}
+
+		function terminateProcess(){
+
+			var statusUrl = getBasepath() + '/FA16/process/terminate/';
+
+			$.ajax({
+				type : 'GET',
+				url : statusUrl,
+				success : function(data){
+
+				},
+				error : function(jqXHR, status, errorThrown){
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				}
+			});
+		}
+
+		function checkUploadStatus(token){
+			if(token == undefined || token == '') return;
+
+			var statusUrl = getBasepath() + '/FA16/progress/status/' + token;
+
+			$.ajax({
+				type : 'GET',
+				url : statusUrl,
+				success : function(data){
+
+					updateProgress(data.progress);
+
+					if(data.isWorkInProgress == false){
+						setTimeout(() => {
+							hideProgress(true);
+							hideBtn(['btn-terminate-process']);
+							enableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+							enableBtn(['btn-row-edit', 'btn-row-delete']);
+
+							if(data.allOk == true) {
+								showMessage('success', 'Data imported successfully');
+
+								selectedVouchers = [];
+
+								sectionReloadAjaxReq({
+									id : 'import-table-container',
+									url : '/FA16/import-table'
+								});
+
+							} else {
+								showMessage('error', 'Data import failed');
+
+								sectionReloadAjaxReq({
+									id : 'import-table-container',
+									url : '/FA16/import-table'
+								});
+							}
+						}, 1000);
+						return;
+					} 
+
+					// Check status again each second
+					setTimeout(() => {
+						checkUploadStatus(data.token);
+					}, 1000);
+
+				},
+				error : function(jqXHR, status, errorThrown){
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				}
+			});
+		}
+
+
+		$(document).ready(function(){
+			kit.ui.init();
+
+			const fa16ImportToken = $('.fa16ImportToken').val();
+			if(fa16ImportToken != undefined && fa16ImportToken != null && fa16ImportToken != ''){
+				disableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+				disableBtn(['btn-row-edit', 'btn-row-delete']);
+				resetProgressBar();
+				showProgress('bg-warning', 'Preparing Data');
+				showBtn(['btn-terminate-process']);
+				checkUploadStatus(fa16ImportToken);
+			}
+
+			$('.btn-download-template').off('click').on('click', function(e){
+				e.preventDefault();
+				var linkUrl = getBasepath() + '/FA16/download/template';
+				window.open(linkUrl, '_blank');
+			});
+
+			$('.btn-terminate-process').off('click').on('click', function(e){
+				e.preventDefault();
+
+				if(!confirm("Are you sure, to terminate process?")){
+					return;
+				}
+
+				terminateProcess();
+			});
+
+			$('.btn-confirm-upload').off('click').on('click', function(e){
+				e.preventDefault();
+				var post = $(this).data('post');
+				var linkUrl = getBasepath() + '/FA16/import/validation/confirm/' + post;
+				var formData = new FormData();
+
+				resetProgressBar();
+				showProgress('bg-success', 'Validating Data');
+				showBtn(['btn-terminate-process']);
+				disableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+				disableBtn(['btn-row-edit', 'btn-row-delete']);
+
+				$.ajax({
+					url: linkUrl,
+					type: 'POST',
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function (data) {
+						if(data.status == 'SUCCESS'){
+							if(data.displayMessage == true) showMessage(data.status.toLowerCase(), data.message);
+
+							if(data.asyncCSVResult.isWorkInProgress == true){
+
+								setTimeout(() => {
+									checkUploadStatus(data.asyncCSVResult.token);
+								}, 1000);
+
+							} else {
+
+								setTimeout(() => {
+									hideProgress(true);
+									hideBtn(['btn-terminate-process']);
+									enableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+									enableBtn(['btn-row-edit', 'btn-row-delete']);
+
+									if(data.asyncCSVResult.allOk == true) {
+										showMessage('success', 'Import Confirmed successfully');
+										selectedVouchers = [];
+									} else {
+										showMessage('error', 'Import failed. There has some error in data.');
+									}
+
+									sectionReloadAjaxReq({
+										id : 'import-table-container',
+										url : '/FA16/import-table'
+									});
+
+								}, 1000);
+
+							}
+
+						} else {
+							$('#progressBar').addClass('bg-danger');
+							enableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+							enableBtn(['btn-row-edit', 'btn-row-delete']);
+							showMessage(data.status.toLowerCase(), data.message);
+
+							sectionReloadAjaxReq({
+								id : 'import-table-container',
+								url : '/FA16/import-table'
+							});
+						}
+					},
+					error: function (jqXHR, status, errorThrown) {
+						loadingMask2.hide();
+						if (jqXHR.status === 401) {
+							// Session is invalid, reload the url to go back to login page
+							location.reload();
+						} else {
+							showMessage("error", jqXHR.responseJSON.message);
+						}
+					}
+				});
+				
+			});
+
+			$('.btn-upload-file').click(function () {
+				$('#fileInput').val(null);
+				$('#fileInput').click();
+			});
+
+			$('#fileInput').change(function () {
+				var file = this.files[0];
+				if (file) {
+					$('.btn-upload-file').attr('disabled', 'true');
+					uploadFileInChunks(file);
+				}
+			});
+
+			function uploadFileInChunks(file) {
+				var chunkSize = 10 * 1024; // 100KB per chunk
+				var totalChunks = Math.ceil(file.size / chunkSize);
+				var currentChunk = 0;
+
+				resetProgressBar();
+				showProgress(null, 'Uploading file to server');
+				showBtn(['btn-terminate-process']);
+				disableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+				disableBtn(['btn-row-edit', 'btn-row-delete']);
+
+				function uploadNextChunk(initialStart) {
+					var start = currentChunk * chunkSize;
+					var end = Math.min(start + chunkSize, file.size);
+					var chunk = file.slice(start, end);
+
+					var formData = new FormData();
+					formData.append('file', chunk);
+					formData.append('currentChunk', currentChunk);
+					formData.append('totalChunks', totalChunks);
+					formData.append('fileName', file.name);
+					formData.append('initialStart', initialStart);
+
+					$.ajax({
+						url: getBasepath() + '/FA16/upload/chunk',
+						type: 'POST',
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function (data) {
+							currentChunk++;
+
+							var progress = (currentChunk / totalChunks) * 100;
+							updateProgress(progress);
+
+							if (currentChunk < totalChunks) {
+								uploadNextChunk("N");
+							} else {
+								if(data.status == 'SUCCESS'){
+									if(data.displayMessage == true) showMessage(data.status.toLowerCase(), data.message);
+
+									updateProgress(progress, 'bg-success');
+
+									if(data.fileType == 'xlsx' || data.fileType == 'xls'){
+										var uploadedFileName = data.fileName;
+
+										setTimeout(() => {
+											hideProgress(true);
+											hideBtn(['btn-terminate-process']);
+
+											$('#importExcelSheetSelectionModal').modal('show');
+											var container = $(".sheet-selection-container");
+											container.empty();
+
+											var imageLink = $('.excel-image-link').attr('src');
+
+											data.sheetNames.forEach(function (sheet, index) {
+												var optionHtml = `
+													<div class="sheet-option" data-sheet="${sheet}">
+														<input type="radio" name="sheetSelection" id="sheet-${index}" value="${sheet}">
+														<img src="`+ imageLink +`" alt="Excel Sheet">
+														<label for="sheet-${index}">${sheet}</label>
+													</div>
+												`;
+												container.append(optionHtml);
+											});
+
+											// Set first option as selected
+											// $(".sheet-option").first().addClass("selected").find("input").prop("checked", true);
+
+											// Cancel modal
+											$('.btn-cancel-sheet-selection').off('click').on('click', function(e){
+												e.preventDefault();
+												$('#importExcelSheetSelectionModal').modal('hide');
+												container.empty();
+												enableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+												enableBtn(['btn-row-edit', 'btn-row-delete']);
+											})
+
+											// Handle click event
+											let timeoutId;
+
+											$(".sheet-option").on("click", function () {
+												$(".sheet-option").removeClass("selected");
+												$(this).addClass("selected");
+												$(this).find("input").prop("checked", true);
+
+												var selectedSheetName = $(this).data('sheet');
+
+												// Clear the previous timeout before scheduling a new one
+												clearTimeout(timeoutId);
+
+												// Schedule a new timeout for 1 minute (60,000 ms)
+												timeoutId = setTimeout(() => {
+													$('#importExcelSheetSelectionModal').modal('hide');
+													container.empty();
+
+													var formData = new FormData();
+													formData.append('fileName', uploadedFileName);
+													formData.append('sheetName', selectedSheetName);
+
+													$.ajax({
+														url: getBasepath() + '/FA16/process/excel',
+														type: 'POST',
+														data: formData,
+														processData: false,
+														contentType: false,
+														success: function (data) {
+															if(data.status == 'SUCCESS'){
+																if(data.displayMessage == true) showMessage(data.status.toLowerCase(), data.message);
+
+																if(data.asyncCSVResult){
+
+																	if(data.asyncCSVResult.isWorkInProgress == true){
+
+																		setTimeout(() => {
+																			showProgress('bg-warning', 'Preparing Data');
+																			showBtn(['btn-terminate-process']);
+																			checkUploadStatus(data.asyncCSVResult.token);
+																		}, 1000);
+
+																	} else {
+
+																		setTimeout(() => {
+																			hideProgress(true);
+																			hideBtn(['btn-terminate-process']);
+																			enableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+																			enableBtn(['btn-row-edit', 'btn-row-delete']);
+
+																			if(data.asyncCSVResult.allOk == true) {
+																				showMessage('success', 'Data imported successfully');
+																			} else {
+																				showMessage('error', 'Data import failed');
+																			}
+
+																		}, 1000);
+
+																	}
+
+																} else {
+																	enableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+																	enableBtn(['btn-row-edit', 'btn-row-delete']);
+																}
+
+															} else {
+																hideProgress(true);
+																hideBtn(['btn-terminate-process']);
+																enableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+																enableBtn(['btn-row-edit', 'btn-row-delete']);
+																showMessage('error', "Excel processing failed");
+															}
+														},
+														error: function (jqXHR, status, errorThrown) {
+															loadingMask2.hide();
+															if (jqXHR.status === 401) {
+																// Session is invalid, reload the url to go back to login page
+																location.reload();
+															} else {
+																showMessage("error", jqXHR.responseJSON.message);
+															}
+														}
+													});
+												}, 1000);
+											});
+
+										}, 1000);
+
+									} else {
+										setTimeout(() => {
+											hideProgress(true);
+											hideBtn(['btn-terminate-process']);
+
+											if(data.asyncCSVResult){
+
+												if(data.asyncCSVResult.isWorkInProgress == true){
+
+													setTimeout(() => {
+														showProgress('bg-warning', 'Preparing Data');
+														showBtn(['btn-terminate-process']);
+														checkUploadStatus(data.asyncCSVResult.token);
+													}, 1000);
+
+												} else {
+
+													setTimeout(() => {
+														hideProgress(true);
+														hideBtn(['btn-terminate-process']);
+														enableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+														enableBtn(['btn-row-edit', 'btn-row-delete']);
+
+														if(data.asyncCSVResult.allOk == true) {
+															showMessage('success', 'Data imported successfully');
+														} else {
+															showMessage('error', 'Data import failed');
+														}
+
+													}, 1000);
+
+												}
+
+											} else {
+												enableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+												enableBtn(['btn-row-edit', 'btn-row-delete']);
+											}
+
+										}, 1000);
+									}
+
+									
+
+								} else {
+									$('#progressBar').addClass('bg-danger');
+									enableBtn(['btn-upload-file', 'btn-confirm-upload', 'btn-download-template', 'btn-delete-all-selected', 'btn-delete-all-rows']);
+									enableBtn(['btn-row-edit', 'btn-row-delete']);
+									showMessage(data.status.toLowerCase(), data.message);
+								}
+							}
+						},
+						error: function (jqXHR, status, errorThrown) {
+							loadingMask2.hide();
+							if (jqXHR.status === 401) {
+								// Session is invalid, reload the url to go back to login page
+								location.reload();
+							} else {
+								showMessage("error", jqXHR.responseJSON.message);
+							}
+						}
+					});
+				}
+
+				uploadNextChunk("Y");
+			}
+
+
+		})
+	</script>
+</div>

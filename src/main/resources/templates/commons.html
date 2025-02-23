@@ -1,0 +1,688 @@
+<!-- COMMON MEAT INFO -->
+<head th:fragment="common-meta" xmlns:th="http://www.thymeleaf.org">
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<link th:href="@{/assets/images/favicon.ico}" rel="icon" type="image/x-icon" />
+</head>
+
+<!-- COMMON-CSS -->
+<head th:fragment="common-css" xmlns:th="http://www.thymeleaf.org">
+	<link th:href="@{/assets/fonts/inter/inter.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/assets/icons/phosphor/styles.min.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/assets/icons/fontawesome/styles.min.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/assets/icons/icomoon/styles.min.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/assets/icons/material/styles.min.css}" rel="stylesheet" type="text/css">
+
+	<link th:href="@{/assets/css/ltr/all.min.css}" id="stylesheet" rel="stylesheet" type="text/css">
+	<link th:href="@{/assets/css/animate.min.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/assets/css/vendor/smoke/smoke.css}" id="stylesheet" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" th:href="@{/assets/css/bootstrap-datetimepicker.min.css}"/>
+	<link th:href="@{/assets/css/kit-ui.css}" rel="stylesheet" type="text/css">
+</head>
+
+<!-- COMMON-JS -->
+<head th:fragment="common-js" xmlns:th="http://www.thymeleaf.org">
+	<!-- Core JS files -->
+	<script th:src="@{/assets/js/jquery/jquery.min.js}"></script>
+	<script th:src="@{/assets/js/popper.min.js}"></script>
+	<script th:src="@{/assets/js/bootstrap/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/assets/js/jquery/cookie.js}"></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<script th:src="@{/assets/js/vendor/smoke/smoke.js}"></script>
+	<script th:src="@{/assets/js/vendor/visualization/d3/d3.min.js}"></script>
+	<script th:src="@{/assets/js/vendor/visualization/d3/d3_tooltip.js}"></script>
+	<script th:src="@{/assets/js/vendor/tables/datatables/datatables.min.js}"></script>
+	<script th:src="@{/assets/js/vendor/tables/datatables/extensions/buttons.min.js}"></script>
+
+	<!-- <script th:src="@{/assets/js/vendor/tables/datatables/extensions/row_reorder.min.js}"></script>
+	<script th:src="@{/assets/js/vendor/tables/datatables/extensions/responsive.min.js}"></script>
+	<script th:src="@{/assets/js/vendor/tables/datatables/extensions/responsive_bs.js}"></script> -->
+
+	<script th:src="@{/assets/js/vendor/forms/selects/select2.min.js}"></script>
+	<script th:src="@{/assets/js/vendor/notifications/noty.min.js}"></script>
+	<script th:src="@{/assets/js/vendor/ui/moment/moment.min.js}"></script>
+	<script th:src="@{/assets/js/vendor/pickers/daterangepicker.js}"></script>
+	<script th:src="@{/assets/js/vendor/pickers/datepicker.min.js}"></script>
+	<script th:src="@{/assets/js/bootstap-datepicker.js}"></script>
+	<script th:src="@{/assets/js/vendor/ui/prism.min.js}"></script>
+	<script th:src="@{/assets/js/vendor/ui/dragula.min.js}"></script>
+	<script th:src="@{/assets/js/vendor/uploaders/bs_custom_file_input.min.js}"></script>
+	<script th:src="@{/assets/js/vendor/forms/selects/bootstrap_multiselect.js}"></script>
+
+	<!-- Custom Js Files -->
+	<script th:src="@{/assets/demo/pages/components_tooltips.js}"></script>
+	<script th:src="@{/assets/demo/demo_configurator.js}"></script>
+	<script th:src="@{/assets/js/app.js}"></script>
+	<script th:src="@{/assets/demo/pages/animations_css3.js}"></script>
+	<script th:src="@{/assets/demo/pages/datatables_basic.js}"></script>
+	<script th:src="@{/assets/js/kit-functions.js}"></script>
+	<script th:src="@{/assets/js/kit-ui.js}"></script>
+</head>
+
+<!-- Main Menu -->
+<div th:fragment="main-menu" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<a th:href="@{/}" class="basePath"></a>
+	<input type="hidden" id="businessZid" th:value="${loggedInZbusiness.zid}"/> 
+
+	<div class="navbar navbar-dark navbar-expand-lg navbar-static border-bottom border-bottom-white border-opacity-10">
+		<div class="container-fluid">
+			<div class="d-flex d-lg-none me-2">
+				<button type="button" class="navbar-toggler sidebar-mobile-main-toggle rounded-pill">
+					<i class="ph-list"></i>
+				</button>
+			</div>
+
+			<div class="navbar-brand flex-1 flex-lg-0">
+				<a th:href="@{/home}" class="d-inline-flex align-items-center side-nav-link" data-screen="home" th:classappend="${#lists.isEmpty(masterMenus) ? '' : 'screen-item'}">
+					<!-- <input type="hidden" id="logoBase64" th:value="${loggedInZbusiness.imageBase64}" readonly></input>
+					<img id="logoPreview" th:src="@{/assets/images/aspi_white.jpg}" alt="" style="height: 35px;" class="me-3"> -->
+					<h3 class="m-0 p-0 text-white" th:text="${loggedInZbusiness.zorg}">ASPI</h3>
+				</a>
+			</div>
+
+			<!--<ul class="nav flex-row">
+				<li class="nav-item d-lg-none">
+					<a href="#navbar_search" class="navbar-nav-link navbar-nav-link-icon rounded-pill" data-bs-toggle="collapse">
+						<i class="ph-magnifying-glass"></i>
+					</a>
+				</li>
+			</ul>-->
+
+			<!--<div class="navbar-collapse justify-content-center flex-lg-1 order-2 order-lg-1 collapse" id="navbar_search">
+				<div class="navbar-search flex-fill position-relative mt-2 mt-lg-0 mx-lg-3">
+					<div class="form-control-feedback form-control-feedback-start flex-grow-1" data-color-theme="dark">
+						<input type="text" class="form-control bg-transparent rounded-pill menu-search" data-search-url="" placeholder="Search Menu">
+						data-bs-toggle="dropdown"
+						<div class="form-control-feedback-icon">
+							<i class="ph-magnifying-glass"></i>
+						</div>
+						<div class="dropdown-menu w-100 menu-search-container" data-color-theme="light">
+							<div class="dropdown-menu-scrollable-lg">
+								<div class="dropdown-header">
+									Menus
+									<a href="#" class="float-end">
+										See all
+										<i class="ph-arrow-circle-right ms-1"></i>
+									</a>
+								</div>
+
+								<div class="dropdown-item cursor-pointer">
+									<div class="me-3">
+										<img src="../../../assets/images/demo/users/face3.jpg" class="w-32px h-32px rounded-pill" alt="">
+									</div>
+
+									<div class="d-flex flex-column flex-grow-1">
+										<div class="fw-semibold">Christ<mark>in</mark>e Johnson</div>
+										<span class="fs-sm text-muted">c.johnson@awesomecorp.com</span>
+									</div>
+
+									<div class="d-inline-flex">
+										<a href="#" class="text-body ms-2">
+											<i class="ph-user-circle"></i>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>-->
+
+			<ul class="nav flex-row justify-content-end order-1 order-lg-2">
+				<li class="nav-item nav-item-dropdown-lg dropdown ms-lg-2" th:if="${not #lists.isEmpty(otherBusinesses)}">
+					<a href="#" class="navbar-nav-link align-items-center rounded-pill p-1" data-bs-toggle="dropdown">
+						<div class="status-indicator-container">
+							<!-- <img th:src="@{/assets/images/demo/users/face11.jpg}" class="w-32px h-32px rounded-pill" alt=""> -->
+							<i class="ph-briefcase" style="font-size: 25px;"></i>
+							<span class="status-indicator bg-success"></span>
+						</div>
+						<span class="d-none d-lg-inline-block mx-lg-2">Switch Business</span>
+					</a>
+
+					<div th:if="${not #lists.isEmpty(otherBusinesses)}" class="dropdown-menu dropdown-menu-end">
+						<a th:each="user : ${otherBusinesses}" th:href="@{/switchbusiness/} + ${user.zid}" class="dropdown-item">
+							<i class="ph-briefcase me-2" style="font-size: 25px;"></i><span th:text="${user.businessName}"></span>
+						</a>
+					</div>
+				</li>
+
+				<li class="nav-item nav-item-dropdown-lg dropdown ms-lg-2" th:if="${not #lists.isEmpty(otherProfiles)}">
+					<a href="#" class="navbar-nav-link align-items-center rounded-pill p-1" data-bs-toggle="dropdown">
+						<div class="status-indicator-container">
+							<i class="ph-user-switch" style="font-size: 25px;"></i>
+							<span class="status-indicator bg-success"></span>
+						</div>
+						<span class="d-none d-lg-inline-block mx-lg-2">Switch Profile</span>
+					</a>
+
+					<div th:if="${not #lists.isEmpty(otherProfiles)}" class="dropdown-menu dropdown-menu-end">
+						<a th:each="profile : ${otherProfiles}" th:href="@{/switchprofile?xprofile=} + ${profile.xprofile}" class="dropdown-item">
+							<i class="ph-user-square me-2" style="font-size: 25px;"></i><span th:text="${profile.xprofile}"></span>
+						</a>
+					</div>
+				</li>
+
+				<li class="nav-item nav-item-dropdown-lg dropdown ms-lg-2">
+					<a href="#" class="navbar-nav-link align-items-center rounded-pill p-1" data-bs-toggle="dropdown">
+						<div class="status-indicator-container">
+							<!-- <img th:src="@{/assets/images/demo/users/face11.jpg}" class="w-32px h-32px rounded-pill" alt=""> -->
+							
+							<i class="ph-user-circle" style="font-size: 25px;"></i>
+							<span class="status-indicator bg-success"></span>
+						</div>
+						<span class="d-none d-lg-inline-block mx-lg-2" th:text="${loginName}"></span>
+					</a>
+
+					<div class="dropdown-menu dropdown-menu-end">
+						<a th:href="@{/AD15}" data-screen="AD15" class="dropdown-item screen-item" th:if="${not #lists.isEmpty(masterMenus)}">
+							<i class="ph-user me-2"></i>
+							My Account
+						</a>
+						<a th:href="@{/logout}" class="dropdown-item">
+							<i class="ph-sign-out me-2"></i>
+							Logout
+						</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- Main sidebar -->
+<div th:fragment="main-sidebar" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<div class="sidebar sidebar-dark sidebar-main sidebar-expand-lg">
+
+		<!-- Sidebar content -->
+		<div class="sidebar-content">
+
+			<!-- Sidebar header -->
+			<div class="sidebar-section">
+				<div class="sidebar-section-body d-flex justify-content-center">
+					<!-- <h5 class="sidebar-resize-hide flex-grow-1 my-auto" th:text="${#strings.isEmpty(loggedInZbusiness.zname) ? 'DEMO ERP' : loggedInZbusiness.zname}">DEMO ERP</h5> -->
+
+					<div>
+						<button type="button" class="navigation-btn btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent sidebar-control expand-mode sidebar-main-resize d-none d-lg-inline-flex">
+							<i class="ph-arrows-left-right"></i>
+						</button>
+
+						<button type="button" class="btn btn-flat-white btn-icon btn-sm rounded-pill border-transparent mobile-nav-close sidebar-mobile-main-toggle d-lg-none">
+							<i class="ph-x"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+			<!-- /sidebar header -->
+
+			<!-- Main navigation -->
+			<div class="sidebar-section">
+				<ul class="nav nav-sidebar" data-nav-type="accordion">
+
+					<div th:remove="tag" th:each="master : ${masterMenus}" th:if="${not (#lists.isEmpty(master.screens) and #lists.isEmpty(master.subMenus))}">
+
+						<li class="nav-item-header pt-3">
+							<div class="text-uppercase fs-sm lh-sm opacity-50 sidebar-resize-hide" th:text="${master.menuTitle}"></div>
+							<i class="ph-dots-three sidebar-resize-show"></i>
+						</li>
+
+						<a th:href="@{/home}" class="screen-item" id="home" data-screen="home"></a>
+
+						<!-- Main -->
+						<li class="nav-item" th:each="screen : ${master.screens}">
+							<a th:id="${screen.xscreen}" th:href="@{/} + ${screen.xscreen}" class="nav-link screen-item" th:attr="id=${screen.xscreen}, data-screen=${screen.xscreen}" th:classappend="${screen.xscreen eq screenCode ? 'active' : ''}">
+								<i th:classappend="${#strings.isEmpty(screen.xicon) ? 'ph-house' : screen.xicon}"></i>
+								<span th:text="${screen.xtitle}"></span>
+							</a>
+						</li>
+
+						<!-- Sub menus -->
+						<div
+							th:if="${not #lists.isEmpty(master.subMenus)}"
+							th:each="submenu : ${master.subMenus}"
+							th:remove="tag">
+							<div th:remove="tag" th:replace="commons :: submenu-fragment(${submenu})"></div>
+						</div>
+
+					</div>
+
+				</ul>
+			</div>
+			<!-- /main navigation -->
+
+		</div>
+		<!-- /sidebar content -->
+
+	</div>
+</div>
+
+
+<li class="nav-item nav-item-submenu" th:fragment="submenu-fragment(master)" xmlns:th="http://www.thymeleaf.org">
+	<a href="#" class="nav-link" th:if="${not (#lists.isEmpty(master.subMenus) and #lists.isEmpty(master.screens))}"><i th:classappend="${#strings.isEmpty(master.menuIcon) ? 'ph-house' :master.menuIcon}"></i><span th:text="${master.menuTitle}"></span></a>
+	<ul class="nav-group-sub collapse" th:if="${not (#lists.isEmpty(master.subMenus) and #lists.isEmpty(master.screens))}">
+
+		<!-- screens -->
+		<li class="nav-item" th:each="screen : ${master.screens}">
+			<a th:id="${screen.xscreen}" th:href="@{/} + ${screen.xscreen}" class="nav-link screen-item" th:attr="id=${screen.xscreen}, data-screen=${screen.xscreen}" th:classappend="${screen.xscreen eq screenCode ? 'active' : ''}">
+				<i th:classappend="${#strings.isEmpty(screen.xicon) ? 'ph-house' :screen.xicon}"></i>
+				<span th:text="${screen.xtitle}"></span>
+			</a>
+		</li>
+
+		<!-- sub menus -->
+		<div
+			th:if="${not #lists.isEmpty(master.subMenus)}"
+			th:each="submenu : ${master.subMenus}"
+			th:remove="tag">
+			<div th:remove="tag" th:replace="commons :: submenu-fragment(${submenu})"></div>
+		</div>
+
+	</ul>
+</li>
+
+<div th:fragment="page-header" xmlns:th="http://www.thymeleaf.org">
+	<div class="page-header page-header-light shadow" th:if="${not #strings.isEmpty(pageTitle)}">
+		<div class="page-header-content d-flex justify-content-between align-items-center">
+			<div class="d-flex">
+				<h4 class="page-title mb-0" th:text="${pageTitle}"></h4>
+			</div>
+			<a th:if="${not isFavorite and not loggedInUser.isAdmin and screenCode ne 'Home'}" th:href="@{/AD15/add-to-favourite?screen=} + ${screenCode}" th:attr="data-pagetitle=${pageTitle}" class="text-end btn-favorite-add" title="Add to favorite"><i class="ph-heart fs-1"></i></a>
+			<a th:if="${isFavorite and not loggedInUser.isAdmin}" th:href="@{/AD15/remove-from-favourite?screen=} + ${screenCode}" th:attr="data-pagetitle=${pageTitle}" class="text-end btn-favorite-remove" title="Remove from favorite"><i class="ph-heart-break text-danger fs-1"></i></a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+		})
+	</script>
+</div>
+
+
+<div th:fragment="favorite-links" xmlns:th="http://www.thymeleaf.org">
+	<div th:if="${not loggedInUser.isAdmin and not #lists.isEmpty(favouriteMenus)}" class="fw-semibold">My Favorite Links</div>
+	<div th:if="${not loggedInUser.isAdmin and not #lists.isEmpty(favouriteMenus)}" class="mb-2" style="font-size: 12px; font-style: italic;">You can add maximum 6 favorite links here</div>
+	<div th:if="${not loggedInUser.isAdmin and not #lists.isEmpty(favouriteMenus)}" class="list-group mb-3">
+		<div class="mb-3 mb-lg-0">
+			<ul class="media-list-container p-0" id="media-list-target-left">
+				<li th:attr="data-xscreen=${f.xscreen}" class="list-group-item d-flex align-items-center border rounded mb-2 dnd-items" th:each="f : ${favouriteMenus}">
+					<a href="#" class="d-inline-flex align-items-center me-3">
+						<i class="ph-dots-six me-2 dragula-handle"></i>
+					</a>
+
+					<div class="flex-fill">
+						<a th:href="@{/} + ${f.xscreen}" th:attr="data-screen=${f.xscreen}, data-fav=Y" class="fw-bold screen-item" th:text="${f.screenName}"></a>
+					</div>
+
+					<div class="ms-3">
+						<input type="radio" th:attr="data-url=@{/} + 'AD15/make-default?screen=' + ${f.xscreen}" class="form-check-input cursor-pointer ms-auto default-favorite-link" name="favorite-default" title="Make it default" th:value="${f.xscreen}" th:checked="${f.xisdefault ? 'checked' : false}" data-bs-popup="tooltip">
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script>
+		$(document).ready(function () {
+			var drake = dragula([document.getElementById('media-list-target-left')]);
+
+			drake.on('dragend', function (el, target, source, sibling) {
+
+				var screenDatas = '';
+
+				$.each($('.dnd-items'), function(i, item){
+					screenDatas += $(item).data('xscreen') + ':' + (i+1);
+					if((i + 1) != $('.dnd-items').length) screenDatas += '|';
+				});
+
+				sectionReloadAjaxPostReq({
+					id : 'favorite-links-container',
+					url : '/AD15/favorite-reorder'
+				}, {
+					screenDatas : screenDatas
+				});
+
+			});
+		})
+	</script>
+</div>
+
+
+<div th:fragment="notification-section" xmlns:th="http://www.thymeleaf.org">
+	<div class="offcanvas offcanvas-end" tabindex="-1" id="notifications">
+		<div class="offcanvas-header py-0">
+			<h5 class="offcanvas-title py-3">Activity</h5>
+			<button type="button" class="btn btn-light btn-sm btn-icon border-transparent rounded-pill" data-bs-dismiss="offcanvas">
+				<i class="ph-x"></i>
+			</button>
+		</div>
+
+		<div class="offcanvas-body p-0">
+			<div class="bg-light fw-medium py-2 px-3">New notifications</div>
+			<div class="p-3">
+				<div class="d-flex align-items-start mb-3">
+					<a href="#" class="status-indicator-container me-3">
+						<img th:src="@{/assets/images/demo/users/face1.jpg}" class="w-40px h-40px rounded-pill" alt="">
+						<span class="status-indicator bg-success"></span>
+					</a>
+					<div class="flex-fill">
+						<a href="#" class="fw-semibold">James</a> has completed the task <a href="#">Submit documents</a> from <a href="#">Onboarding</a> list
+
+						<div class="bg-light rounded p-2 my-2">
+							<label class="form-check ms-1">
+								<input type="checkbox" class="form-check-input" checked disabled>
+								<del class="form-check-label">Submit personal documents</del>
+							</label>
+						</div>
+
+						<div class="fs-sm text-muted mt-1">2 hours ago</div>
+					</div>
+				</div>
+
+				<div class="d-flex align-items-start mb-3">
+					<a href="#" class="status-indicator-container me-3">
+						<img th:src="@{/assets/images/demo/users/face3.jpg}" class="w-40px h-40px rounded-pill" alt="">
+						<span class="status-indicator bg-warning"></span>
+					</a>
+					<div class="flex-fill">
+						<a href="#" class="fw-semibold">Margo</a> has added 4 users to <span class="fw-semibold">Customer enablement</span> channel
+
+						<div class="d-flex my-2">
+							<a href="#" class="status-indicator-container me-1">
+								<img th:src="@{/assets/images/demo/users/face10.jpg}" class="w-32px h-32px rounded-pill" alt="">
+								<span class="status-indicator bg-danger"></span>
+							</a>
+							<a href="#" class="status-indicator-container me-1">
+								<img th:src="@{/assets/images/demo/users/face11.jpg}" class="w-32px h-32px rounded-pill" alt="">
+								<span class="status-indicator bg-success"></span>
+							</a>
+							<a href="#" class="status-indicator-container me-1">
+								<img th:src="@{/assets/images/demo/users/face12.jpg}" class="w-32px h-32px rounded-pill" alt="">
+								<span class="status-indicator bg-success"></span>
+							</a>
+							<a href="#" class="status-indicator-container me-1">
+								<img th:src="@{/assets/images/demo/users/face13.jpg}" class="w-32px h-32px rounded-pill" alt="">
+								<span class="status-indicator bg-success"></span>
+							</a>
+							<button type="button" class="btn btn-light btn-icon d-inline-flex align-items-center justify-content-center w-32px h-32px rounded-pill p-0">
+								<i class="ph-plus ph-sm"></i>
+							</button>
+						</div>
+
+						<div class="fs-sm text-muted mt-1">3 hours ago</div>
+					</div>
+				</div>
+
+				<div class="d-flex align-items-start">
+					<div class="me-3">
+						<div class="bg-warning bg-opacity-10 text-warning rounded-pill">
+							<i class="ph-warning p-2"></i>
+						</div>
+					</div>
+					<div class="flex-1">
+						Subscription <a href="#">#466573</a> from 10.12.2021 has been cancelled. Refund case <a href="#">#4492</a> created
+						<div class="fs-sm text-muted mt-1">4 hours ago</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="bg-light fw-medium py-2 px-3">Older notifications</div>
+			<div class="p-3">
+				<div class="d-flex align-items-start mb-3">
+					<a href="#" class="status-indicator-container me-3">
+						<img th:src="@{/assets/images/demo/users/face25.jpg}" class="w-40px h-40px rounded-pill" alt="">
+						<span class="status-indicator bg-success"></span>
+					</a>
+					<div class="flex-fill">
+						<a href="#" class="fw-semibold">Nick</a> requested your feedback and approval in support request <a href="#">#458</a>
+
+						<div class="my-2">
+							<a href="#" class="btn btn-success btn-sm me-1">
+								<i class="ph-checks ph-sm me-1"></i>
+								Approve
+							</a>
+							<a href="#" class="btn btn-light btn-sm">
+								Review
+							</a>
+						</div>
+
+						<div class="fs-sm text-muted mt-1">3 days ago</div>
+					</div>
+				</div>
+
+				<div class="d-flex align-items-start mb-3">
+					<a href="#" class="status-indicator-container me-3">
+						<img th:src="@{/assets/images/demo/users/face24.jpg}" class="w-40px h-40px rounded-pill" alt="">
+						<span class="status-indicator bg-grey"></span>
+					</a>
+					<div class="flex-fill">
+						<a href="#" class="fw-semibold">Mike</a> added 1 new file(s) to <a href="#">Product management</a> project
+
+						<div class="bg-light rounded p-2 my-2">
+							<div class="d-flex align-items-center">
+								<div class="me-2">
+									<img th:src="@{/assets/images/icons/pdf.svg}" width="34" height="34" alt="">
+								</div>
+								<div class="flex-fill">
+									new_contract.pdf
+									<div class="fs-sm text-muted">112KB</div>
+								</div>
+								<div class="ms-2">
+									<button type="button" class="btn btn-flat-dark text-body btn-icon btn-sm border-transparent rounded-pill">
+										<i class="ph-arrow-down"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="fs-sm text-muted mt-1">1 day ago</div>
+					</div>
+				</div>
+
+				<div class="d-flex align-items-start mb-3">
+					<div class="me-3">
+						<div class="bg-success bg-opacity-10 text-success rounded-pill">
+							<i class="ph-calendar-plus p-2"></i>
+						</div>
+					</div>
+					<div class="flex-fill">
+						All hands meeting will take place coming Thursday at 13:45.
+
+						<div class="my-2">
+							<a href="#" class="btn btn-primary btn-sm">
+								<i class="ph-calendar-plus ph-sm me-1"></i>
+								Add to calendar
+							</a>
+						</div>
+
+						<div class="fs-sm text-muted mt-1">2 days ago</div>
+					</div>
+				</div>
+
+				<div class="d-flex align-items-start mb-3">
+					<a href="#" class="status-indicator-container me-3">
+						<img th:src="@{/assets/images/demo/users/face4.jpg}" class="w-40px h-40px rounded-pill" alt="">
+						<span class="status-indicator bg-danger"></span>
+					</a>
+					<div class="flex-fill">
+						<a href="#" class="fw-semibold">Christine</a> commented on your community <a href="#">post</a> from 10.12.2021
+
+						<div class="fs-sm text-muted mt-1">2 days ago</div>
+					</div>
+				</div>
+
+				<div class="d-flex align-items-start mb-3">
+					<div class="me-3">
+						<div class="bg-primary bg-opacity-10 text-primary rounded-pill">
+							<i class="ph-users-four p-2"></i>
+						</div>
+					</div>
+					<div class="flex-fill">
+						<span class="fw-semibold">HR department</span> requested you to complete internal survey by Friday
+
+						<div class="fs-sm text-muted mt-1">3 days ago</div>
+					</div>
+				</div>
+
+				<div class="text-center">
+					<div class="spinner-border" role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modals -->
+<div class="modal-section" th:fragment="modal-section" xmlns:th="http://www.thymeleaf.org">
+	<div id="errorDetailModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="true">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title text-danger">Errors</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+
+				<div class="modal-body">
+					<div class="error-details-container"></div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="searchSuggestTableModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="true">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Search Results</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+				</div>
+
+				<div class="modal-body">
+					<div class="search-suggest-results-container"></div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="importExcelSheetSelectionModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title text-muted text-center">Select Sheet To Start Process</h5>
+					<button type="button" class="btn-close btn-cancel-sheet-selection"></button>
+				</div>
+
+				<div class="modal-body">
+					<p class="text-center bg-info bg-opacity-25 rounded">By selecting any sheet, the import process will be start automatically within a second.</p>
+					<div class="sheet-selection-container"></div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm btn-light btn-cancel-sheet-selection">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer-section" th:fragment="footer-section" xmlns:th="http://www.thymeleaf.org">
+	<div class="navbar navbar-sm navbar-footer border-top">
+		<div class="container-fluid">
+			<a href="#">
+				<img th:src="@{/assets/images/aspi_black.png}" alt="" style="height: 30px;" class="me-3">
+			</a>
+
+			<ul class="nav">
+				<li class="nav-item ms-md-1">
+					<a href="#" class="navbar-nav-link navbar-nav-link-icon rounded">
+						<div class="d-flex align-items-center mx-md-1">
+							<!-- <i class="ph-git-merge"></i> -->
+							<span class="ms-2" th:text="${'Version - ' + appVersion}">Version 1.0.0</span>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<span th:remove="tag" th:include="commons :: loading-mask"></span>
+	<!-- <span th:remove="tag" th:include="commons :: alert-section"></span>
+	<span th:remove="tag" th:include="commons :: loading-mask"></span>
+	<div th:remove="tag" th:replace="commons :: progressmask"></div> -->
+</div>
+
+<!-- Stock Error Details Fragment commonly used -->
+<div th:fragment="error-details" xmlns:th="http://www.thymeleaf.org">
+	<div class="table-responsive">
+		<table class="table datatable">
+			<thead>
+				<tr>
+					<th>Item</th>
+					<th>From Business</th>
+					<th>From Store</th>
+					<th class="text-end">Quantity Need</th>
+					<th class="text-end">Quantity Available</th>
+					<th class="text-end">Quantity Diviation</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="error : ${stockErrors}">
+					<td th:text="${error.itemCode + ' - ' + error.itemName}"></td>
+					<td th:text="${error.fromBusienssCode + ' - ' + error.fromBusinessUnitName}"></td>
+					<td th:text="${error.fromStoreCode + ' - ' + error.fromStoreName}"></td>
+					<td class="text-end" th:text="${error.reqQty}"></td>
+					<td class="text-end" th:text="${error.availableQty}"></td>
+					<td class="text-end" th:text="${error.deviation}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<!-- Utility -->
+<!-- ALERT -->
+<div th:fragment="alert-section" xmlns:th="http://www.thymeleaf.org">
+	<div class="ck-alert nodisplay alert alert-dismissible fade in">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> 
+		<strong class="ck-alert-identifier">Success!</strong> <span class="ck-alert-message">This alert box could indicate a successful or positive action.</span>
+	</div>
+</div>
+
+<!-- Loading mask -->
+<div th:fragment="loading-mask" xmlns:th="http://www.thymeleaf.org">
+	<div class="loading-mask nodisplay"></div>
+	<div id="loadingmask2" class="nodisplay">
+		<div id="loadingdots" class="nodisplay">
+			<div id="loadingdots_1" class="loadingdots nodisplay">L</div>
+			<div id="loadingdots_2" class="loadingdots nodisplay">O</div>
+			<div id="loadingdots_3" class="loadingdots nodisplay">A</div>
+			<div id="loadingdots_4" class="loadingdots nodisplay">D</div>
+			<div id="loadingdots_5" class="loadingdots nodisplay">I</div>
+			<div id="loadingdots_6" class="loadingdots nodisplay">N</div>
+			<div id="loadingdots_7" class="loadingdots nodisplay">G</div>
+		</div>
+	</div>
+</div>
+
+<div id="progressmask" th:fragment="progressmask" xmlns:th="http://www.thymeleaf.org">
+	<div class="progress-box">
+		<div class="progress">
+			<link rel="stylesheet" type="text/css" th:href="@{/assets/css/ck-ui/progressmask.css}" />
+			<div 	class="progress-bar progress-bar-success progress-bar-striped" 
+					role="progressbar"
+					aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+					0% complete
+			</div>
+		</div>
+	</div>
+</div>

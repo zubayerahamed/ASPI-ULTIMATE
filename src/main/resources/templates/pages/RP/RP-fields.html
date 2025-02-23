@@ -1,0 +1,321 @@
+<!-- Report Form -->
+<div th:fragment="report-fields" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<div class="row">
+		<div th:each="field : ${fieldsList}" th:if="${field.fieldType.name() eq 'HIDDEN'}" th:switch="${field.fieldType + ''}">
+			<div th:replace="pages/RP/RP-fields :: display-argument(${field})"></div>
+		</div>
+		<div class="col-md-3" th:each="field : ${fieldsList}" th:if="${field.fieldType.name() ne 'HIDDEN'}" th:switch="${field.fieldType + ''}">
+			<div th:replace="pages/RP/RP-fields :: display-argument(${field})"></div>
+		</div>
+	</div>
+
+	<div class="d-flex justify-content-between align-items-center">
+		<div>
+			<button type="reset" th:attr="data-reloadurl='/' + ${group} + '/' + ${reportCode}, data-reloadid='header-table-container'" class="btn btn-light btn-reset">Clear</button>
+		</div>
+		<div class="d-flex justify-content-between align-items-center">
+			<div class="form-group" style="width: 150px !important;" >
+				<select class="form-control select"
+						id="reportType" 
+						name="reportType" 
+						required="required"
+						data-minimum-results-for-search="Infinity">
+					<option value="PDF">PDF</option>
+					<option value="EXCEL">Excel</option>
+					<option value="EXCEL_DATA">Excel Data Only</option>
+				</select>
+			</div>
+
+			<button type="submit" class="btn btn-primary btn-submit ms-2"><i class="ph-eye me-2"></i> View</button>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				validateAndSubmitReportForm();
+				//submitReportForm();
+			});
+
+			$('.card').on('click', '.btn-search-rp', function(e){
+				e.preventDefault();
+				var requiredError = false;
+
+				var searchValue = $(this).siblings('input.searchsuggest2').val();
+				var url = $(this).data('reloadurl') + searchValue;
+
+				var dependentFieldId = $(this).data('dependent');
+				if(dependentFieldId != undefined && dependentFieldId != '') {
+					var dependentArr = dependentFieldId.split(',');
+					var dependentValues = '';
+					$.each(dependentArr, function(i, j){
+						var dependentFiledValue = $('input[name="'+ j +'"]').val();
+						var dependentex = $('input[name="'+ j +'"]').attr('dependentex');
+						if(dependentFiledValue == '') {
+							var fieldName = $("label[for='"+j+"']").text();
+							showMessage('error', fieldName + ' required');
+							requiredError = true;
+						}
+						if(dependentValues == ''){
+							if(dependentex != undefined && dependentex != null && dependentex != '') {
+								dependentValues = dependentex + ',' + dependentFiledValue;
+							} else {
+								dependentValues = dependentFiledValue;
+							}
+						} else {
+							if(dependentex != undefined && dependentex != null && dependentex != '') {
+								dependentValues = dependentValues + ',' + dependentex + ',' + dependentFiledValue;
+							} else {
+								dependentValues = dependentValues + ',' + dependentFiledValue;
+							}
+						}
+					});
+
+					url = url + '&dependentparam=' + dependentValues;
+				}
+
+				var resetFieldId = $(this).data('toreset');
+				if(resetFieldId != undefined && resetFieldId != '') {
+					url = url + '&resetparam=' + resetFieldId;
+				}
+
+				if(requiredError) return;
+
+				$('#searchSuggestTableModal').modal('show');
+				$('.search-suggest-results-container').html("");
+
+				sectionReloadAjaxPostReq({
+					id : $(this).data('reloadid'),
+					url : url,
+				}, {
+					"fieldId" : $(this).data('fieldid'),
+				});
+			});
+
+
+			$('.card').on('click', '.btn-search-clear-rp', function(e){
+				e.preventDefault();
+				$(this).siblings('input.searchsuggest2').val("");
+				$(this).siblings('input.search-val').val("");
+				$(this).siblings('input.search-val').attr("dependentex", "");
+
+				var resetFieldIds = $(this).data('toreset');
+				if(resetFieldIds != undefined && resetFieldIds != ''){
+					var resetFields = resetFieldIds.split(',');
+					$.each(resetFields, function(i, j){
+						if(j != undefined && j != '') {
+							$('#' + j).val("");
+							$('input[name="'+ j +'"]').val("");
+						}
+					});
+				}
+
+			});
+
+		})
+	</script>
+	<script type="text/javascript" th:src="@{/assets/js/kit-search-suggest.js}"></script>
+</div>
+
+<div th:fragment="display-argument(field)" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<div th:switch="${field.fieldType + ''}">
+		<!-- HIDDEN -->
+		<div th:case="'HIDDEN'">
+			<input 	type="hidden" 
+					class="form-control" 
+					th:id="${field.fieldId}" 
+					th:name="${field.fieldName}" 
+					th:value="${field.defaultInputValue}"/>
+		</div>
+
+		<!-- DISABLED -->
+		<div th:case="'DISABLED'">
+			<div class="mb-3 form-group">
+				<label class="form-label" th:for="${field.fieldId}" th:text="${field.prompt}">Label</label>
+				<input 	type="text"
+						disabled="disabled" 
+						class="form-control" 
+						th:value="${field.defaultInputValue}"/>
+			</div>
+		</div>
+
+		<!-- TEXT -->
+		<div th:case="'TEXT'">
+			<div class="mb-3 form-group">
+				<label class="form-label" th:classappend="${field.required ? 'required' : ''}" th:for="${field.fieldId}" th:text="${field.prompt}">Label</label>
+				<input 	type="text" 
+						class="form-control" 
+						th:id="${field.fieldId}" 
+						th:name="${field.fieldName}" 
+						th:value="${field.defaultInputValue}" 
+						th:required="${field.required}"
+						th:disabled="${field.disabled}">
+			</div>
+		</div>
+
+		<!-- NUMBER -->
+		<div th:case="'NUMBER'">
+			<div class="mb-3 form-group">
+				<label class="form-label" th:classappend="${field.required ? 'required' : ''}" th:for="${field.fieldId}" th:text="${field.prompt}">Label</label>
+				<input 	type="number" 
+						class="form-control numeric-only" 
+						th:id="${field.fieldId}" 
+						th:name="${field.fieldName}" 
+						th:value="${field.defaultNumberValue}" 
+						th:required="${field.required}"
+						th:disabled="${field.disabled}">
+			</div>
+		</div>
+
+		<!-- DATE FIELD -->
+		<div th:case="'DATE'">
+			<div class="mb-3 form-group">
+				<label class="form-label" th:classappend="${field.required ? 'required' : ''}" th:for="${field.fieldId}" th:text="${field.prompt}">Date</label>
+				<div class="input-group">
+					<input 	type="text" 
+							th:name="${field.fieldName}" 
+							th:id="${field.fieldId}" 
+							class="form-control datepicker-date-format" 
+							th:value="${field.defaultDateValue == null ? #dates.format(#dates.createNow(), df) : #dates.format(field.defaultDateValue, df)}"
+							th:required="${field.required}"
+							th:disabled="${field.disabled}"
+							th:attr="con-start=${field.startDate}">
+					<span class="input-group-text">
+						<i class="ph-calendar"></i>
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- TIME -->
+		<div th:case="'TIME'">
+			<div class="mb-3 form-group">
+				<label th:for="${field.fieldId}" th:classappend="${field.required ? 'required' : ''}" th:text="${field.prompt}" class="form-label">Time: </label>
+				<div class="input-group time  timepicker">
+					<input 	class="form-control" 
+							data-type="timepicker" 
+							th:id="${field.fieldId}"
+							th:name="${field.fieldName}" 
+							placeholder="Start" 
+							th:required="${field.required}"
+							th:value="${field.defaultTime}"/>
+					<span class="input-group-text input-group-append input-group-addon">
+						<i class="ph-clock"></i>
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- DROPDOWN -->
+		<div th:case="'DROPDOWN'">
+			<div class="mb-3 form-group">
+				<label class="form-label" th:classappend="${field.required ? 'required' : ''}" th:for="${field.fieldId}" th:text="${field.prompt}">Label</label>
+				<select class="form-control select" 
+						th:id="${field.fieldId}" 
+						th:name="${field.fieldName}" 
+						th:required="${field.required}"
+						th:disabled="${field.disabled}" data-minimum-results-for-search="Infinity">
+					<option th:each="o : ${field.options}" 
+							th:value="${o.value}" 
+							th:text="${o.prompt}"
+							th:selected="${o.value eq field.selectedOption}">Value</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- DROPDOWN SELECT2 -->
+		<div th:case="'SELECT2'">
+			<div class="mb-3 form-group">
+				<label class="form-label" th:classappend="${field.required ? 'required' : ''}" th:for="${field.fieldId}" th:text="${field.prompt}">Label</label>
+				<select class="form-control select" 
+						th:id="${field.fieldId}" 
+						th:name="${field.fieldName}" 
+						th:required="${field.required}"
+						th:disabled="${field.disabled}">
+					<option th:each="o : ${field.options}" 
+							th:value="${o.value}" 
+							th:text="${o.prompt}"
+							th:selected="${o.value eq field.selectedOption}">Value</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- SEARCH -->
+		<div th:case="'SEARCH'">
+			<div class="mb-3 form-group">
+				<label class="form-label" th:for="${field.fieldId}" th:text="${field.prompt}">Search : </label>
+				<div class="iconic-input">
+					<input 	type="text" 
+							class="form-control searchsuggest" 
+							placeholder="Search..." 
+							th:id="${field.fieldId}"
+							th:attr="search-url=${field.searchUrl}">
+					<input type="hidden" id="search-val" th:name="${field.fieldName}" value=""/>
+					<input type="hidden" id="search-des" value=""/>
+				</div>
+			</div>
+		</div>
+
+		<!-- SEARCH ADVANCED -->
+		<div th:case="'SEARCH_ADVANCED'">
+			<div class="mb-3 form-group">
+				<label class="form-label" th:classappend="${field.required ? 'required' : ''}" th:for="${field.fieldId}" th:text="${field.prompt}">Label</label>
+				<div class="input-group">
+					<input 	type="text" 
+							class="form-control searchsuggest2"
+							th:id="${field.fieldId}">
+					<input 	type="hidden" class="search-val" th:name="${field.fieldName}" value="" th:required="${field.required}"/>
+					<span 	class="input-group-text btn-search-rp" 
+							th:attr="
+							data-reloadurl=${field.searchUrl}, 
+							data-reloadid='search-suggest-results-container', 
+							data-fieldid=${field.fieldId},
+							data-mainscreen=false,
+							data-toreset=${field.resetFieldId},
+							data-dependent=${field.dependentFieldId}" 
+							style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+					<span 	class="input-group-text btn-search-clear-rp" 
+							th:attr="data-toreset=${field.resetFieldId}"
+							style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+				</div>
+			</div>
+		</div>
+
+		<!-- CHECKBOX -->
+		<div th:case="'CHECKBOX'">
+			<div class="mb-3 form-group">
+				<label class="form-label" th:for="${field.fieldId}" th:text="${field.prompt}">Is Active?</label>
+				<input 	type="checkbox"
+						class="d-block" 
+						th:id="${field.fieldId}"
+						th:name="${field.fieldName}" 
+						th:checked="${field.checked}">
+			</div>
+		</div>
+
+		<!-- RADIO -->
+		<div th:case="'RADIO'">
+			<div class="mb-3 form-group">
+				<label class="form-label" th:text="${field.prompt}">Gender:</label>
+				<div>
+					<div class="d-inline-flex align-items-center me-3" th:each="option : ${field.radioOptions}">
+						<input type="radio" th:id="${option.value}" th:name="${field.fieldName}" th:value="${option.value}" th:checked="${option.value eq field.selectedOption}">
+						<label class="ms-2" th:for="${option.value}" th:text="${option.prompt}">Checked</label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	

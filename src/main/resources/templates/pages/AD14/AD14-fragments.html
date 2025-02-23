@@ -1,0 +1,172 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div th:if="${not #strings.isEmpty(xcodes.xcode)}" class="card-header d-sm-flex align-items-sm-center py-sm-0">
+
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/AD14/store}" th:object="${xcodes}" method="POST">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${not #strings.isEmpty(xcodes.xcode)}" th:field="*{xcode}">
+				<input type="hidden" th:if="${not #strings.isEmpty(xcodes.xcode)}" th:field="*{xtype}">
+
+				<div class="row">
+					<div class="col-md-3" th:if="${#strings.isEmpty(xcodes.xcode)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Code Type</label>
+							<select class="form-control select" id="xtype" name="xtype" th:field="*{xtype}" required="required">
+								<option value="Code Type">Code Type</option>
+								<option th:each="ct : ${codeTypes}" th:value="${ct.xcode}" th:text="${ct.xcode}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${not #strings.isEmpty(xcodes.xcode)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Code Type</label>
+							<input type="text" class="form-control" th:value="${xcodes.xtype}" disabled="disabled">
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${#strings.isEmpty(xcodes.xcode)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Code</label>
+							<input type="text" class="form-control" id="xcode" name="xcode" th:field="*{xcode}" required="required">
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${not #strings.isEmpty(xcodes.xcode)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Code</label>
+							<input type="text" class="form-control" th:value="${xcodes.xcode}" disabled="disabled">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Description</label>
+							<input type="text" class="form-control" th:field="*{xdesc}">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label d-block" for="zactive">Is Active?</label>
+							<input type="checkbox" id="zactive" th:field="*{zactive}">
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/AD14?xtype=RESET&xcode=RESET', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(xcodes.xcode)}" th:attr="data-url=@{/AD14}, data-xtype=${xcodes.xtype}, data-xcode=${xcodes.xcode}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${not #strings.isEmpty(xcodes.xcode)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${#strings.isEmpty(xcodes.xcode)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'), {
+					"xtype" : $(this).data('xtype'),
+					"xcode" : $(this).data('xcode'),
+				});
+			});
+	
+		})
+	</script>
+</div>
+
+
+<div th:fragment="header-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto"><span th:text="${pageTitle}"></span> List</h6>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table datatable">
+				<thead>
+					<tr>
+						<th>Code Type</th>
+						<th>Code</th>
+						<th>Description</th>
+						<th>Is Active</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			$('.datatable').DataTable({
+				"processing" : true,
+				"serverSide" : true,
+				"stateSave" : true,
+				"columnDefs": [
+					{ "name": "xtype",   "targets": 0 },
+					{ "name": "xcode",  "targets": 1 },
+					{ "name": "xdesc",  "targets": 2 },
+					{ "name": "zactive",  "targets": 3 }
+				],
+				"ajax" : getBasepath() + "/AD14/all",
+				"columns": [
+					{
+						"data" : "xtype"
+					},
+					{ 
+						"data": "xcode",
+						render: function(data, type, row, meta) {
+							return '<a style="text-decoration: underline; cursor: pointer;" class="dataindex" reloadid="main-form-container" href="/AD14/index" data-xtype="'+ row['xtype'] +'" data-xcode="'+ data +'">' + data + '</a>';
+						}
+					},
+					{ "data": "xdesc" },
+					{ 
+						"data": "zactive",
+						"class": 'text-center',
+						render: function(data, type) {
+							return data == true ? 'Y' : 'N';
+						}
+					},
+				]
+			});
+
+			$('.datatable').off('click').on('click', 'a.dataindex', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxPostReq({
+					id : $(this).attr('reloadid'),
+					url : $(this).attr('href')
+				}, {
+					"xtype" : $(this).data('xtype'),
+					"xcode" : $(this).data('xcode'),
+				});
+			})
+		})
+	</script>
+</div>

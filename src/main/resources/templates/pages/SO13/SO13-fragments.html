@@ -1,0 +1,350 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/SO13/store}" th:object="${searchParam}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="xfdate" 
+										id="xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required="required"
+										th:value="${searchParam.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(searchParam.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="xtdate" 
+										id="xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required="required"
+										th:value="${searchParam.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(searchParam.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xbuid">
+								<input 	type="hidden" class="search-val" name="xbuid" th:value="${searchParam.xbuid ne null ? searchParam.xbuid + ' - ' + searchParam.businessUnitName : ''}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Store</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xwh">
+								<input 	type="hidden" class="search-val" name="xwh" th:value="${searchParam.xwh ne null ? searchParam.xwh + ' - ' + searchParam.warehouseName : ''}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD11/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xwh',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Customer</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xcus">
+								<input 	type="hidden" class="search-val" name="xcus" th:value="${searchParam.xcus ne null ? searchParam.xcus + ' - ' + searchParam.customerName : ''}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA14/1?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xcus',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Order Status</label>
+							<select class="form-control select" th:field="*{xstatusord}">
+								<option value="">-- Select --</option>
+								<option value="Open">Open</option>
+								<option value="Invoice Created">Invoice Created</option>
+								<option value="Full Delivered">Full Delivered</option>
+								<option value="Invoice Created & Dismissed">Invoice Created &amp; Dismissed</option>
+								<option value="Dismissed">Dismissed</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/SO13', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button type="submit" class="btn btn-primary btn-sm btn-search-purchase-order ms-1"><i class="ph-magnifying-glass me-2"></i> Search</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				$('.header-table-container').html("");
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-search-purchase-order').off('click').on('click', function(e){
+				e.preventDefault();
+				console.log("here");
+
+				var targettedForm = $('form#mainform');
+				if(!targettedForm.smkValidate()) return;
+
+				sectionReloadAjaxPostReq({
+					id : 'header-table-container',
+					url : '/SO13/header-table'
+				},{
+					"xfdate" : $('#xfdate').val(),
+					"xtdate" : $('#xtdate').val(),
+					"xbuid" : $('input[name="xbuid"]').val(),
+					"xwh" : $('input[name="xwh"]').val(),
+					"xcus" : $('input[name="xcus"]').val(),
+					"xstatusord" :  $('#xstatusord').val(),
+				});
+			});
+		})
+	</script>
+</div>
+
+
+
+
+<div th:fragment="header-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<input type="hidden" id="s-xfdate" th:with="df=${'yyyy-MM-dd'}" th:value="${searchParam.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(searchParam.xfdate, df)}"/>
+		<input type="hidden" id="s-xtdate"  th:with="df=${'yyyy-MM-dd'}" th:value="${searchParam.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(searchParam.xtdate, df)}"/>
+		<input type="hidden" id="s-xbuid" th:value="${searchParam.xbuid}"/>
+		<input type="hidden" id="s-xwh" th:value="${searchParam.xwh}"/>
+		<input type="hidden" id="s-xcus" th:value="${searchParam.xcus}"/>
+		<input type="hidden" id="s-xstatusord" th:value="${searchParam.xstatusord}"/>
+
+		<div class="table-responsive">
+			<table class="table datatable" style="white-space: nowrap;">
+				<thead>
+					<tr>
+						<th>Order Number</th>
+						<th>Order Date</th>
+						<th>Order Amount</th>
+						<th>Business Unit</th>
+						<th>Store/Warehouse</th>
+						<th>Customer</th>
+						<th>Last Invoice</th>
+						<th>Order Status</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			var selectedVouchers = [];
+			var xfdate = $("#s-xfdate").val();
+			var xtdate = $("#s-xtdate").val();
+			var xbuid = $("#s-xbuid").val();
+			var xwh = $("#s-xwh").val();
+			var xcus = $("#s-xcus").val();
+			var xstatusord = $("#s-xstatusord").val();
+
+			var dt = $('.datatable').DataTable({
+				"deferLoading": true,
+				"processing" : true,
+				"serverSide" : true,
+				"stateSave" : false,
+				"order" : [0, 'desc'],
+				"responsive": true,
+				"lengthChange": true,
+				"columnDefs": [
+					{ "name": "xordernum",   "targets": 0 },
+					{ "name": "xdate",   "targets": 1 },
+					{ "name": "xtotamt",   "targets": 2 },
+					{ "name": "xbuid",  "targets": 3 },
+					{ "name": "xwh",  "targets": 4 },
+					{ "name": "xcus",  "targets": 5 },
+					{ "name": "xdornum",  "targets": 6 },
+					{ "name": "xstatusord",  "targets": 7 },
+					{ "name": "xstatusord",  "targets": 8 }
+				],
+				"ajax": {
+					"url": getBasepath() + "/SO13/all",
+					"type": 'POST',
+					"data": function(d) {
+						// Include the default DataTables parameters
+						d.xfdate = xfdate;
+						d.xtdate = xtdate;
+						d.xbuid = xbuid;
+						d.xwh = xwh;
+						d.xcus = xcus;
+						d.xstatusord = xstatusord;
+					}
+				},
+				//"ajax" : getBasepath() + "/SO13/all?xfdate=" + xfdate + "&xtdate=" + xtdate + "&xyear=" + xyear + "&xper=" + xper + "&xbuid=" + xbuid + "&xtype=" + xtype + "&xstatusjv=" + xstatusjv,
+				"columns": [
+					{ "data": "xordernum" },
+					{ "data": "xdate" },
+					{ "data" : "xtotamt" },
+					{ 
+						"data": "xbuid",
+						render: function(data, type, row, meta) {
+							return data + ' - ' +  row['businessUnitName'];
+						},
+					},
+					{ 
+						"data": "xwh",
+						render: function(data, type, row, meta) {
+							return data + ' - ' +  row['warehouseName'];
+						},
+					},
+					{ 
+						"data": "xcus",
+						render: function(data, type, row, meta) {
+							return data + ' - ' +  row['customerName'];
+						},
+					},
+					{ 
+						"data": "xdornum",
+						render: function(data, type, row, meta) {
+							return data == null ? '' : '<a href="#" data-screen="SO15?xdornum='+ data +'" class="screen-item">'+ data +'</a>';
+						},
+					},
+					{ "data": "xstatusord" },
+					{ 
+						"data": "xstatusord" ,
+						"width": '550px',
+						"orderable": false,
+						"searchable": false,
+						"class": "text-center",
+						render: function(data, type, row, meta) {
+
+							var actions = '<button data-url="/report/print", data-param2="'+row['xordernum']+'", data-rptcode="opord" type="button" class="btn btn-light btn-sm btn-print mx-1"><i class="ph-printer me-2"></i>Print Order</button>';
+							actions += '<button data-url="/report/print", data-param2="'+row['xordernum']+'", data-rptcode="opordinv" type="button" class="btn btn-light btn-sm btn-print mx-1"><i class="ph-printer me-2"></i>Print Invoice(s)</button>';
+
+							if(row['xstatus'] == 'Confirmed' && (row['xstatusord'] == 'Open' || row['xstatusord'] == 'Invoice Created')){
+								actions += '<a class="btn btn-sm btn-primary mx-1 btn-create-grn" data-xordernum="'+ row['xordernum'] +'" href="#">Create Invoice</a>';
+							}
+
+							if(row['xstatus'] == 'Confirmed' && (row['xstatusord'] == 'Open' || row['xstatusord'] == 'Invoice Created')){
+								actions += '<a class="btn btn-sm btn-danger mx-1 btn-dismiss-order" data-xordernum="'+ row['xordernum'] +'" href="#">Dismiss Order</a>';
+							}
+
+							return actions;
+						}
+					}
+				]
+			});
+
+			dt.draw();
+
+			$('.datatable').on('click', '.btn-print', function(e){
+				e.preventDefault();
+
+				var params = {};
+				params.reportCode = $(this).data('rptcode');
+				params.reportType = "PDF";
+				params.param1 = $("#businessZid").val();
+
+				var i = 2;
+				while(i <= 30){
+					params['param' + i] = $(this).data('param' + i);
+					i++;
+				}
+
+				generateOnScreenReport(getBasepath() + $(this).data('url'), params);
+			});
+
+
+			$('.datatable').on('click', 'a.btn-dismiss-order', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to dismiss this order?")){
+					return;
+				}
+
+				actionPostRequest(getBasepath() + '/SO13/dismiss-order', {
+					"xordernum" : $(this).data('xordernum'),
+					"xfdate" : xfdate,
+					"xtdate" : xtdate,
+					"xbuid" : xbuid,
+					"xwh" : xwh,
+					"xcus" : xcus,
+					"xstatusord" : xstatusord
+				});
+			});
+
+			$('.datatable').on('click', 'a.btn-create-grn', function(e){
+				e.preventDefault();
+
+				actionPostRequest(getBasepath() + '/SO13/create-invoice', {
+					"xordernum" : $(this).data('xordernum'),
+					"xfdate" : xfdate,
+					"xtdate" : xtdate,
+					"xbuid" : xbuid,
+					"xwh" : xwh,
+					"xcus" : xcus,
+					"xstatusord" : xstatusord
+				});
+			});
+
+		})
+	</script>
+</div>

@@ -1,0 +1,603 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center p-0">
+			<button th:if="${moheader.xbatch ne null}" th:attr="data-url=@{/report/print}, data-param2=${moheader.xbatch}, data-rptcode='mobatch'" type="button" class="btn btn-light btn-sm btn-print my-2 ms-3"><i class="ph-printer me-2"></i> Print Batch</button>
+			<button th:if="${moheader.xbatch ne null and moheader.xstatus eq 'Open' and moheader.xstatusim eq 'Open'}" th:attr="data-url=@{/IM14/confirm?xbatch=} + ${moheader.xbatch}" type="button" class="btn btn-primary btn-sm btn-confirm my-2 ms-3"><i class="ph-check me-2"></i> Confirm</button>
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/IM14/store}" th:object="${moheader}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${moheader.xbatch ne null}" th:field="*{xbatch}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Batch No.</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										name="xbatch"
+										th:value="${moheader.xbatch ne null ? moheader.xbatch : ''}"
+										disabled="disabled">
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LIM14/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xbatch',
+										data-mainscreen=true,
+										data-mainreloadurl='/IM14?xbatch=',
+										data-mainreloadid='main-form-container',
+										data-detailreloadurl='/IM14/detail-table?xrow=RESET&xbatch=',
+										data-detailreloadid='detail-table-container',
+										data-additionalreloadid='additional-table-container',
+										data-additionalreloadurl='/IM14/additional-table?xrow=RESET&xbatch='" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="xdate" 
+										id="xdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${moheader.xdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(moheader.xdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xbuid"
+										th:value="${moheader.xbuid != null ? moheader.xbuid + ' - ' + moheader.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="xbuid" th:value="*{xbuid}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Store/Warehouse</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xwh"
+										th:value="${moheader.xwh != null ? moheader.xwh + ' - ' + moheader.warehouseName : ''}">
+								<input 	type="hidden" class="search-val" name="xwh" th:value="*{xwh}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD11/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xwh',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6 fg-item-container">
+						<div class="row" th:include="pages/IM14/IM14-fragments :: fg-item"></div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Production Quantity</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xqty}" min="0" required>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Markup Exp Type</label>
+							<select class="form-control select" th:field="*{xexptype}" required="required">
+								<option value="Percent">Percent</option>
+								<option value="Amount">Amount</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Markup Exp (Percent/Amount)</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xexpval}" min="0" required>
+						</div>
+					</div>
+					
+					
+					<div class="col-md-3" th:if="${moheader.xbatch ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">FG Cost Rate</label>
+							<input type="number" class="form-control numeric-only" th:value="*{xrate}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${moheader.xbatch ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Total Cost</label>
+							<input type="number" class="form-control numeric-only" th:value="*{xtotamt}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Reference</label>
+							<input type="text" class="form-control" th:field="*{xref}">
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${moheader.xbatch ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Batch Status</label>
+							<input type="text" class="form-control" th:value="*{xstatus}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${moheader.xbatch ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Inventory Status</label>
+							<input type="text" class="form-control" th:value="*{xstatusim}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${moheader.xbatch ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">GL Status</label>
+							<input type="text" class="form-control" th:value="*{xstatusjv}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${moheader.xbatch ne null and moheader.xstatusjv eq 'Confirmed'}">
+						<div class="mb-3 form-group">
+							<label class="form-label">GL Voucher</label>
+							<input type="text" th:if="${moheader.xvoucher eq null}" class="form-control" disabled>
+							<a 	href="#"
+								th:if="${moheader.xvoucher ne null}" 
+								th:attr="data-screen='FA17?xvoucher=' + ${moheader.xvoucher}" 
+								class="screen-item form-control" 
+								th:text="${moheader.xvoucher}">
+							</a>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Note</label>
+							<textarea cols="" rows="1" class="form-control" th:field="*{xnote}"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" 
+								th:attr="data-reloadurl='/IM14?xbatch=RESET' , 
+										data-reloadid='main-form-container', 
+										data-detailreloadurl='/IM14/detail-table?xbatch=RESET&xrow=RESET', 
+										data-detailreloadid='detail-table-container',
+										data-additionalreloadurl='/IM14/additional-table?xbatch=RESET&xrow=RESET', 
+										data-additionalreloadid='additional-table-container'" 
+								class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${moheader.xbatch ne null and moheader.xstatus eq 'Open'}" th:attr="data-url=@{/IM14?xbatch=} + ${moheader.xbatch}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${moheader.xbatch ne null and moheader.xstatus eq 'Open'}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${moheader.xbatch eq null}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailreloadid'),
+					url : $(this).data('detailreloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('additionalreloadid'),
+					url : $(this).data('additionalreloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+
+			$('.btn-confirm').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure?")){
+					return;
+				}
+				actionPostRequest($(this).data('url'));
+			});
+		})
+	</script>
+</div>
+
+
+<div th:fragment="fg-item" xmlns:th="http://www.thymeleaf.org" class="row">
+	<div class="col-md-6">
+		<div class="mb-3 form-group">
+			<label class="form-label required">FG Item</label>
+			<div class="input-group">
+				<input 	type="text" 
+						class="form-control searchsuggest2"
+						id="xitem"
+						th:value="${moheader.xitem != null ? moheader.xitem + ' - ' + moheader.itemName : ''}">
+				<input 	type="hidden" class="search-val" name="xitem" th:value="${moheader.xitem}" required/>
+				<span 	class="input-group-text btn-search" 
+						th:attr="
+						data-reloadurl='/search/table/LMD12/1?hint=', 
+						data-reloadid='search-suggest-results-container', 
+						data-fieldid='xitem',
+						data-mainscreen=true,
+						data-mainreloadid='fg-item-container',
+						data-mainreloadurl='/IM14/fg-item?xitem='" 
+						style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+				<span 	class="input-group-text btn-search-clear"
+						th:attr="data-dependentfieldsid='virtual-xunit'" 
+						style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="mb-3 form-group">
+			<label class="form-label">Unit</label>
+			<input type="text" class="form-control" id="virtual-xunit" th:value="${moheader.xunit}" disabled>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.config.advancedSearchBtInit();
+		})
+	</script>
+</div>
+
+
+<div th:fragment="detail-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card" th:if="${moheader.xbatch ne null}">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">Raw Materials</h6>
+		</div>
+
+		<div class="card-body" th:if="${moheader.xstatus eq 'Open'}">
+			<form id="detailform" class="form-validate-jquery" th:action="@{/IM14/detail/store}" th:object="${modetail}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" name="submitFor" th:value="*{submitFor}"/>
+				<input type="hidden" name="xbatch" th:value="*{xbatch}">
+				<input type="hidden" name="xrow" th:value="*{xrow}">
+				<input type="hidden" th:if="${modetail.xrow ne 0}" th:field="*{xitem}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Item</label>
+							<input th:if="${modetail.xrow ne 0}" class="form-control" type="text" th:value="${modetail.xitem ne null ? modetail.xitem + ' - ' + modetail.itemName : ''}" disabled>
+							<div class="input-group" th:if="${modetail.xrow eq 0}">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xitem"
+										th:value="${modetail.xitem ne null ? modetail.xitem + ' - ' + modetail.itemName : ''}">
+								<input 	type="hidden" class="search-val" name="xitem" th:value="*{xitem}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD12/1?hint=',  
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xitem',
+										data-mainscreen=true,
+										data-mainreloadurl='/IM14/detail-table?xbatch='+ ${modetail.xbatch} +'&xrow='+ ${modetail.xrow} +'&xitem=',
+										data-mainreloadid='detail-table-container'" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Unit</label>
+							<input type="text" class="form-control" th:value="*{xunit}" disabled="disabled">
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Quantity</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xqty}" min="0" required="required">
+						</div>
+					</div>
+					
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Consumption Type</label>
+							<select class="form-control select" th:field="*{xtype}" required="required">
+								<option value="">-- Select --</option>
+								<option value="BOM">BOM</option>
+								<option value="Additional">Additional</option>
+								<option value="Wastage">Wastage</option>
+								<option value="Exchange">Exchange</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Note</label>
+							<textarea cols="" rows="1" class="form-control" th:field="*{xnote}"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/IM14/detail-table?xbatch='+ ${modetail.xbatch} +'&xrow=RESET', data-reloadid='detail-table-container'" class="btn btn-light btn-sm btn-detail-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${modetail.xrow ne 0}" th:attr="data-url=@{/IM14/detail-table?xbatch=} + ${modetail.xbatch} + '&xrow=' + ${modetail.xrow}" type="button" class="btn btn-danger btn-sm btn-detail-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${modetail.xrow ne 0}" type="submit" class="btn btn-primary btn-sm btn-detail-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${modetail.xrow eq 0}" type="submit" class="btn btn-primary btn-sm btn-detail-submit"><i class="ph-plus me-2"></i> Add New</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="table-responsive" th:if="${not #lists.isEmpty(detailList)}">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Item</th>
+						<th>Unit</th>
+						<th>Quantity</th>
+						<th>Consumption Type</th>
+						<th>Note</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="x : ${detailList}">
+						<td>
+							<a class="detail-dataindex" th:attr="data-reloadid='detail-table-container', data-reloadurl='/IM14/detail-table?xbatch=' + ${x.xbatch} + '&xrow=' + ${x.xrow} + '&xitem=' + ${x.xitem}" th:href="@{/IM14/detail-table?xbatch=} + ${x.xbatch} + '&xrow=' + ${x.xrow} + '&xitem=' + ${x.xitem}" th:text="${x.xitem + ' - ' + x.itemName}"></a>
+						</td>
+						<td th:text="${x.xunit}"></td>
+						<td th:text="${x.xqty}"></td>
+						<td th:text="${x.xtype}"></td>
+						<td th:text="${x.xnote}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-detail-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-detail-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm(null, $('form#detailform'));
+			});
+
+			$('.btn-detail-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+	
+			$('a.detail-dataindex').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+		})
+	</script>
+</div>
+
+
+
+<div th:fragment="additional-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card" th:if="${moheader.xbatch ne null}">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">By Products</h6>
+		</div>
+
+		<div class="card-body" th:if="${moheader.xstatus eq 'Open'}">
+			<form id="additionalform" class="form-validate-jquery" th:action="@{/IM14/additional/store}" th:object="${modetail}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" name="submitFor" th:value="*{submitFor}"/>
+				<input type="hidden" name="xbatch" th:value="*{xbatch}">
+				<input type="hidden" name="xrow" th:value="*{xrow}">
+				<input type="hidden" th:if="${modetail.xrow ne 0}" th:field="*{xitem}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Item</label>
+							<input th:if="${modetail.xrow ne 0}" class="form-control" type="text" th:value="${modetail.xitem ne null ? modetail.xitem + ' - ' + modetail.itemName : ''}" disabled>
+							<div class="input-group" th:if="${modetail.xrow eq 0}">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xitem"
+										th:value="${modetail.xitem ne null ? modetail.xitem + ' - ' + modetail.itemName : ''}">
+								<input 	type="hidden" class="search-val" name="xitem" th:value="*{xitem}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD12/1?hint=',  
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xitem',
+										data-mainscreen=true,
+										data-mainreloadurl='/IM14/additional-table?xbatch='+ ${modetail.xbatch} +'&xrow='+ ${modetail.xrow} +'&xitem=',
+										data-mainreloadid='additional-table-container'" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Unit</label>
+							<input type="text" class="form-control" th:value="*{xunit}" disabled="disabled">
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Quantity</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xqty}" min="0" required="required">
+						</div>
+					</div>
+					
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" th:field="*{xtype}" required="required">
+								<option value="">-- Select --</option>
+								<option th:each="t : ${byTypes}" th:value="${t.xcode}" th:text="${t.xcode}"></option>
+								<option value="Material Waste">Material Waste</option>
+								<option value="Defective Products">Defective Products</option>
+								<option value="Production Offcuts">Production Offcuts</option>
+								<option value="Thermal Residue">Thermal Residue</option>
+								<option value="Recyclable Scrap">Recyclable Scrap</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Rate</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xrate}" min="0" required="required">
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Note</label>
+							<textarea cols="" rows="1" class="form-control" th:field="*{xnote}"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/IM14/additional-table?xbatch='+ ${modetail.xbatch} +'&xrow=RESET', data-reloadid='additional-table-container'" class="btn btn-light btn-sm btn-detail-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${modetail.xrow ne 0}" th:attr="data-url=@{/IM14/additional-table?xbatch=} + ${modetail.xbatch} + '&xrow=' + ${modetail.xrow}" type="button" class="btn btn-danger btn-sm btn-detail-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${modetail.xrow ne 0}" type="submit" class="btn btn-primary btn-sm btn-detail-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${modetail.xrow eq 0}" type="submit" class="btn btn-primary btn-sm btn-detail-submit"><i class="ph-plus me-2"></i> Add New</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="table-responsive" th:if="${not #lists.isEmpty(detailList)}">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Item</th>
+						<th>Unit</th>
+						<th>Quantity</th>
+						<th>Type</th>
+						<th>Rate</th>
+						<th>Note</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="x : ${detailList}">
+						<td>
+							<a class="detail-dataindex" th:attr="data-reloadid='additional-table-container', data-reloadurl='/IM14/additional-table?xbatch=' + ${x.xbatch} + '&xrow=' + ${x.xrow} + '&xitem=' + ${x.xitem}" th:href="@{/IM14/additional-table?xbatch=} + ${x.xbatch} + '&xrow=' + ${x.xrow} + '&xitem=' + ${x.xitem}" th:text="${x.xitem + ' - ' + x.itemName}"></a>
+						</td>
+						<td th:text="${x.xunit}"></td>
+						<td th:text="${x.xqty}"></td>
+						<td th:text="${x.xtype}"></td>
+						<td th:text="${x.xrate}"></td>
+						<td th:text="${x.xnote}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-detail-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-detail-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm(null, $('form#additionalform'));
+			});
+
+			$('.btn-detail-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+	
+			$('a.detail-dataindex').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+		})
+	</script>
+</div>

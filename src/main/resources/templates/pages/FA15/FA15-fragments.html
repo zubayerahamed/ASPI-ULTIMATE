@@ -1,0 +1,423 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center p-0">
+			<button th:if="${acheader.xvoucher ne null}" th:attr="data-url=@{/report/print}, data-param2=${acheader.xvoucher}, data-rptcode='voucher'" type="button" class="btn btn-light btn-sm btn-print my-2 ms-3"><i class="ph-printer me-2"></i> Print</button>
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/FA15/store}" th:object="${acheader}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${acheader.xvoucher ne null}" th:field="*{xvoucher}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Voucher</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										name="xvoucher"
+										th:value="${acheader.xvoucher ne null ? acheader.xvoucher : ''}"
+										disabled="disabled">
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA15/1?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xvoucher',
+										data-mainscreen=true,
+										data-mainreloadurl='/FA15?xvoucher=',
+										data-mainreloadid='main-form-container',
+										data-detailreloadurl='/FA15/detail-table?xrow=RESET&xvoucher=',
+										data-detailreloadid='detail-table-container'" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Voucher Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="xdate" 
+										id="xdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required="required"
+										th:value="${acheader.xdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(acheader.xdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xbuid"
+										th:value="${acheader.xbuid != null ? acheader.xbuid + ' - ' + acheader.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="xbuid" th:value="*{xbuid}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Voucher Type</label>
+							<select class="form-control select" th:field="*{xvtype}" required="required">
+								<option value="">-- Select --</option>
+								<option value="Journal Voucher">Journal Voucher</option>
+								<option th:each="vt : ${voucherTypes}" th:value="${vt.xcode}" th:text="${vt.xcode}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Reference</label>
+							<input type="text" class="form-control" th:field="*{xref}">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Narration</label>
+							<textarea cols="" rows="1" class="form-control" th:field="*{xnote}"></textarea>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Year</label>
+							<input type="text" class="form-control" th:value="*{xyear}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Period</label>
+							<input type="text" class="form-control" th:value="*{xper}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">GL Status</label>
+							<input type="text" class="form-control" th:value="*{xstatusjv}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Prepared By</label>
+							<input type="text" class="form-control" th:value="${acheader.xstaff + ' - ' + acheader.staffName}" disabled>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/FA15?xvoucher=RESET' , data-reloadid='main-form-container', data-detailreloadurl='/FA15/detail-table?xvoucher=RESET&xrow=RESET', data-detailreloadid='detail-table-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${acheader.xvoucher ne null and acheader.xstatusjv ne 'Posted'}" th:attr="data-url=@{/FA15?xvoucher=} + ${acheader.xvoucher}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${acheader.xvoucher ne null and acheader.xstatusjv ne 'Posted'}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${acheader.xvoucher eq null}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+
+		<div class="card-footer" th:if="${acheader.xvoucher ne null}">
+			<h6 class="py-sm-3 mb-sm-auto">Documents</h6>
+			<form id="documentform" class="form-validate-jquery mb-3" th:action="@{/AD18/upload}" method="POST" enctype="multipart/form-data" th:if="${acheader.xvoucher ne null and acheader.xstatusjv ne 'Posted'}">
+				<input type="hidden" name="screenId" value="FA15"/>
+				<input type="hidden" name="transactionId" th:value="${acheader.xvoucher}"/>
+				<input type="hidden" name="mainreloadid" value="main-form-container"/>
+				<input type="hidden" name="mainreloadurl" value="/FA15?xvoucher="/>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group mb-3">
+							<label class="form-label">File</label>
+							<input type="file" name="file" id="fileuploader" class="form-control" th:attr="accept=${loggedInZbusiness.xdoctypes}">
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="submit" class="btn btn-primary btn-sm btn-doc-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+
+			<div class="table-responsive" th:if="${#lists.isEmpty(documents) and acheader.xstatusjv eq 'Posted'}">
+				<p class="text-center text-muted">No document added</p>
+			</div>
+
+			<div class="table-responsive" th:if="${not #lists.isEmpty(documents)}">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>
+								Action
+							</th>
+							<th>File</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="x : ${documents}">
+							<td>
+								<a th:href="@{/AD18/download/} + ${x.xdocid}" class="btn btn-primary btn-sm btn-doc-download" target="_blank"><i class="ph-download-simple"></i></a>
+								<button th:if="${acheader.xvoucher ne null and acheader.xstatusjv ne 'Posted'}"
+										th:attr="
+											data-url=@{/AD18/delete/} + ${x.xdocid}, 
+											data-mainreloadid='main-form-container',
+											data-mainreloadurl='/FA15?xvoucher='" 
+										type="button" 
+										class="btn btn-danger btn-sm btn-doc-delete">
+									<i class="ph-trash"></i>
+								</button>
+							</td>
+							<td>
+								<i class="ph-file-dotted me-3"></i>
+								<span th:text="${x.xnameold}"></span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailreloadid'),
+					url : $(this).data('detailreloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+
+			$('.btn-docupload').off('click').on('click', function(e){
+				e.preventDefault();
+				$('#docupload').trigger('click');
+			});
+
+			$('.btn-doc-submit').off('click').on('click', function(e){
+				e.preventDefault();
+
+				var files = $('#fileuploader').get(0).files;
+				if(files.length == 0){
+					showMessage('error', "File selection required");
+					return;
+				}
+
+				submitMainForm(null, $('form#documentform'));
+			});
+
+			$('.btn-doc-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+
+				var data = {
+					'mainreloadid' : $(this).data("mainreloadid"),
+					'mainreloadurl' : $(this).data("mainreloadurl")
+				}
+				deleteRequest($(this).data('url'), data);
+			});
+
+		})
+	</script>
+</div>
+
+
+
+
+<div th:fragment="detail-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card" th:if="${acheader.xvoucher ne null}">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto" th:text="${pageTitle + ' Details'}">Voucher Details</h6>
+		</div>
+
+		<div class="card-body" th:if="${acheader.xstatusjv ne 'Posted'}">
+			<form id="detailform" class="form-validate-jquery" th:action="@{/FA15/detail/store}" th:object="${acdetail}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" name="submitFor" th:value="*{submitFor}"/>
+				<input type="hidden" name="xvoucher" th:value="*{xvoucher}">
+				<input type="hidden" name="xrow" th:value="*{xrow}">
+				<input type="hidden" th:if="${acdetail.xrow ne 0}" th:field="*{xacc}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Account</label>
+							<input th:if="${acdetail.xrow ne 0}" class="form-control" type="text" th:value="${acdetail.xacc ne null ? acdetail.xacc + ' - ' + acdetail.accountName : ''}" disabled>
+							<div class="input-group" th:if="${acdetail.xrow eq 0}">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xacc"
+										th:value="${acdetail.xacc ne null ? acdetail.xacc + ' - ' + acdetail.accountName : ''}">
+								<input 	type="hidden" class="search-val" name="xacc" th:value="*{xacc}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=',  
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xsub',
+										data-mainscreen=true,
+										data-mainreloadurl='/FA15/detail-table?xvoucher='+ ${acdetail.xvoucher} +'&xrow='+ ${acdetail.xrow} +'&xacc=',
+										data-mainreloadid='detail-table-container'" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3" th:if="${acdetail.xacc ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Sub Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xsub"
+										th:value="${acdetail.xsub ne null ? acdetail.xsub + ' - ' + acdetail.subAccountName : ''}">
+								<input 	type="hidden" class="search-val" name="xsub" th:value="*{xsub}" th:required="${acdetail.accountUsage ne 'Default'}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA14/5?dependentparam='+${acdetail.xacc}+'&hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xsub',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Particular</label>
+							<input type="text" class="form-control" th:field="*{xnote}">
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Debit</label>
+							<input type="number" class="form-control numeric-only" min="0" th:field="*{xdebit}" required>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Credit</label>
+							<input type="number" class="form-control numeric-only" min="0" th:field="*{xcredit}" required>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/FA15/detail-table?xvoucher='+ ${acdetail.xvoucher} +'&xrow=RESET', data-reloadid='detail-table-container'" class="btn btn-light btn-sm btn-detail-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${acdetail.xrow ne 0}" th:attr="data-url=@{/FA15/detail-table?xvoucher=} + ${acdetail.xvoucher} + '&xrow=' + ${acdetail.xrow}" type="button" class="btn btn-danger btn-sm btn-detail-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${acdetail.xrow ne 0}" type="submit" class="btn btn-primary btn-sm btn-detail-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${acdetail.xrow eq 0}" type="submit" class="btn btn-primary btn-sm btn-detail-submit"><i class="ph-plus me-2"></i> Add New</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="table-responsive" th:if="${not #lists.isEmpty(detailList)}">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Account</th>
+						<th>Sub Account</th>
+						<th>Particular</th>
+						<th>Debit</th>
+						<th>Credit</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="x : ${detailList}">
+						<td>
+							<a class="detail-dataindex" th:attr="data-reloadid='detail-table-container', data-reloadurl='/FA15/detail-table?xvoucher=' + ${x.xvoucher} + '&xrow=' + ${x.xrow}" th:href="@{/FA15/detail-table?xvoucher=} + ${x.xvoucher} + '&xrow=' + ${x.xrow}" th:text="${x.xacc + ' - ' + x.accountName}"></a>
+						</td>
+						<td th:text="${x.xsub != null ? x.xsub + ' - ' + x.subAccountName : ''}"></td>
+						<td th:text="${x.xnote}"></td>
+						<td th:text="${x.xdebit}"></td>
+						<td th:text="${x.xcredit}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-detail-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-detail-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm(null, $('form#detailform'));
+			});
+
+			$('.btn-detail-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+	
+			$('a.detail-dataindex').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+		})
+	</script>
+</div>

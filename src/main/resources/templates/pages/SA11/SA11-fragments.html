@@ -1,0 +1,204 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div th:if="${not #strings.isEmpty(xmenus.xmenu)}" class="card-header d-sm-flex align-items-sm-center py-sm-0">
+
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/SA11/store}" th:object="${xmenus}" method="POST">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${not #strings.isEmpty(xmenus.xmenu)}" th:field="*{xmenu}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group" th:if="${#strings.isEmpty(xmenus.xmenu)}">
+							<label class="form-label">Menu Code</label>
+							<input type="text" class="form-control" th:field="*{xmenu}" required="required">
+						</div>
+		
+						<div class="mb-3 form-group" th:if="${not #strings.isEmpty(xmenus.xmenu)}">
+							<label class="form-label">Menu Code</label>
+							<input type="text" class="form-control" th:value="${xmenus.xmenu}" disabled="disabled">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Menu Title</label>
+							<input type="text" class="form-control" th:field="*{xtitle}" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Parent Menu</label>
+							<input type="text" class="form-control" th:field="*{xpmenu}" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Image/Icon</label>
+							<input type="text" class="form-control" th:field="*{xicon}">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Sequence</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xsequence}" min="0" required="required">
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/SA11?xmenu=RESET', data-reloadid='main-form-container', data-detailid='header-table-container', data-detailurl='/SA11/header-table'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(xmenus.xmenu)}" th:attr="data-url=@{/SA11?xmenu=} + ${xmenus.xmenu}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${not #strings.isEmpty(xmenus.xmenu)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${#strings.isEmpty(xmenus.xmenu)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailid'),
+					url : $(this).data('detailurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+	
+		})
+	</script>
+</div>
+
+<div th:fragment="header-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">List of Master Menus</h6>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table datatable">
+				<thead>
+					<tr>
+						<th>Menu Code</th>
+						<th>Menu Title</th>
+						<th class="text-center">Parent Menu</th>
+						<th>Image/Icon</th>
+						<th class="text-end">Sequence</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			var columns = [
+				{
+					suffix : [0],
+					name : 'xmenu',
+					rendername : 'xmenu',
+					render: function(data, type, row, meta) {
+						return '<a style="text-decoration: underline; cursor: pointer;" class="dataindex" reloadid="main-form-container" href="/SA11?xmenu=" data-value="'+ data +'">' + data + '</a>';
+					}
+				}, {
+					suffix : [0],
+					name : 'xtitle',
+					rendername: 'xtitle',
+				}, {
+					suffix : [0],
+					class: 'text-center',
+					name : 'xpmenu',
+					rendername: 'xpmenu',
+				}, {
+					suffix : [0],
+					name : 'xicon',
+					rendername: 'xicon',
+				}, {
+					suffix : [0],
+					class: 'text-end',
+					name : 'xsequence',
+					rendername: 'xsequence',
+				}
+			];
+
+			var columnDefs = [];
+			var targetCounter = 0;
+			$.each(columns, function(index, el){
+				if(el.suffix.includes(0)) {
+					columnDefs.push({
+						name : el.name,
+						targets : targetCounter++,
+					});
+				} 
+			});
+
+			var dataRetreiver = [];
+			$.each(columns, function(index, el){
+				if(el.suffix.includes(0)) {
+					dataRetreiver.push({
+						data : el.rendername,
+						render : el.render,
+						class : el.class
+					});
+				} 
+			});
+
+			var dt = $('.datatable').DataTable({
+				"deferLoading": true,
+				"processing" : true,
+				"serverSide" : true,
+				"order" : [4, 'asc'],
+				"columnDefs": columnDefs,
+				"ajax": {
+					"url": getBasepath() + "/search/LSA11/0",
+					"type": 'POST'
+				},
+				"columns": dataRetreiver,
+			});
+
+			dt.draw();
+
+			$('.datatable').off('click').on('click', 'a.dataindex', function(e){
+				e.preventDefault();
+
+				var mainreloadurl = $(this).attr('href');
+				var mainreloadid = $(this).attr('reloadid');
+				var value = $(this).data('value');
+
+				sectionReloadAjaxReq({
+					id : mainreloadid,
+					url : mainreloadurl + value
+				});
+			})
+		})
+	</script>
+</div>

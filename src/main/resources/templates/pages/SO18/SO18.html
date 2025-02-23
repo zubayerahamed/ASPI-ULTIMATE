@@ -1,0 +1,89 @@
+<!-- Inner content -->
+<div class="content-inner" xmlns:th="http://www.thymeleaf.org">
+
+	<!-- Page header -->
+	<div class="page-header-container">
+		<div class="page-header page-header-light shadow" th:if="${not #strings.isEmpty(pageTitle)}">
+			<div class="page-header-content d-flex justify-content-between align-items-center">
+				<div class="d-flex">
+					<h4 class="page-title mb-0" th:text="${pageTitle}"></h4>
+				</div>
+				<h6 class="page-title mb-0" id="clock"></h6>
+				<a th:if="${not isFavorite and not loggedInUser.isAdmin and screenCode ne 'Home'}" th:href="@{/AD15/add-to-favourite?screen=} + ${screenCode}" th:attr="data-pagetitle=${pageTitle}" class="text-end btn-favorite-add" title="Add to favorite"><i class="ph-heart fs-1"></i></a>
+				<a th:if="${isFavorite and not loggedInUser.isAdmin}" th:href="@{/AD15/remove-from-favourite?screen=} + ${screenCode}" th:attr="data-pagetitle=${pageTitle}" class="text-end btn-favorite-remove" title="Remove from favorite"><i class="ph-heart-break text-danger fs-1"></i></a>
+			</div>
+		</div>
+		<script type="text/javascript" th:inline="javascript">
+			$(document).ready(function(){
+				kit.ui.init();
+
+				// Initialize server time from Thymeleaf variable
+				let serverTimeStr = /*[[${serverTime}]]*/;
+				let serverTime = new Date(serverTimeStr);
+
+				// Update the clock every second
+				setInterval(function () {
+					serverTime.setSeconds(serverTime.getSeconds() + 1); // Increment server time by 1 second
+
+					// Format the time
+					let year = serverTime.getFullYear();
+					let month = (serverTime.getMonth() + 1).toString().padStart(2, '0');
+					let day = serverTime.getDate().toString().padStart(2, '0');
+					let hours = serverTime.getHours();
+					let minutes = serverTime.getMinutes().toString().padStart(2, '0');
+					let seconds = serverTime.getSeconds().toString().padStart(2, '0');
+					let ampm = hours >= 12 ? 'PM' : 'AM';
+					hours = hours % 12 || 12; // Convert 24-hour to 12-hour format
+
+					// Display formatted time
+					$('#clock').text(`${year}-${month}-${day} ${hours}:${minutes}:${seconds} ${ampm}`);
+				}, 1000);
+			})
+		</script>
+	</div>
+	<!-- /page header -->
+
+	<!-- Content area -->
+	<div class="content">
+
+		<div class="row">
+			<div class="col-lg-8 col-xl-9">
+				<div class="row">
+					<div class="col-xl-12">
+						<div class="detail-table-container">
+							<div th:remove="tag" th:include="pages/SO18/SO18-fragments :: detail-table"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4 col-xl-3">
+
+				<div class="row">
+					<div class="col-xl-12">
+						<div class="main-form-container">
+							<div th:remove="tag" th:include="pages/SO18/SO18-fragments :: main-form"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+	<!-- /content area -->
+
+	<!-- Footer -->
+	<div th:remove="tag" th:include="commons :: footer-section"></div>
+	<!-- /footer -->
+
+	<script>
+		$(document).ready(function(){
+			if($('.sidebar-main-resized').length <= 0){
+				$('.sidebar-main-resize').click();
+			}
+		})
+	</script>
+
+</div>
+<!-- /inner content -->

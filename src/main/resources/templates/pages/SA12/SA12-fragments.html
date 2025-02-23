@@ -1,0 +1,224 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div th:if="${not #strings.isEmpty(xscreens.xscreen)}" class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/SA12/store}" th:object="${xscreens}" method="POST">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${not #strings.isEmpty(xscreens.xscreen)}" th:field="*{xscreen}">
+
+				<div class="row">
+					<div class="col-md-3" th:if="${#strings.isEmpty(xscreens.xscreen)}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Screen Code</label>
+							<input type="text" class="form-control" th:field="*{xscreen}" required="required">
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${not #strings.isEmpty(xscreens.xscreen)}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Screen Code</label>
+							<input type="text" class="form-control" th:value="${xscreens.xscreen}" disabled="disabled">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Screen Title</label>
+							<input type="text" class="form-control" th:field="*{xtitle}" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Type</label>
+							<select class="form-control select" th:field="*{xtype}" required="required" data-minimum-results-for-search="Infinity">
+								<option value="Screen">Screen</option>
+								<option value="Report">Report</option>
+								<option value="System">System</option>
+								<option value="Default">Default</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Starting From</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xnum}" min="0" step="1" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Icon</label>
+							<input type="text" class="form-control" th:field="*{xicon}">
+						</div>
+					</div>
+					
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Keywords</label>
+							<textarea rows="1" class="form-control" th:field="*{xkeywords}"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/SA12?xscreen=RESET', data-reloadid='main-form-container', data-detailid='header-table-container', data-detailurl='/SA12/header-table'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(xscreens.xscreen)}" th:attr="data-url=@{/SA12?xscreen=} + ${xscreens.xscreen}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${not #strings.isEmpty(xscreens.xscreen)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${#strings.isEmpty(xscreens.xscreen)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailid'),
+					url : $(this).data('detailurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+	
+		})
+	</script>
+</div>
+
+
+<div th:fragment="header-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">List of Screens</h6>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table datatable">
+				<thead>
+					<tr>
+						<th>Screen</th>
+						<th>Title</th>
+						<th>Type</th>
+						<th>Starting</th>
+						<th>Icon</th>
+						<th>Keyword</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			var columns = [
+				{
+					suffix : [0],
+					name : 'xscreen',
+					rendername : 'xscreen',
+					render: function(data, type, row, meta) {
+						return '<a style="text-decoration: underline; cursor: pointer;" class="dataindex" reloadid="main-form-container" href="/SA12?xscreen=" data-value="'+ data +'">' + data + '</a>';
+					}
+				}, {
+					suffix : [0],
+					name : 'xtitle',
+					rendername: 'xtitle',
+				}, {
+					suffix : [0],
+					name : 'xtype',
+					rendername: 'xtype',
+				}, {
+					suffix : [0],
+					class: 'text-end',
+					name : 'xnum',
+					rendername: 'xnum',
+				}, {
+					suffix : [0],
+					name : 'xicon',
+					rendername: 'xicon',
+				}, {
+					suffix : [0],
+					name : 'xkeywords',
+					rendername: 'xkeywords',
+				}
+			];
+
+			var columnDefs = [];
+			var targetCounter = 0;
+			$.each(columns, function(index, el){
+				if(el.suffix.includes(0)) {
+					columnDefs.push({
+						name : el.name,
+						targets : targetCounter++,
+					});
+				} 
+			});
+
+			var dataRetreiver = [];
+			$.each(columns, function(index, el){
+				if(el.suffix.includes(0)) {
+					dataRetreiver.push({
+						data : el.rendername,
+						render : el.render,
+						class : el.class
+					});
+				} 
+			});
+
+			var dt = $('.datatable').DataTable({
+				"deferLoading": true,
+				"processing" : true,
+				"serverSide" : true,
+				"order" : [0, 'asc'],
+				"columnDefs": columnDefs,
+				"ajax": {
+					"url": getBasepath() + "/search/LSA12/0",
+					"type": 'POST'
+				},
+				"columns": dataRetreiver,
+			});
+
+			dt.draw();
+
+			$('.datatable').off('click').on('click', 'a.dataindex', function(e){
+				e.preventDefault();
+
+				e.preventDefault();
+
+				var mainreloadurl = $(this).attr('href');
+				var mainreloadid = $(this).attr('reloadid');
+				var value = $(this).data('value');
+
+				sectionReloadAjaxReq({
+					id : mainreloadid,
+					url : mainreloadurl + value
+				});
+			})
+		})
+	</script>
+</div>

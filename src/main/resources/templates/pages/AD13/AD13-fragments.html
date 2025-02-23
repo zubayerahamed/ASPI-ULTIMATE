@@ -1,0 +1,317 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/AD13/store}" th:object="${xusers}" method="POST">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${not #strings.isEmpty(xusers.zemail)}" th:field="*{zemail}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">User ID</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										name="zemail"
+										th:value="${xusers.zemail != null ? xusers.zemail : ''}"
+										th:disabled="${xusers.zemail != null}"
+										th:required="${xusers.zemail == null}">
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='zemail',
+										data-mainscreen=true,
+										data-mainreloadurl='/AD13?zemail=',
+										data-mainreloadid='main-form-container',
+										data-detailreloadurl='/AD13/detail-table?xprofile=RESET&zemail=',
+										data-detailreloadid='detail-table-container'"
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${#strings.isEmpty(xusers.zemail)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Password</label>
+							<input type="password" class="form-control" th:field="*{xpassword}" required="required">
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${not #strings.isEmpty(xusers.zemail)}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Password</label>
+							<input type="password" class="form-control" th:field="*{xpassword}">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Employee</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xstaff"
+										th:value="${xusers.xstaff != null ? xusers.xstaff + ' - ' + xusers.employeeName : ''}">
+								<input 	type="hidden" class="search-val" name="xstaff" th:value="*{xstaff}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA14/3?dependentparam=Employee&hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xstaff',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Session Type</label>
+							<select class="form-control select" th:field="*{xsessiontype}" required="required">
+								<option value="Default">Default</option>
+								<option value="Custom">Custom</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Session Time (In Second)</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xsessiontime}" min="0">
+						</div>
+					</div>
+					
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Unit (POS)</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control  searchsuggest2"
+										id="xbuid"
+										th:value="${xusers.xbuid != null ? xusers.xbuid + ' - ' + xusers.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="xbuid" th:value="*{xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Outlet (POS)</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control  searchsuggest2"
+										id="xwh"
+										th:value="${xusers.xwh != null ? xusers.xwh + ' - ' + xusers.warehouseName : ''}">
+								<input 	type="hidden" class="search-val" name="xwh" th:value="*{xwh}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD11/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xwh',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label d-block" for="xislock">Is Lock? (POS Unit & Outlet)</label>
+							<input type="checkbox" id="xislock" th:field="*{xislock}">
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${loggedInUser.admin}">
+						<div class="mb-3 form-group">
+							<label class="form-label d-block" for="zadmin">Is Admin?</label>
+							<input type="checkbox" id="zadmin" th:field="*{zadmin}">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label d-block" for="zactive">Is Active?</label>
+							<input type="checkbox" id="zactive" th:field="*{zactive}">
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/AD13?zemail=RESET', data-reloadid='main-form-container',  data-detailreloadurl='/AD13/detail-table?zemail=RESET&xprofile=RESET', data-detailreloadid='detail-table-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(xusers.zemail)}" th:attr="data-url=@{/AD13?zemail=} + ${xusers.zemail}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${not #strings.isEmpty(xusers.zemail)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${#strings.isEmpty(xusers.zemail)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailreloadid'),
+					url : $(this).data('detailreloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+
+		})
+	</script>
+</div>
+
+
+
+<div th:fragment="detail-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card" th:if="${xuserprofiles}">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">Access Profiles</h6>
+		</div>
+
+		<div class="card-body">
+			<form id="detailform" class="form-validate-jquery" th:action="@{/AD13/detail/store}" th:object="${xuserprofiles}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" name="submitFor" th:value="*{submitFor}"/>
+				<input type="hidden" name="zemail" th:value="*{zemail}">
+				<input type="hidden" name="xprofile" th:value="*{xprofile}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Profile</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										name="xprofile"
+										th:value="${xuserprofiles.xprofile ne null ? xuserprofiles.xprofile : ''}"
+										disabled="disabled">
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD12/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xprofile',
+										data-mainscreen=true,
+										data-mainreloadurl='/AD13/detail-table?zemail='+ ${xuserprofiles.zemail} +'&xprofile=',
+										data-mainreloadid='detail-table-container'" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/AD13/detail-table?zemail='+ ${xuserprofiles.zemail} +'&xprofile=RESET', data-reloadid='detail-table-container'" class="btn btn-light btn-sm btn-detail-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${xuserprofiles.submitFor ne T(com.zayaanit.enums.SubmitFor).INSERT}" th:attr="data-url=@{/AD13/detail-table?zemail=} + ${xuserprofiles.zemail} + '&xprofile=' + ${xuserprofiles.xprofile}" type="button" class="btn btn-danger btn-sm btn-detail-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${xuserprofiles.submitFor eq T(com.zayaanit.enums.SubmitFor).INSERT}" type="submit" class="btn btn-primary btn-sm btn-detail-submit"><i class="ph-plus me-2"></i> Add New</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="table-responsive" th:if="${not #lists.isEmpty(detailList)}">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Profile</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="x : ${detailList}">
+						<td>
+							<a class="detail-dataindex" th:attr="data-reloadid='detail-table-container', data-reloadurl='/AD13/detail-table?zemail=' + ${x.zemail} + '&xprofile=' + ${x.xprofile}" th:href="@{/AD13/detail-table?zemail=} + ${x.zemail} + '&xprofile=' + ${x.xprofile}" th:text="${x.xprofile}"></a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-detail-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-detail-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm(null, $('form#detailform'));
+			});
+
+			$('.btn-detail-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+	
+			$('a.detail-dataindex').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+		})
+	</script>
+</div>
+
+
+<div th:fragment="list-table" xmlns:th="http://www.thymeleaf.org">
+	<script>
+		$(document).ready(function(){
+			kit.ui.init();
+
+			sectionReloadAjaxPostReq({
+				id : 'list-table-container',
+				url : '/search/table/LAD13/0'
+			}, {
+				mainscreen: true, 
+				mainreloadurl: '/AD13?zemail=',
+				mainreloadid: 'main-form-container',
+				detailreloadurl: '/AD13/detail-table?xprofile=RESET&zemail=',
+				detailreloadid: 'detail-table-container'
+			});
+		})
+	</script>
+</div>

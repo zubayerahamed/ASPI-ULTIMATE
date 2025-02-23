@@ -1,0 +1,302 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/FA32/store}" th:object="${optogli}" method="POST">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${not #strings.isEmpty(optogli.xtype)}" th:field="*{xtype}">
+				<input type="hidden" th:if="${not #strings.isEmpty(optogli.xgcus)}" th:field="*{xgcus}">
+
+				<div class="row">
+
+					<div class="col-md-3" th:if="${#strings.isEmpty(optogli.xtype)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="xtype" name="xtype" th:field="*{xtype}" required="required">
+								<option value="Sales">Sales</option>
+								<option value="Sales Return">Sales Return</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${not #strings.isEmpty(optogli.xtype)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<input type="text" class="form-control" th:value="${optogli.xtype}" disabled="disabled">
+						</div>
+					</div>
+
+					<div class="col-md-3" th:if="${#strings.isEmpty(optogli.xgcus)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Customer Group</label>
+							<select class="form-control select" id="xgcus" name="xgcus" th:field="*{xgcus}" required="required">
+								<option th:each="cg : ${cusGrps}" th:value="${cg.xcode}" th:text="${cg.xcode}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${not #strings.isEmpty(optogli.xgcus)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Customer Group</label>
+							<input type="text" class="form-control" th:value="${optogli.xgcus}" disabled="disabled">
+						</div>
+					</div>
+
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Receivable Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xaccdr"
+										th:value="${optogli.xaccdr != null ? optogli.xaccdr + ' - ' + optogli.receivableAccount : ''}">
+								<input 	type="hidden" class="search-val" name="xaccdr" th:value="*{xaccdr}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xaccdr',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Sales/Return Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xacccr"
+										th:value="${optogli.xacccr != null ? optogli.xacccr + ' - ' + optogli.salesAccount : ''}">
+								<input 	type="hidden" class="search-val" name="xacccr" th:value="*{xacccr}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xacccr',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Discount Exp Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xaccdisc"
+										th:value="${optogli.xaccdisc != null ? optogli.xaccdisc + ' - ' + optogli.discountAccount : ''}">
+								<input 	type="hidden" class="search-val" name="xaccdisc" th:value="*{xaccdisc}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xaccdisc',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">VAT Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xaccvat"
+										th:value="${optogli.xaccvat != null ? optogli.xaccvat + ' - ' + optogli.vatAccount : ''}">
+								<input 	type="hidden" class="search-val" name="xaccvat" th:value="*{xaccvat}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xaccvat',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">AIT Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xaccait"
+										th:value="${optogli.xaccait != null ? optogli.xaccait + ' - ' + optogli.aitAccount : ''}">
+								<input 	type="hidden" class="search-val" name="xaccait" th:value="*{xaccait}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xaccait',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/FA32?xtype=RESET&xgcus=RESET', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(optogli.xtype)}" th:attr="data-url=@{/FA32}, data-xtype=${optogli.xtype}, data-xgcus=${optogli.xgcus}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${not #strings.isEmpty(optogli.xtype)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${#strings.isEmpty(optogli.xtype)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'), {
+					"xtype" : $(this).data('xtype'),
+					"xgcus" : $(this).data('xgcus'),
+				});
+			});
+	
+		})
+	</script>
+</div>
+
+
+<div th:fragment="header-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">List of <span th:text="${pageTitle}"></span></h6>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table datatable">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>Customer Group</th>
+						<th>Receivable Account</th>
+						<th>Sales/Return Account</th>
+						<th>Discount Exp Account</th>
+						<th>VAT Account</th>
+						<th>AIT Account</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			$('.datatable').DataTable({
+				"processing" : true,
+				"serverSide" : true,
+				"stateSave" : true,
+				"lengthMenu": [5000],
+				"columnDefs": [
+					{ "name": "xtype",   "targets": 0 },
+					{ "name": "xgcus",  "targets": 1 },
+					{ "name": "xaccdr",  "targets": 2 },
+					{ "name": "xacccr",  "targets": 3 },
+					{ "name": "xaccdisc",  "targets": 4 },
+					{ "name": "xaccvat",  "targets": 5 },
+					{ "name": "xaccait",  "targets": 6 },
+				],
+				"ajax" : getBasepath() + "/FA32/all",
+				"columns": [
+					{
+						"data" : "xtype",
+						render: function(data, type, row, meta) {
+							return '<a style="text-decoration: underline; cursor: pointer;" class="dataindex" reloadid="main-form-container" href="/FA32?xtype='+ data +'&xgcus='+ row['xgcus'] +'">' + data + '</a>';
+						}
+					},
+					{ 
+						"data": "xgcus",
+					},
+					{ 
+						"data": "xaccdr",
+						render: function(data, type, row, meta) {
+							return data + ' - ' + row['receivableAccount'];
+						}
+					},
+					{ 
+						"data": "xacccr",
+						render: function(data, type, row, meta) {
+							return data + ' - ' + row['salesAccount'];
+						}
+					},
+					{ 
+						"data": "xaccdisc",
+						render: function(data, type, row, meta) {
+							return data + ' - ' + row['discountAccount'];
+						}
+					},
+					{ 
+						"data": "xaccvat",
+						render: function(data, type, row, meta) {
+							return data + ' - ' + row['vatAccount'];
+						}
+					},
+					{ 
+						"data": "xaccait",
+						render: function(data, type, row, meta) {
+							return data + ' - ' + row['aitAccount'];
+						}
+					},
+				]
+			});
+
+			$('.datatable').off('click').on('click', 'a.dataindex', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).attr('reloadid'),
+					url : $(this).attr('href')
+				});
+
+
+				
+			})
+		})
+	</script>
+</div>

@@ -1,0 +1,185 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center p-0">
+			<button th:if="${acheader.xvoucher ne null}" th:attr="data-url=@{/report/print}, data-param2=${acheader.xvoucher}, data-rptcode='voucher'" type="button" class="btn btn-light btn-sm btn-print my-2 ms-3"><i class="ph-printer me-2"></i> Print</button>
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/FA17/store}" th:object="${acheader}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${acheader.xvoucher ne null}" th:field="*{xvoucher}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Voucher</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										name="xvoucher"
+										th:value="${acheader.xvoucher ne null ? acheader.xvoucher : ''}"
+										disabled="disabled">
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA15/3?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xvoucher',
+										data-mainscreen=true,
+										data-mainreloadurl='/FA17?xvoucher=',
+										data-mainreloadid='main-form-container',
+										data-detailreloadurl='/FA17/detail-table?xrow=RESET&xvoucher=',
+										data-detailreloadid='detail-table-container'" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Voucher Date</label>
+							<input type="text" class="form-control" th:value="${acheader.xdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(acheader.xdate, df)}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<input type="text" class="form-control" th:value="${acheader.xbuid != null ? acheader.xbuid + ' - ' + acheader.businessUnitName : ''}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Voucher Type</label>
+							<input type="text" class="form-control" th:value="${acheader.xvtype}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Reference</label>
+							<input type="text" class="form-control" th:value="*{xref}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Narration</label>
+							<textarea cols="" rows="1" class="form-control" th:text="*{xnote}" disabled></textarea>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Year</label>
+							<input type="text" class="form-control" th:value="*{xyear}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Period</label>
+							<input type="text" class="form-control" th:value="*{xper}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">GL Status</label>
+							<input type="text" class="form-control" th:value="*{xstatusjv}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acheader.xvoucher ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Prepared By</label>
+							<input type="text" class="form-control" th:value="${acheader.xstaff + ' - ' + acheader.staffName}" disabled>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/FA17?xvoucher=RESET' , data-reloadid='main-form-container', data-detailreloadurl='/FA17/detail-table?xvoucher=RESET&xrow=RESET', data-detailreloadid='detail-table-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+
+		<div class="card-footer" th:if="${acheader.xvoucher ne null and not #lists.isEmpty(documents)}">
+			<h6 class="py-sm-3 mb-sm-auto">Documents</h6>
+
+			<div class="table-responsive" th:if="${not #lists.isEmpty(documents)}">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>
+								Action
+							</th>
+							<th>File</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="x : ${documents}">
+							<td>
+								<a th:href="@{/AD18/download/} + ${x.xdocid}" class="btn btn-primary btn-sm btn-doc-download" target="_blank"><i class="ph-download-simple"></i></a>
+							</td>
+							<td>
+								<i class="ph-file-dotted me-3"></i>
+								<span th:text="${x.xnameold}"></span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailreloadid'),
+					url : $(this).data('detailreloadurl')
+				});
+			});
+
+		})
+	</script>
+</div>
+
+
+
+
+<div th:fragment="detail-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card" th:if="${acheader.xvoucher ne null}">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto" th:text="${pageTitle + ' Details'}">Voucher Details</h6>
+		</div>
+
+		<div class="table-responsive" th:if="${not #lists.isEmpty(detailList)}">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Account</th>
+						<th>Sub Account</th>
+						<th>Debit</th>
+						<th>Credit</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="x : ${detailList}">
+						<td th:text="${x.xacc ne null ? x.xacc + ' - ' + x.accountName : ''}"></td>
+						<td th:text="${x.xsub != null ? x.xsub + ' - ' + x.subAccountName : ''}"></td>
+						<td th:text="${x.xdebit}"></td>
+						<td th:text="${x.xcredit}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+</div>

@@ -1,0 +1,212 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center p-0"></div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/FA14/store}" th:object="${acsub}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${acsub.xsub ne null}" th:field="*{xsub}">
+				<input type="hidden" th:if="${acsub.xsub ne null}" th:field="*{xtype}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Code</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										name="xsub"
+										th:value="${acsub.xsub ne null ? acsub.xsub : ''}"
+										th:disabled="${acsub.xsub != null}">
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA14/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xsub',
+										data-mainscreen=true,
+										data-mainreloadurl='/FA14?xsub=',
+										data-mainreloadid='main-form-container'" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Name</label>
+							<input type="text" class="form-control" th:field="*{xname}" required>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" th:field="*{xtype}" 
+									th:disabled="${acsub.xsub != null}"
+									th:required="${acsub.xsub == null}">
+								<option value="">-- Select --</option>
+								<option value="Customer">Customer</option>
+								<option value="Supplier">Supplier</option>
+								<option value="Employee">Employee</option>
+								<option value="Sub Account">Sub Account</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Description</label>
+							<input type="text" class="form-control" th:field="*{xdesc}">
+						</div>
+					</div>
+
+					<div class="col-md-12" th:if="${acsub.xsub eq null}">
+						<div class="xacc-field-container">
+							<div th:remove="tag" th:include="pages/FA14/FA14-fragments :: xacc-field"></div>
+						</div>
+					</div>
+					
+					
+					<div class="col-md-3" th:if="${acsub.xsub ne null and acsub.xtype eq 'Customer'}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Customer Groups</label>
+							<select class="form-control select" th:field="*{xgcus}" required="required">
+								<option value="">-- Select --</option>
+								<option th:each="grp : ${customerGroups}" th:value="${grp.xcode}" th:text="${grp.xcode}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acsub.xsub ne null and acsub.xtype eq 'Supplier'}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Supplier Groups</label>
+							<select class="form-control select" th:field="*{xgsup}" required="required">
+								<option value="">-- Select --</option>
+								<option th:each="grp : ${supplierGroups}" th:value="${grp.xcode}" th:text="${grp.xcode}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acsub.xsub ne null and acsub.xtype eq 'Sub Account'}">
+						<div class="mb-3 form-group">
+							<label class="form-label" th:classappend="${acsub.xtype eq 'Sub Account' ? 'required' : ''}">Account</label>
+							<input type="text" class="form-control" th:value="${acsub.xacc != null ? acsub.xacc + ' - ' + acsub.accountName : ''}" disabled>
+							<input type="hidden" class="form-control" th:field="*{xacc}">
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/FA14?xsub=RESET' , data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${acsub.xsub ne null}" th:attr="data-url=@{/FA14?xsub=} + ${acsub.xsub}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${acsub.xsub ne null}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${acsub.xsub eq null}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+
+			$('#xtype').on('change', function(){
+				sectionReloadAjaxReq({
+					id : 'xacc-field-container',
+					url : '/FA14/xaccfield?xtype=' + $(this).val()
+				});
+			})
+
+		})
+	</script>
+</div>
+
+
+<div class="row" th:fragment="xacc-field" xmlns:th="http://www.thymeleaf.org">
+	<div class="col-md-3" th:if="${acsub.xtype eq 'Customer'}">
+		<div class="mb-3 form-group">
+			<label class="form-label required">Customer Groups</label>
+			<select class="form-control select" id="xgcus" name="xgcus" required="required">
+				<option value="">-- Select --</option>
+				<option th:each="grp : ${customerGroups}" th:value="${grp.xcode}" th:text="${grp.xcode}" th:selected="${grp.xcode eq acsub.xgcus}"></option>
+			</select>
+		</div>
+	</div>
+
+	<div class="col-md-3" th:if="${acsub.xtype eq 'Supplier'}">
+		<div class="mb-3 form-group" th:if="${acsub.xtype eq 'Supplier'}">
+			<label class="form-label required">Supplier Groups</label>
+			<select class="form-control select" id="xgsup" name="xgsup" required="required">
+				<option value="">-- Select --</option>
+				<option th:each="grp : ${supplierGroups}" th:value="${grp.xcode}" th:text="${grp.xcode}" th:selected="${grp.xcode eq acsub.xgsup}"></option>
+			</select>
+		</div>
+	</div>
+
+	<div class="col-md-3" th:if="${acsub.xtype ne null and acsub.xtype eq 'Sub Account'}">
+		<div class="mb-3 form-group">
+			<label class="form-label" th:classappend="${acsub.xtype eq 'Sub Account' ? 'required' : ''}">Account</label>
+			<div class="input-group">
+				<input 	type="text" 
+						class="form-control searchsuggest2"
+						id="xacc"
+						th:value="${acsub.xacc != null ? acsub.xacc + ' - ' + acsub.accountName : ''}">
+				<input 	type="hidden" class="search-val" name="xacc" th:value="*{xacc}" th:if="${acsub.xtype ne 'Sub Account'}"/>
+				<input 	type="hidden" class="search-val" name="xacc" th:value="*{xacc}" th:if="${acsub.xtype eq 'Sub Account'}" required="required"/>
+				<span 	class="input-group-text btn-search" 
+						th:attr="
+						data-reloadurl='/search/table/LFA13/1?dependentparam='+${acsub.xtype}+'&hint=', 
+						data-reloadid='search-suggest-results-container', 
+						data-fieldid='xacc',
+						data-mainscreen=false" 
+						style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+				<span 	class="input-group-text btn-search-clear" 
+						style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+		})
+	</script>
+</div>
+
+
+<div th:fragment="list-table" xmlns:th="http://www.thymeleaf.org">
+	<script>
+		$(document).ready(function(){
+			kit.ui.init();
+
+			sectionReloadAjaxPostReq({
+				id : 'list-table-container',
+				url : '/search/table/LFA14/0'
+			}, {
+				mainscreen: true, 
+				mainreloadurl: '/FA14?xsub=',
+				mainreloadid: 'main-form-container'
+			});
+		})
+	</script>
+</div>

@@ -1,0 +1,168 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div th:if="${xmenuscreens.xrow != null}" class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/SA13/store}" th:object="${xmenuscreens}" method="POST">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${xmenuscreens.xrow != null}" th:field="*{xrow}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Menu Code</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xmenu"
+										th:value="${xmenuscreens.xrow != null ? xmenuscreens.xmenu + ' - ' + xmenuscreens.xmenuTitle : ''}">
+								<input 	type="hidden" class="search-val" name="xmenu" th:value="*{xmenu}" required="required"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LSA11/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xmenu',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Screen Code</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xscreen"
+										th:value="${xmenuscreens.xrow != null ? xmenuscreens.xscreen + ' - ' + xmenuscreens.xscreenTitle : ''}">
+								<input 	type="hidden" class="search-val" name="xscreen" th:value="*{xscreen}" required="required"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LSA12/1?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xscreen',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Sequence</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xsequence}" min="0" step="1" required="required">
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/SA13?xrow=RESET', data-reloadid='main-form-container', data-detailid='header-table-container', data-detailurl='/SA13/header-table'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${xmenuscreens.xrow != null}" th:attr="data-url=@{/SA13?xrow=} + ${xmenuscreens.xrow}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${xmenuscreens.xrow != null}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${xmenuscreens.xrow == null}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailid'),
+					url : $(this).data('detailurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+	
+		})
+	</script>
+</div>
+
+
+<div th:fragment="header-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">List of Menu Screens</h6>
+		</div>
+
+
+		<div class="card-body">
+			<div th:each="g : ${menuscreensGroup}" class="mb-5">
+				<div class="table-responsive">
+					<h3 th:text="${g.key}"></h3>
+					<table class="table normaltable">
+						<thead>
+							<tr>
+								<th class="text-center">Menu Code</th>
+								<th class="text-center">Screen</th>
+								<th>Screen Title</th>
+								<th class="text-center">Screen Type</th>
+								<th class="text-center">Sequence</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="ms : ${g.value}">
+								<td class="text-center">
+									<a class="dataindex" href="/SA13?xrow=" reloadid="main-form-container" th:attr="data-value=${ms.xrow}" th:text="${ms.xmenu}"></a>
+								</td>
+								<td class="text-center" th:text="${ms.xscreen}"></td>
+								<td th:text="${ms.xscreenTitle}"></td>
+								<td class="text-center" th:text="${ms.xscreenType}"></td>
+								<td class="text-center" th:text="${ms.xsequence}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			$('.normaltable').off('click').on('click', 'a.dataindex', function(e){
+				e.preventDefault();
+
+				var mainreloadurl = $(this).attr('href');
+				var mainreloadid = $(this).attr('reloadid');
+				var value = $(this).data('value');
+
+				sectionReloadAjaxReq({
+					id : mainreloadid,
+					url : mainreloadurl + value
+				});
+			})
+		})
+	</script>
+</div>

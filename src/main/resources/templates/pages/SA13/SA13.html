@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>DEMO</title>
+	<meta th:remove="tag" th:include="commons :: common-meta"/>
+	<meta th:remove="tag" th:include="commons :: common-css"/>
+	<meta th:remove="tag" th:include="commons :: common-js"/>
+</head>
+
+<body>
+
+	<!-- Main navbar -->
+	<div th:remove="tag" th:include="commons :: main-menu"></div>
+
+
+	<!-- Page content -->
+	<div class="page-content">
+
+		<!-- Main sidebar -->
+		<div th:remove="tag" th:include="commons :: main-sidebar" th:if="${not #lists.isEmpty(masterMenus)}"></div>
+		<!-- /main sidebar -->
+
+
+		<!-- Main content -->
+		<div class="content-wrapper">
+
+			<!-- Inner content -->
+			<div class="content-inner">
+
+				<!-- Page header -->
+				<div class="page-header page-header-light shadow" th:if="${not #strings.isEmpty(pageTitle)}">
+					<div class="page-header-content d-lg-flex">
+						<div class="d-flex">
+							<h4 class="page-title mb-0" th:text="${pageTitle}">
+								Header Title
+							</h4>
+						</div>
+					</div>
+				</div>
+				<!-- /page header -->
+
+				<!-- Content area -->
+				<div class="content">
+
+					<div class="row">
+						<div class="col-xl-12">
+							<div class="main-form-container">
+								<div th:remove="tag" th:include="pages/SA13/SA13-fragments :: main-form"></div>
+							</div>
+						</div>
+
+						<div class="col-xl-12">
+							<div class="header-table-container">
+								<div th:remove="tag" th:include="pages/SA13/SA13-fragments :: header-table"></div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- /content area -->
+
+				<!-- Footer -->
+				<div th:remove="tag" th:include="commons :: footer-section"></div>
+				<!-- /footer -->
+
+			</div>
+			<!-- /inner content -->
+
+		</div>
+		<!-- /main content -->
+
+	</div>
+	<!-- /page content -->
+
+	<div th:remove="tag" th:include="commons :: modal-section"></div>
+	<div th:remove="tag" th:include="commons :: notification-section"></div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!-- Inner content -->
+<div class="content-inner" xmlns:th="http://www.thymeleaf.org">
+
+	<!-- Page header -->
+	<div class="page-header-container">
+		<div th:remove="tag" th:include="commons :: page-header"></div>
+	</div>
+	<!-- /page header -->
+
+	<!-- Content area -->
+	<div class="content">
+
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="main-form-container">
+					<div th:remove="tag" th:include="pages/FA19/FA19-fragments :: main-form"></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- /content area -->
+
+	<!-- Footer -->
+	<div th:remove="tag" th:include="commons :: footer-section"></div>
+	<!-- /footer -->
+
+</div>
+<!-- /inner content -->

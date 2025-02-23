@@ -1,0 +1,173 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center p-0"></div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/FA13/store}" th:object="${acmst}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${acmst.xacc ne null}" th:field="*{xacc}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Account Code</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										name="xacc"
+										th:value="${acmst.xacc ne null ? acmst.xacc : ''}"
+										th:disabled="${acmst.xacc != null}">
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xacc',
+										data-mainscreen=true,
+										data-mainreloadurl='/FA13?xacc=',
+										data-mainreloadid='main-form-container'" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Account Name</label>
+							<input type="text" class="form-control" th:field="*{xdesc}" required>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Account Usage</label>
+							<select class="form-control select" th:field="*{xaccusage}" required>
+								<option value="Default">Default</option>
+								<option value="Supplier">Supplier</option>
+								<option value="Customer">Customer</option>
+								<option value="Employee">Employee</option>
+								<option value="Sub Account">Sub Account</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acmst.xacc eq null}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Account Group</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xgroup"
+										th:value="${acmst.xgroup != null ? acmst.xgroup + ' - ' + acmst.groupName : ''}">
+								<input 	type="hidden" class="search-val" name="xgroup" th:value="*{xgroup}" required="required"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA12/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xgroup',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acmst.xacc ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Account Group</label>
+							<input type="text" class="form-control" th:value="${acmst.xgroup != null ? acmst.xgroup + ' - ' + acmst.groupName : ''}" disabled>
+							<input type="hidden" class="form-control" th:field="*{xgroup}">
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acmst.xacc ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Account Type</label>
+							<input type="text" class="form-control" th:value="*{xacctype}" disabled>
+						</div>
+					</div>
+
+					<div class="col-md-3" th:each="parent : ${acmst.getParentGroups()}" th:if="${acmst.xacc ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label" th:text="${'Level ' + parent.xaglevel}"></label>
+							<input type="text" class="form-control" th:value="${parent.xagcode + ' - ' + parent.xagname}" disabled>
+						</div>
+					</div>
+					
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/FA13?xacc=RESET' , data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${acmst.xacc ne null}" th:attr="data-url=@{/FA13?xacc=} + ${acmst.xacc}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${acmst.xacc ne null}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${acmst.xacc eq null}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+
+		<div class="card-footer" th:if="${acmst.xacc ne null && not #lists.isEmpty(acmst.subAccounts)}">
+			<h6 class="py-sm-3 mb-sm-auto">List of Sub Accounts</h6>
+
+			<div class="table-responsive" th:if="${not #lists.isEmpty(acmst.subAccounts)}">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="x : ${acmst.subAccounts}">
+							<td th:text="${x.xsub + ' - ' + x.xname}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+
+		})
+	</script>
+</div>
+
+<div th:fragment="list-table" xmlns:th="http://www.thymeleaf.org">
+	<script>
+		$(document).ready(function(){
+			kit.ui.init();
+
+			sectionReloadAjaxPostReq({
+				id : 'list-table-container',
+				url : '/search/table/LFA13/0'
+			}, {
+				mainscreen: true, 
+				mainreloadurl: '/FA13?xacc=',
+				mainreloadid: 'main-form-container'
+			});
+		})
+	</script>
+</div>

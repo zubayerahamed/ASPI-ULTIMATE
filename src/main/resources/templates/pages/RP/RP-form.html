@@ -1,0 +1,19 @@
+<div th:fragment="dynamicreport" id="dynamicreport" xmlns:th="https://www.thymeleaf.org">
+	<div class="card" th:if="${reportFound}">
+		<div class="card-body">
+			<form id="reportform" th:action="@{/} +  ${group} + '/print'" th:attr="data-validate-url=@{/} +  ${group} + '/validate'" method="POST" th:if="${reportCode ne 'BLANK'}">
+				<input type="hidden" id="reportName" th:value="${reportName}"/>
+				<input type="hidden" name="reportCode" th:value="${reportCode}"/>
+				<input type="hidden" name="xtitle" th:value="${xtitle}"/>
+				<div th:include="pages/RP/RP-fields :: report-fields" th:with="df=${'yyyy-MM-dd'}"></div>
+			</form>
+		</div>
+	</div>
+
+	<div class="card" th:unless="${reportFound}">
+		<div class="card-body">
+			<h1 th:unless="${message}" class="text-center p-0 m-0">Please Select Report</h1>
+			<h1 th:if="${message}" class="text-center p-0 m-0" th:text="${message}">hi</h1>
+		</div>
+	</div>
+</div>

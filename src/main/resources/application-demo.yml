@@ -1,0 +1,64 @@
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        web: INFO
+    hibernate: 
+      SQL: DEBUG
+      type: DEBUG
+
+app: 
+  audit-enable: false
+  tomcat-service: Tomcat9
+  logging-path: C:/KIT/ASPI/logs
+  template-path: C:/cr_live_reports
+  backup-location: C:/KIT/ASPI/backup
+  import-export: C:/KIT/ASPI/import-export
+  database-name: aspi
+  version: "@project.version@"
+
+server:
+  port: 8081
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    session:
+      timeout: -1
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types: "text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json"
+spring: 
+  datasource: 
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:2019;databaseName=aspi
+    username: sa
+    password: zubayer@123
+    tomcat:
+      max-wait: 20000
+      max-active: 50
+      max-idle: 20
+      min-idle: 15
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate: 
+        dialect: org.hibernate.dialect.SQLServer2012Dialect
+        id:
+          new_generator_mappings: false
+  jackson:
+    serialization:
+      indent-output: true
+  thymeleaf:
+    cache: true
+  resources:
+    cache:
+      period: 36000
+    chain:
+      cache: true

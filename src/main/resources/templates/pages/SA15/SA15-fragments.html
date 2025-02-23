@@ -1,0 +1,131 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/SA15/store}" th:object="${qw}" method="POST">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" required="required" th:field="*{type}">
+								<option value="">-- Select Type --</option>
+								<option value="SELECT QUERY">Select Query</option>
+								<option value="INSERT QUERY">Insert Query</option>
+								<option value="UPDATE QUERY">Update Query</option>
+								<option value="DELETE QUERY">Delete Query</option>
+								<option value="CLEAN BUSINESS">Clean Business</option>
+								<option value="CLONE DATA">Clone Data</option>
+								<option value="EXECUTE QUERY">Execute Query</option>
+							</select>
+						</div>
+					</div>
+					<!-- <div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Security Key</label>
+							<input type="password" class="form-control" th:field="*{xpassword}" required="required">
+						</div>
+					</div> -->
+					<div class="col-md-12">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Statement</label>
+							<textarea rows="6" cols="" class="form-control" required="required" th:field="*{statement}"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/SA15', data-reloadid='main-form-container', data-detailreloadurl='/SA15/detail-table?clear=CLEAR', data-detailreloadid='detail-table-container'," class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button type="submit" class="btn btn-warning btn-sm btn-submit"><i class="ph-cloud-arrow-down me-2"></i> Process</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailreloadid'),
+					url : $(this).data('detailreloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('select#type').on('change', function(){
+
+				var statement = '';
+				var type = $(this).val();
+
+				if(type == 'SELECT QUERY'){
+					statement = 'select * from xxx where zid=xxx';
+				} else if(type == 'INSERT QUERY'){
+					statement = 'insert into xxx(xx,xx) values (xx, xx)';
+				} else if(type == 'UPDATE QUERY'){
+					statement = 'update xxx set xxx=xxx where zid=xxx';
+				} else if(type == 'DELETE QUERY'){
+					statement = 'delete from xxx where zid=xxx';
+				} else if(type == 'CLEAN BUSINESS'){
+					statement = '2000;All';
+				} else if(type == 'CLONE DATA'){
+					statement = '1000;2000;All';
+				} else if(type == 'EXECUTE QUERY'){
+					statement = '';
+				}
+
+				$('#statement').val(statement);
+			})
+
+		})
+	</script>
+</div>
+
+
+
+<div th:fragment="detail-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card" th:if="${detailSection == true and displayTable == true}">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">Data Results</h6>
+		</div>
+
+		<div class="table-responsive">
+			<h5 class="text-center m-2" th:if="${not dataFound}">Data Not Found</h5>
+			<table class="table datatable" th:if="${dataFound}">
+				<thead>
+					<tr>
+						<th th:each="col : ${columns}" th:text="${col}">Column Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="row : ${data}">
+						<td th:each="column : ${row}" th:text="${column.value}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+			$('.datatable').DataTable({
+				"lengthMenu": [ [1000], [1000] ]
+			});
+		})
+	</script>
+</div>

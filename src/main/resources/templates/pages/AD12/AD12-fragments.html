@@ -1,0 +1,280 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div th:if="${not #strings.isEmpty(profile.xprofile)}" class="card-header d-sm-flex align-items-sm-center py-sm-0">
+
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/AD12/store}" th:object="${profile}" method="POST">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${not #strings.isEmpty(profile.xprofile)}" th:field="*{xprofile}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Profile</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										name="xprofile"
+										th:value="${not #strings.isEmpty(profile.xprofile) ? profile.xprofile : ''}"
+										th:disabled="${not #strings.isEmpty(profile.xprofile)}"
+										th:required="${#strings.isEmpty(profile.xprofile)}">
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD12/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xprofile',
+										data-mainscreen=true,
+										data-mainreloadurl='/AD12?xprofile=',
+										data-mainreloadid='main-form-container',
+										data-detailreloadurl='/AD12/detail-table?xwh=RESET&xprofile=',
+										data-detailreloadid='detail-table-container'"
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Remarks</label>
+							<textarea rows="1" cols="" th:field="*{xnote}" class="form-control"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/AD12?xprofile=RESET', data-reloadid='main-form-container', data-detailid='detail-table-container', data-detailurl='/AD12/detail-table?xprofile=RESET'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(profile.xprofile)}" th:attr="data-url=@{/AD12}, data-xprofile=${profile.xprofile}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${not #strings.isEmpty(profile.xprofile)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${#strings.isEmpty(profile.xprofile)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailid'),
+					url : $(this).data('detailurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'),{
+					"xprofile" : $(this).data('xprofile')
+				});
+			});
+	
+		})
+	</script>
+</div>
+
+<div th:fragment="detail-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card" th:if="${not #maps.isEmpty(mgMap)}">
+
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">
+				Profile details of <b th:text="${xprofile}"></b> profile
+			</h6>
+			<div class="ms-sm-auto my-sm-auto">
+				<button th:attr="data-url=@{/AD12/detail/save}" type="button" class="btn btn-sm btn-primary detail-save-btn">
+					<i class="ph-check me-2"></i>
+					Save
+				</button>
+			</div>
+		</div>
+
+		<input type="hidden" th:value="${xprofile}" id="profileName"/>
+
+		<div class="card-body">
+			<div th:each="g : ${mgMap}" class="mb-5">
+				<div class="table-responsive">
+					<h3 th:text="${g.key}"></h3>
+					<table class="table normaltable">
+						<thead>
+							<tr>
+								<th>
+									<input type="checkbox" class="gr-menu" th:id="${g.value.menucode}" th:checked="${g.value.allSelected}">
+								</th>
+								<th class="text-center">Menu Code</th>
+								<th class="text-center">Screen</th>
+								<th>Screen Title</th>
+								<th class="text-center">Screen Type</th>
+								<th class="text-center">Sequence</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="ms : ${g.value.menus}">
+								<td>
+									<input type="checkbox" th:classappend="${'screens ' + g.value.menucode}" th:id="${ms.xrow}" th:attr="data-pid=${g.value.menucode}" th:checked="${ms.profileChecked}">
+								</td>
+								<td class="text-center">
+									<a class="dataindex" href="/SA13?xrow=" reloadid="main-form-container" th:attr="data-value=${ms.xrow}" th:text="${ms.xmenu}"></a>
+								</td>
+								<td class="text-center" th:text="${ms.xscreen}"></td>
+								<td th:text="${ms.xscreenTitle}"></td>
+								<td class="text-center" th:text="${ms.xscreenType}"></td>
+								<td class="text-center" th:text="${ms.xsequence}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			var xscreens = [];
+
+			function generateXscreens(){
+				var screens = $("input[type='checkbox'].screens");
+				xscreens = [];
+				$.each(screens, function (i, screen) {
+					if($(screen).is(":checked")){
+						xscreens.push($(screen).attr('id'));
+					}
+				});
+			}
+
+			$('.gr-menu').on('click', function(){
+				var elid = $(this).attr('id');
+
+				var screens = $('input[type="checkbox"].' + elid);
+				if($(this).is(":checked")){
+					$.each(screens, function (i, screen) {
+						$(screen).prop('checked', true);
+					});
+				} else {
+					$.each(screens, function (i, screen) {
+						$(screen).prop('checked', false);
+					});
+				}
+			});
+
+			$('.screens').on('click', function(){
+				var parentId = $(this).data('pid');
+
+				var screens = $("input[type='checkbox']." + parentId);
+				var count = screens.length;
+				var checkedCount = 0;
+				$.each(screens, function (i, screen) {
+					if($(screen).is(":checked")){
+						checkedCount++;
+					}
+				});
+
+				if(count == checkedCount){
+					$('#' + parentId).prop('checked', true);
+				} else {
+					$('#' + parentId).prop('checked', false);
+				}
+			});
+
+			$('.detail-save-btn').off('click').on('click', function(e){
+				e.preventDefault();
+				generateXscreens();
+
+				var submitUrl = $(this).data('url');
+
+				var formData = {
+					'xscreens' : xscreens,
+					'profileName' : $('#profileName').val()
+				}
+
+				$.ajax({
+					url : submitUrl,
+					contentType: 'application/json; charset=utf-8',
+					dataType: 'json',
+					type : "POST",
+					data : JSON.stringify(formData),
+					success : function(data) {
+						loadingMask2.hide();
+						if(data.status == 'SUCCESS'){
+							if(data.displayMessage == true) showMessage(data.status.toLowerCase(), data.message);
+
+							if(data.triggermodalurl){
+								modalLoader(getBasepath() + data.triggermodalurl, data.modalid);
+							} else {
+								if(data.reloadsections != undefined && data.reloadsections.length > 0){
+									$.each(data.reloadsections, function (ind, section) {
+										if(section.postData.length > 0){
+											var data = {};
+											$.each(section.postData, function(pi, pdata){
+												data[pdata.key] = pdata.value;
+											})
+											sectionReloadAjaxPostReq(section, data);
+										} else {
+											sectionReloadAjaxReq(section);
+										}
+									});
+								} else if(data.reloadurl){
+									doSectionReloadWithNewData(data);
+								} else if(data.redirecturl){
+									setTimeout(() => {
+										window.location.replace(getBasepath() + data.redirecturl);
+									}, 1000);
+								}
+							}
+						} else {
+							showMessage(data.status.toLowerCase(), data.message);
+						}
+					}, 
+					error : function(jqXHR, status, errorThrown){
+						showMessage(status, "Something went wrong .... ");
+						loadingMask2.hide();
+					}
+				});
+
+			});
+
+		})
+	</script>
+</div>
+
+
+<div th:fragment="list-table" xmlns:th="http://www.thymeleaf.org">
+	<script>
+		$(document).ready(function(){
+			kit.ui.init();
+
+			sectionReloadAjaxPostReq({
+				id : 'list-table-container',
+				url : '/search/table/LAD12/0'
+			}, {
+				mainscreen: true, 
+				mainreloadurl: '/AD12?xprofile=',
+				mainreloadid: 'main-form-container',
+				detailreloadurl: '/AD12/detail-table?xwh=RESET&xprofile=',
+				detailreloadid: 'detail-table-container'
+			});
+		})
+	</script>
+</div>

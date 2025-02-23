@@ -1,0 +1,91 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-body">
+			
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			
+	
+		})
+	</script>
+</div>
+
+<div th:fragment="AD05WG01" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body">
+		<div class="d-flex align-items-center">
+			<div class="flex-fill">
+				<h4 class="mb-0" th:text="${AD05WG01}">0</h4>
+				Total Users
+			</div>
+
+			<i class="ph-users-three ph-2x opacity-75 me-3"></i>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="AD05WG02" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body">
+		<div class="d-flex align-items-center">
+			<div class="flex-fill">
+				<h4 class="mb-0" th:text="${AD05WG02}">0</h4>
+				Active Users
+			</div>
+
+			<i class="ph-users-three ph-2x opacity-75 me-3"></i>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="AD05WG03" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body">
+		<div class="d-flex align-items-center">
+			<i class="ph-users-three ph-2x opacity-75 me-3"></i>
+
+			<div class="flex-fill text-end">
+				<h4 class="mb-0" th:text="${AD05WG03}">0</h4>
+				Today Loged-In Users
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="AD05WG04" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body">
+		<div class="d-flex align-items-center">
+			<i class="ph-users-three ph-2x opacity-75 me-3"></i>
+
+			<div class="flex-fill text-end">
+				<h4 class="mb-0" th:text="${AD05WG04}">0</h4>
+				Current Loged-In Users
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="AD05WG05" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body">
+		<h6>Profile Wise Users</h6>
+		<div class="table-responsive">
+			<table class="table table-stripped">
+				<thead>
+					<tr>
+						<th>Profile</th>
+						<th class="text-center">Total</th>
+						<th class="text-center">Active</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="row : ${AD05WG05}">
+						<td th:text="${row.profile}"></td>
+						<td class="text-center" th:text="${row.total}"></td>
+						<td class="text-center" th:text="${row.active}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

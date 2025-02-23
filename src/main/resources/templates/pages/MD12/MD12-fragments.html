@@ -1,0 +1,175 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div th:if="${caitem.xitem ne null}" class="card-header d-sm-flex align-items-sm-center p-0">
+
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/MD12/store}" th:object="${caitem}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${caitem.xitem ne null}" th:field="*{xitem}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Item Code</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										name="xitem"
+										th:value="${caitem.xitem ne null ? caitem.xitem : ''}"
+										disabled="disabled">
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD12/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xitem',
+										data-mainscreen=true,
+										data-mainreloadurl='/MD12?xitem=',
+										data-mainreloadid='main-form-container'" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Item Name</label>
+							<input type="text" class="form-control" th:field="*{xdesc}" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Item Group</label>
+							<select class="form-control select" th:field="*{xgitem}" required="required">
+								<option value="">-- Select --</option>
+								<option value="Services">Services</option>
+								<option th:each="grp : ${groups}" th:value="${grp.xcode}" th:text="${grp.xcode}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Item Category</label>
+							<select class="form-control select" th:field="*{xcatitem}">
+								<option value="">-- Select --</option>
+								<option th:each="cat : ${categories}" th:value="${cat.xcode}" th:text="${cat.xcode}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Unit of Measurement</label>
+							<select class="form-control select" th:field="*{xunit}" required="required">
+								<option value="">-- Select --</option>
+								<option th:each="uom : ${uoms}" th:value="${uom.xcode}" th:text="${uom.xcode}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Consumption Type</label>
+							<select class="form-control select" th:field="*{xctype}" required="required">
+								<option value="">-- Select --</option>
+								<option value="LIFO">LIFO</option>
+								<option value="FIFO">FIFO</option>
+								<option value="Weighted Average">Weighted Average</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Default Purchase Rate</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xcost}" min="0" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Default Sale Rate</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xrate}" min="0" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Note</label>
+							<textarea cols="" rows="1" class="form-control" th:field="*{xnote}"></textarea>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Barcode (Additional)</label>
+							<input type="text" class="form-control" th:field="*{xbarcode}">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label d-block" for="xispo">Is Purchase?</label>
+							<input type="checkbox" id="xispo" th:field="*{xispo}">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label d-block" for="xisop">Is Sale?</label>
+							<input type="checkbox" id="xisop" th:field="*{xisop}">
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/MD12?xitem=RESET', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${caitem.xitem ne null}" th:attr="data-url=@{/MD12?xitem=} + ${caitem.xitem}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${caitem.xitem ne null}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${caitem.xitem eq null}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+
+		})
+	</script>
+</div>
+
+<div th:fragment="list-table" xmlns:th="http://www.thymeleaf.org">
+	<script>
+		$(document).ready(function(){
+			kit.ui.init();
+
+			sectionReloadAjaxPostReq({
+				id : 'list-table-container',
+				url : '/search/table/LMD12/0'
+			}, {
+				mainscreen: true, 
+				mainreloadurl: '/MD12?xitem=',
+				mainreloadid: 'main-form-container',
+			});
+		})
+	</script>
+</div>

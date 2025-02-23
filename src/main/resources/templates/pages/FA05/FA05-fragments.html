@@ -1,0 +1,126 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/FA05/store}" th:object="${business}" method="POST" enctype="multipart/form-data">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Company Name</label>
+							<input type="text" class="form-control" th:field="*{zorg}" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Phone Number</label>
+							<input type="text" class="form-control" th:field="*{xphone}">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Email</label>
+							<input type="email" class="form-control" th:field="*{xemail}">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Mailing Address</label>
+							<textarea rows="1" cols="" th:field="*{xmadd}" class="form-control" required></textarea>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">TIN</label>
+							<input type="text" class="form-control" th:field="*{xtin}">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">VAT Reg No.</label>
+							<input type="text" class="form-control" th:field="*{xvatregno}">
+						</div>
+					</div>
+					
+					
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Max File Size (KB)</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xfilesize}" scroller="hide" required="required" min="0">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Document Path</label>
+							<input type="text" class="form-control" th:field="*{xdocpath}" placeholder="C:\Contents" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Supporting Documents (,)</label>
+							<input type="text" class="form-control" th:field="*{xdoctypes}" placeholder=".pdf,.jpg,.jpeg,.png" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Default Session Time (Seconds)</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xsessiontime}" min="0" step="1" required>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Report Path</label>
+							<input type="text" class="form-control" th:field="*{xrptpath}" placeholder="C:\Reports" required>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="form-group mb-3">
+							<label class="form-label">Logo</label>
+							<input type="file" name="file" id="fileuploader" class="form-control">
+							<div class="form-text text-muted">Accepted: png, jpg. Max file size 2Mb</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<input type="hidden" id="imageBase64" th:value="${business.imageBase64}" readonly></input>
+						<img id="imagePreview" src="#" alt="Report logo" width="100%"/>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center mt-2">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/FA05', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(business.zid)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			var imageBase64 = $('#imageBase64').val();
+			var imagePreview= document.getElementById('imagePreview');
+			if(imagePreview) {
+				imagePreview.src = "data:image/png;base64," + imageBase64;
+			}
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+	
+		})
+	</script>
+</div>

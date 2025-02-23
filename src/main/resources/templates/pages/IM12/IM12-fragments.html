@@ -1,0 +1,384 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center p-0">
+			<button th:if="${imtorheader.xtornum ne null}" th:attr="data-url=@{/report/print}, data-param2=${imtorheader.xtornum}, data-rptcode='imtor'" type="button" class="btn btn-light btn-sm btn-print my-2 ms-3"><i class="ph-printer me-2"></i> Print Transfer</button>
+			<button th:if="${imtorheader.xtornum ne null}" th:attr="data-url=@{/report/print}, data-param2=${imtorheader.xtornum}, data-rptcode='imtorc'" type="button" class="btn btn-light btn-sm btn-print my-2 ms-3"><i class="ph-printer me-2"></i> Print Challan</button>
+			<button th:if="${imtorheader.xtornum ne null and imtorheader.xstatus eq 'Open' and imtorheader.xstatusim eq 'Open'}" th:attr="data-url=@{/IM12/confirm?xtornum=} + ${imtorheader.xtornum}" type="button" class="btn btn-primary btn-sm btn-confirm my-2 ms-3"><i class="ph-check me-2"></i> Confirm Transfer</button>
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/IM12/store}" th:object="${imtorheader}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${imtorheader.xtornum ne null}" th:field="*{xtornum}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Transfer No.</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										name="xtornum"
+										th:value="${imtorheader.xtornum ne null ? imtorheader.xtornum : ''}"
+										disabled="disabled">
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LIM11/3?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xtornum',
+										data-mainscreen=true,
+										data-mainreloadurl='/IM12?xtornum=',
+										data-mainreloadid='main-form-container',
+										data-detailreloadurl='/IM12/detail-table?xrow=RESET&xtornum=',
+										data-detailreloadid='detail-table-container'" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Transfer Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="xdate" 
+										id="xdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${imtorheader.xdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(imtorheader.xdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">From Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xfbuid"
+										th:value="${imtorheader.xfbuid != null ? imtorheader.xfbuid + ' - ' + imtorheader.fromBusinessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="xfbuid" th:value="*{xfbuid}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xfbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">To Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xtbuid"
+										th:value="${imtorheader.xtbuid != null ? imtorheader.xtbuid + ' - ' + imtorheader.toBusinessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="xtbuid" th:value="*{xtbuid}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xtbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">From Store</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xfwh"
+										th:value="${imtorheader.xfwh != null ? imtorheader.xfwh + ' - ' + imtorheader.fromWarehouseName : ''}">
+								<input 	type="hidden" class="search-val" name="xfwh" th:value="*{xfwh}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD11/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xfwh',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">To Store</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xtwh"
+										th:value="${imtorheader.xtwh != null ? imtorheader.xtwh + ' - ' + imtorheader.toWarehouseName : ''}">
+								<input 	type="hidden" class="search-val" name="xtwh" th:value="*{xtwh}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD11/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xtwh',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Reference</label>
+							<input type="text" class="form-control" th:field="*{xref}">
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${imtorheader.xtornum ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Status</label>
+							<input type="text" class="form-control" th:value="*{xstatus}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${imtorheader.xtornum ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Inventory Status</label>
+							<input type="text" class="form-control" th:value="*{xstatusim}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${imtorheader.xtornum ne null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">GL Status</label>
+							<input type="text" class="form-control" th:value="*{xstatusjv}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${imtorheader.xtornum ne null and imtorheader.xstatusjv eq 'Confirmed'}">
+						<div class="mb-3 form-group">
+							<label class="form-label">GL Voucher (Issue)</label>
+							<a 	href="#" 
+								th:attr="data-screen='FA17?xvoucher=' + ${imtorheader.xfvoucher}" 
+								class="screen-item form-control" 
+								th:text="${imtorheader.xfvoucher}">
+							</a>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${imtorheader.xtornum ne null and imtorheader.xstatusjv eq 'Confirmed'}">
+						<div class="mb-3 form-group">
+							<label class="form-label">GL Voucher (Receive)</label>
+							<a 	href="#" 
+								th:attr="data-screen='FA17?xvoucher=' + ${imtorheader.xtvoucher}" 
+								class="screen-item form-control" 
+								th:text="${imtorheader.xtvoucher}">
+							</a>
+						</div>
+					</div>
+					
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Note</label>
+							<textarea cols="" rows="1" class="form-control" th:field="*{xnote}"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/IM12?xtornum=RESET' , data-reloadid='main-form-container', data-detailreloadurl='/IM12/detail-table?xtornum=RESET&xrow=RESET', data-detailreloadid='detail-table-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${imtorheader.xtornum ne null and imtorheader.xstatus eq 'Open' and imtorheader.xstatusim eq 'Open'}" th:attr="data-url=@{/IM12?xtornum=} + ${imtorheader.xtornum}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${imtorheader.xtornum ne null and imtorheader.xstatus eq 'Open' and imtorheader.xstatusim eq 'Open'}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${imtorheader.xtornum eq null}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailreloadid'),
+					url : $(this).data('detailreloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+
+			$('.btn-confirm').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure?")){
+					return;
+				}
+				actionPostRequest($(this).data('url'));
+			});
+		})
+	</script>
+</div>
+
+
+
+
+<div th:fragment="detail-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card" th:if="${imtorheader.xtornum ne null}">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto" th:text="${pageTitle + ' Details'}"></h6>
+		</div>
+
+		<div class="card-body" th:if="${imtorheader.xstatus eq 'Open'}">
+			<form id="detailform" class="form-validate-jquery" th:action="@{/IM12/detail/store}" th:object="${imtordetail}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" name="submitFor" th:value="*{submitFor}"/>
+				<input type="hidden" name="xtornum" th:value="*{xtornum}">
+				<input type="hidden" name="xrow" th:value="*{xrow}">
+				<input type="hidden" th:if="${imtordetail.xrow ne 0}" th:field="*{xitem}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Item</label>
+							<input th:if="${imtordetail.xrow ne 0}" class="form-control" type="text" th:value="${imtordetail.xitem ne null ? imtordetail.xitem + ' - ' + imtordetail.itemName : ''}" disabled>
+							<div class="input-group" th:if="${imtordetail.xrow eq 0}">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xitem"
+										th:value="${imtordetail.xitem ne null ? imtordetail.xitem + ' - ' + imtordetail.itemName : ''}">
+								<input 	type="hidden" class="search-val" name="xitem" th:value="*{xitem}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD12/1?hint=',  
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xitem',
+										data-mainscreen=true,
+										data-mainreloadurl='/IM12/detail-table?xtornum='+ ${imtordetail.xtornum} +'&xrow='+ ${imtordetail.xrow} +'&xitem=',
+										data-mainreloadid='detail-table-container'" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Unit</label>
+							<input type="text" class="form-control" th:value="*{xunit}" disabled="disabled">
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Quantity</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xqty}" min="0" required="required">
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Note</label>
+							<textarea cols="" rows="1" class="form-control" th:field="*{xnote}"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/IM12/detail-table?xtornum='+ ${imtordetail.xtornum} +'&xrow=RESET', data-reloadid='detail-table-container'" class="btn btn-light btn-sm btn-detail-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${imtordetail.xrow ne 0}" th:attr="data-url=@{/IM12/detail-table?xtornum=} + ${imtordetail.xtornum} + '&xrow=' + ${imtordetail.xrow}" type="button" class="btn btn-danger btn-sm btn-detail-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${imtordetail.xrow eq 0}" type="submit" class="btn btn-primary btn-sm btn-detail-submit"><i class="ph-plus me-2"></i> Add New</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="table-responsive" th:if="${not #lists.isEmpty(detailList)}">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Item</th>
+						<th>Unit</th>
+						<th>Quantity</th>
+						<th>Note</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="x : ${detailList}">
+						<td>
+							<a class="detail-dataindex" th:attr="data-reloadid='detail-table-container', data-reloadurl='/IM12/detail-table?xtornum=' + ${x.xtornum} + '&xrow=' + ${x.xrow} + '&xitem=' + ${x.xitem}" th:href="@{/IM12/detail-table?xtornum=} + ${x.xtornum} + '&xrow=' + ${x.xrow} + '&xitem=' + ${x.xitem}" th:text="${x.xitem + ' - ' + x.itemName}"></a>
+						</td>
+						<td th:text="${x.xunit}"></td>
+						<td th:text="${x.xqty}"></td>
+						<td th:text="${x.xnote}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-detail-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-detail-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm(null, $('form#detailform'));
+			});
+
+			$('.btn-detail-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+	
+			$('a.detail-dataindex').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+		})
+	</script>
+</div>

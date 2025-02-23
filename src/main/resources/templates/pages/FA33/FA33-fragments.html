@@ -1,0 +1,216 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/FA33/store}" th:object="${imtogli}" method="POST">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${not #strings.isEmpty(imtogli.xtype)}" th:field="*{xtype}">
+				<input type="hidden" th:if="${not #strings.isEmpty(imtogli.xgitem)}" th:field="*{xgitem}">
+
+				<div class="row">
+
+					<div class="col-md-3" th:if="${#strings.isEmpty(imtogli.xtype)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Transaction Type</label>
+							<select class="form-control select" id="xtype" name="xtype" th:field="*{xtype}" required="required">
+								<option th:each="ig : ${issueTypes}" th:value="${ig.xcode}" th:text="${ig.xcode}"></option>
+								<option value="Production Inventory">Production Inventory</option>
+								<option value="Sales Inventory">Sales Inventory</option>
+								<option value="Adjustment Inventory">Adjustment Inventory</option>
+								<option value="Opening Inventory">Opening Inventory</option>
+								<option value="Inter Business Receive">Inter Business Receive</option>
+								<option value="Inter Business Issue">Inter Business Issue</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${not #strings.isEmpty(imtogli.xtype)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Transaction Type</label>
+							<input type="text" class="form-control" th:value="${imtogli.xtype}" disabled="disabled">
+						</div>
+					</div>
+
+					<div class="col-md-3" th:if="${#strings.isEmpty(imtogli.xgitem)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Item Group</label>
+							<select class="form-control select" id="xgitem" name="xgitem" th:field="*{xgitem}" required="required">
+								<option th:each="ig : ${itemGrps}" th:value="${ig.xcode}" th:text="${ig.xcode}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${not #strings.isEmpty(imtogli.xgitem)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Item Group</label>
+							<input type="text" class="form-control" th:value="${imtogli.xgitem}" disabled="disabled">
+						</div>
+					</div>
+
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Debit Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xaccdr"
+										th:value="${imtogli.xaccdr != null ? imtogli.xaccdr + ' - ' + imtogli.debitAccount : ''}">
+								<input 	type="hidden" class="search-val" name="xaccdr" th:value="*{xaccdr}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xaccdr',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Credit Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xacccr"
+										th:value="${imtogli.xacccr != null ? imtogli.xacccr + ' - ' + imtogli.creditAccount : ''}">
+								<input 	type="hidden" class="search-val" name="xacccr" th:value="*{xacccr}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xacccr',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/FA33?xtype=RESET&xgitem=RESET', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(imtogli.xtype)}" th:attr="data-url=@{/FA33}, data-xtype=${imtogli.xtype}, data-xgitem=${imtogli.xgitem}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${not #strings.isEmpty(imtogli.xtype)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${#strings.isEmpty(imtogli.xtype)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'), {
+					"xtype" : $(this).data('xtype'),
+					"xgitem" : $(this).data('xgitem'),
+				});
+			});
+	
+		})
+	</script>
+</div>
+
+
+<div th:fragment="header-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">List of <span th:text="${pageTitle}"></span></h6>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table datatable">
+				<thead>
+					<tr>
+						<th>Type</th>
+						<th>Item Group</th>
+						<th>Debit Account</th>
+						<th>Credit Account</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			$('.datatable').DataTable({
+				"processing" : true,
+				"serverSide" : true,
+				"stateSave" : true,
+				"lengthMenu": [5000],
+				"columnDefs": [
+					{ "name": "xtype",   "targets": 0 },
+					{ "name": "xgitem",  "targets": 1 },
+					{ "name": "xaccdr",  "targets": 2 },
+					{ "name": "xacccr",  "targets": 3 },
+				],
+				"ajax" : getBasepath() + "/FA33/all",
+				"columns": [
+					{
+						"data" : "xtype",
+						render: function(data, type, row, meta) {
+							return '<a style="text-decoration: underline; cursor: pointer;" class="dataindex" reloadid="main-form-container" href="/FA33?xtype='+ data + '&xgitem='+ row['xgitem'] +'">' + data + '</a>';
+						}
+					},
+					{ 
+						"data": "xgitem",
+					},
+					{ 
+						"data": "xaccdr",
+						render: function(data, type, row, meta) {
+							return data + ' - ' + row['debitAccount'];
+						}
+					},
+					{ 
+						"data": "xacccr",
+						render: function(data, type, row, meta) {
+							return data + ' - ' + row['creditAccount'];
+						}
+					},
+				]
+			});
+
+			$('.datatable').off('click').on('click', 'a.dataindex', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).attr('reloadid'),
+					url : $(this).attr('href')
+				});
+
+
+			})
+		})
+	</script>
+</div>
