@@ -629,21 +629,55 @@ function submitReportForm(customurl, rParam){
 		data : formData,
 		success : function(data) {
 			loadingMask2.hide();
+			doReportProcess(data);
+		}, 
+		error : function(jqXHR, status, errorThrown){
+			loadingMask2.hide();
+			if (jqXHR.status === 401) {
+				// Session is invalid, reload the url to go back to login page
+				location.reload();
+			} else {
+				showMessage("error", jqXHR.responseJSON.message);
+			}
+		}
+	});
+}
+
+
+
+function doReportProcess(data2){
+	loadingMask2.show();
+
+	$.ajax({
+		url : 'http://localhost:2025/report-server/report/generate',
+		type : 'POST',
+		contentType: "application/json; charset=utf-8",   // tell server it's JSON
+		data: JSON.stringify(data2), 
+		success : function(data) {
+			//console.log(data);
+			loadingMask2.hide();
+
 			var arrrayBuffer = base64ToArrayBuffer(data);
-			if("PDF" == reportType){
+			if("PDF" == data2.reportType){
 				var blob = new Blob([arrrayBuffer], {type: "application/pdf"});
 				var link = window.URL.createObjectURL(blob);
 				window.open(link,'', 'height=650,width=840');
+				/*var a = $("<a />");
+					a.attr("download", data2.reportTitle + ".pdf");
+					a.attr("href", link);
+					$("body").append(a);
+					a[0].click();
+					$(a, "body").remove();*/
 			} else {
 				var blob = new Blob([arrrayBuffer], {type: "application/octetstream"});
 				var isIE = false || !!document.documentMode;
 				if (isIE) {
-					window.navigator.msSaveBlob(blob, reportName + ".xls");
+					window.navigator.msSaveBlob(blob, data2.reportTitle + ".xls");
 				} else {
 					var url = window.URL || window.webkitURL;
 					link = url.createObjectURL(blob);
 					var a = $("<a />");
-					a.attr("download", reportName + ".xls");
+					a.attr("download", data2.reportTitle + ".xls");
 					a.attr("href", link);
 					$("body").append(a);
 					a[0].click();
@@ -657,11 +691,14 @@ function submitReportForm(customurl, rParam){
 				// Session is invalid, reload the url to go back to login page
 				location.reload();
 			} else {
-				showMessage("error", jqXHR.responseJSON.message);
+				//showMessage("error", jqXHR.responseJSON.message);
 			}
 		}
 	});
+	
 }
+
+
 
 /**
  * Convert Base64 string to array buffer
