@@ -166,37 +166,9 @@ public abstract class AbstractReportController extends KitController {
 			convertObjectAndPutIntoMap(cristalReportParamName, paramType, method, reportParams);
 		}
 
-		// FOP
-//		if(rm.isEnabledFop()) {
-//			try {
-//				reportName = new StringBuilder(this.getClass().getClassLoader().getResource("static").toURI().getPath())
-//								.append(File.separator).append("xsl").append(File.separator)
-//								.append(rm.name() + ".xsl").toString();
-//			} catch (URISyntaxException e) {
-//				log.error(ERROR, e.getMessage(), e);
-//			}
-//
-//			byte[] byt = null;
-//			try {
-//				byt = getReportFieldService(rm).getPDFReportByte(reportName, reportParams);
-//			} catch (JAXBException | ParserConfigurationException | SAXException | TransformerFactoryConfigurationError
-//					| TransformerException e) {
-//				log.error(ERROR, e.getMessage(), e);
-//			} catch (ParseException e) {
-//				log.error(ERROR, e.getMessage(), e);
-//			}
-//			if(byt == null) {
-//				String encodedString = Base64.getEncoder().encodeToString(message.getBytes());
-//				return new ResponseEntity<>(encodedString, headers, HttpStatus.OK);
-//			}
-//
-//			String encodedString = Base64.getEncoder().encodeToString(byt);
-//			return new ResponseEntity<>(encodedString, headers, HttpStatus.OK);
-//		}
-
 		// CRISTAL
 		byte[] byt = null;
-		InputStream in = printingService.getDataBytes(reportName, reportTitle, attachment, reportParams, reportType);
+		InputStream in = null; //printingService.getDataBytes(reportName, reportTitle, attachment, reportParams, reportType);
 		if (in == null) {
 			message = "Can't generate PDF to print";
 			byt = message.getBytes();

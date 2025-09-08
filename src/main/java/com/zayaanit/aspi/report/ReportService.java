@@ -9,6 +9,4 @@ import javax.xml.bind.JAXBException;
 public interface ReportService<T> {
 
 	public String parseXMLString(Class<T> type) throws JAXBException;
-//	public Document getDomSourceForXML(String xml) throws ParserConfigurationException, SAXException, IOException;
-//	public ByteArrayOutputStream transfromToPDFBytes(Document doc, String template, HttpServletRequest request) throws TransformerFactoryConfigurationError, TransformerException, FOPException;
 }

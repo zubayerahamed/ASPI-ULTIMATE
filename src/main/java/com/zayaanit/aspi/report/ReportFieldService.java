@@ -19,8 +19,5 @@ public interface ReportFieldService<T> {
 
 	public List<FormFieldBuilder> getReportFields();
 	public String parseXMLString(T ob) throws JAXBException;
-//	public Document getDomSourceForXML(String xml) throws ParserConfigurationException, SAXException, IOException;
-//	public ByteArrayOutputStream transfromToPDFBytes(Document doc, String template) throws TransformerFactoryConfigurationError, TransformerException, FOPException;
-//	public byte[] getPDFReportByte(String templatePath, Map<String, Object> reportParams) throws JAXBException, ParserConfigurationException, SAXException, IOException, TransformerFactoryConfigurationError, TransformerException, ParseException;
 	public Map<String, Object> validateParams(ResponseHelper responseHelper, Map<String, Object> reportParams);
 }

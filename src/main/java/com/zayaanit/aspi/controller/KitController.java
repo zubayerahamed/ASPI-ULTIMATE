@@ -51,7 +51,6 @@ import com.zayaanit.aspi.repo.XwhsRepo;
 import com.zayaanit.aspi.repo.ZbusinessRepo;
 import com.zayaanit.aspi.service.ImportExportService;
 import com.zayaanit.aspi.service.MenuTreeService;
-import com.zayaanit.aspi.service.PrintingService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Validator;
@@ -74,7 +73,6 @@ public abstract class KitController extends BaseController {
 	@Autowired protected Validator validator;
 	@Autowired protected XprofilesRepo xprofilesRepo;
 	@Autowired protected XprofilesdtRepo profiledtRepo;
-	@Autowired protected PrintingService printingService;
 	@Autowired protected XusersRepo xusersRepo;
 	@Autowired protected ZbusinessRepo zbusinessRepo;
 	@Autowired protected AcsubRepo acsubRepo;
