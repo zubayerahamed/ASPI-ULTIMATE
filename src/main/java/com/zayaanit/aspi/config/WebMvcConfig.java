@@ -9,6 +9,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -51,7 +52,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	}
 
 	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
+	public void addInterceptors(@NonNull InterceptorRegistry registry) {
 		registry.addInterceptor(sessionTimeoutInterceptor).addPathPatterns("/**").excludePathPatterns("/login-assets/**", "/error", "/assets/**");
 		registry.addInterceptor(menuAccessInterceptor()).addPathPatterns(getMenuPaths(true)).excludePathPatterns("/AD15/**");
 		registry.addInterceptor(localeChangeInterceptor());
