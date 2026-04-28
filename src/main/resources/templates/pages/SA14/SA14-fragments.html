@@ -1,0 +1,202 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div th:if="${not #strings.isEmpty(xwidgets.xwidget)}" class="card-header d-sm-flex align-items-sm-center py-sm-0">
+
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/SA14/store}" th:object="${xwidgets}" method="POST">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${not #strings.isEmpty(xwidgets.xwidget)}" th:field="*{xwidget}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group" th:if="${#strings.isEmpty(xwidgets.xwidget)}">
+							<label class="form-label required">Widget Code</label>
+							<input type="text" class="form-control" th:field="*{xwidget}" required="required">
+						</div>
+		
+						<div class="mb-3 form-group" th:if="${not #strings.isEmpty(xwidgets.xwidget)}">
+							<label class="form-label">Widget Code</label>
+							<input type="text" class="form-control" th:value="${xwidgets.xwidget}" disabled="disabled">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Widget Title</label>
+							<input type="text" class="form-control" th:field="*{xtitle}" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Default Value</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xdefault}" min="0" required="required">
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/SA14?xwidget=RESET', data-reloadid='main-form-container', data-detailid='header-table-container', data-detailurl='/SA14/header-table'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(xwidgets.xwidget)}" th:attr="data-url=@{/SA14?xwidget=} + ${xwidgets.xwidget}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${not #strings.isEmpty(xwidgets.xwidget)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${#strings.isEmpty(xwidgets.xwidget)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailid'),
+					url : $(this).data('detailurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+	
+		})
+	</script>
+</div>
+
+<div th:fragment="header-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">List of Widgets</h6>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table datatable table-hover">
+				<thead>
+					<tr>
+						<th>Widget Code</th>
+						<th>Widget Title</th>
+						<th class="text-end">Default Value</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			var columns = [
+				{
+					suffix : [0],
+					name : 'xwidget',
+					rendername : 'xwidget',
+					render: function(data, type, row, meta) {
+						return '<a style="text-decoration: underline; cursor: pointer;" class="dataindex" reloadid="main-form-container" href="/SA14?xwidget=" data-value="'+ data +'">' + data + '</a>';
+					}
+				}, {
+					suffix : [0],
+					name : 'xtitle',
+					rendername: 'xtitle',
+				}, {
+					suffix : [0],
+					class: 'text-end',
+					name : 'xdefault',
+					rendername: 'xdefault',
+				}, {
+					suffix : [0],
+					name : 'xwidget',
+					rendername: 'xwidget',
+					orderable: false,
+					searchable: false,
+					class: "text-end",
+					render: function(data, type, row, meta) {
+						return '<button data-url="/SA14?xwidget='+ row['xwidget'] +'" type="button" class="btn btn-danger btn-sm btn-table-delete"><i class="ph-trash"></i></button>';
+					}
+				}
+			];
+
+			var columnDefs = [];
+			var targetCounter = 0;
+			$.each(columns, function(index, el){
+				if(el.suffix.includes(0)) {
+					columnDefs.push({
+						name : el.name,
+						targets : targetCounter++,
+					});
+				} 
+			});
+
+			var dataRetreiver = [];
+			$.each(columns, function(index, el){
+				if(el.suffix.includes(0)) {
+					dataRetreiver.push({
+						data : el.rendername,
+						render : el.render,
+						class : el.class,
+						orderable: el.orderable == undefined ? true : el.orderable,
+						searchable: el.searchable == undefined ? true : el.searchable,
+					});
+				} 
+			});
+
+			var dt = $('.datatable').DataTable({
+				"deferLoading": true,
+				"processing" : true,
+				"serverSide" : true,
+				"order" : [0, 'asc'],
+				"columnDefs": columnDefs,
+				"ajax": {
+					"url": getBasepath() + "/search/LSA14/0",
+					"type": 'POST'
+				},
+				"columns": dataRetreiver,
+			});
+
+			dt.draw();
+
+			$('.datatable').on('click', 'button.btn-table-delete', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest(getBasepath() + $(this).data('url'));
+			});
+
+			$('.datatable').on('click', 'a.dataindex', function(e){
+				e.preventDefault();
+
+				var mainreloadurl = $(this).attr('href');
+				var mainreloadid = $(this).attr('reloadid');
+				var value = $(this).data('value');
+
+				sectionReloadAjaxReq({
+					id : mainreloadid,
+					url : mainreloadurl + value
+				});
+			})
+		})
+	</script>
+</div>

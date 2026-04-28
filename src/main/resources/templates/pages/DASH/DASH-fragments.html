@@ -1,0 +1,2595 @@
+<!-- WA01 Widgets Section -->
+<div class="col-lg-12 col-xl-12" th:if="${WA01 eq 'Y'}" th:fragment="FRAG-WA01" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0 text-center">User Activity</h4>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="WA01WG01-container col-md-6 mb-3">
+					<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WA01WG01"></div>
+				</div>
+				<div class="WA01WG02-container col-md-6 mb-3">
+					<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WA01WG02"></div>
+				</div>
+				<div class="WA01WG03-container col-md-6 mb-3" th:if="${loggedInZbusiness.xlogtype ne null && 'Basic' ne loggedInZbusiness.xlogtype}">
+					<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WA01WG03"></div>
+				</div>
+				<div class="WA01WG04-container col-md-6 mb-3" th:if="${loggedInZbusiness.xlogtype ne null && 'Basic' ne loggedInZbusiness.xlogtype}">
+					<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WA01WG04"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="WA01WG05-container col-md-12">
+					<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WA01WG05"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- WF02 Widgets Section -->
+<div class="col-lg-6 col-xl-6" th:if="${WF02 eq 'Y'}" th:fragment="FRAG-WF02" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="m-0 p-0">Account Transaction</h4>
+		</div>
+		<div class="card-body">
+			<form id="WF02WG01-form" class="form-validate-jquery" method="POST">
+
+				<div class="row">
+
+					<div class="col-md-6">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WF02WG01xbuid"
+										th:value="${WF02REQPARAM.xbuid ne null ? WF02REQPARAM.xbuid + ' - ' + WF02REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WF02WG01xbuid" th:value="${WF02REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WF02WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WF02WG01xacc"
+										th:value="${WF02REQPARAM.xacc ne null ? WF02REQPARAM.xacc + ' - ' + WF02REQPARAM.accountName : ''}">
+								<input 	type="hidden" class="search-val" name="WF02WG01xacc" th:value="${WF02REQPARAM.xacc}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WF02WG01xacc',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Last</label>
+							<input type="number" class="form-control numeric-only" name="WF02WG01last" th:value="${WF02REQPARAM.last}" required="required">
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Day Type</label>
+							<select class="form-control select" id="WF02WG01type" name="WF02WG01type" th:value="${WF02REQPARAM.type}" required="required">
+								<option value="DAYS" th:selected="${WF02REQPARAM.type eq 'DAYS'}">Days</option>
+								<option value="MONTHS" th:selected="${WF02REQPARAM.type eq 'MONTHS'}">Months</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WF02WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WF02WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WF01 Widgets Section -->
+<div class="col-lg-12 col-xl-12" th:if="${WF01 eq 'Y'}" th:fragment="FRAG-WF01" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0 text-center">Procurement Activity</h4>
+		</div>
+		<div class="card-body p-1">
+			<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+				<div class="flex-grow-1">
+					<div class="WF01WG01-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WF01WG01"></div>
+					</div>
+				</div>
+				<div class="flex-grow-1">
+					<div class="WF01WG02-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WF01WG02"></div>
+					</div>
+				</div>
+				<div class="flex-grow-1">
+					<div class="WF01WG03-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WF01WG03"></div>
+					</div>
+				</div>
+				<div class="flex-grow-1">
+					<div class="WF01WG04-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WF01WG04"></div>
+					</div>
+				</div>
+				<div class="flex-grow-1">
+					<div class="WF01WG05-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WF01WG05"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- WF03 Widgets Section -->
+<div class="col-lg-6 col-xl-6" th:if="${WF03 eq 'Y'}" th:fragment="FRAG-WF03" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="m-0 p-0">Sub Account Transaction</h4>
+		</div>
+		<div class="card-body">
+			<form id="WF03WG01-form" class="form-validate-jquery" method="POST">
+
+				<div class="row">
+
+					<div class="col-md-6">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WF03WG01xbuid"
+										th:value="${WF03REQPARAM.xbuid ne null ? WF03REQPARAM.xbuid + ' - ' + WF03REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WF03WG01xbuid" th:value="${WF03REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WF03WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Sub Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WF03WG01xsub"
+										th:value="${WF03REQPARAM.xsub ne null ? WF03REQPARAM.xsub + ' - ' + WF03REQPARAM.subAccountName : ''}">
+								<input 	type="hidden" class="search-val" name="WF03WG01xsub" th:value="${WF03REQPARAM.xsub}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA14/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WF03WG01xsub',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Last</label>
+							<input type="number" class="form-control numeric-only" name="WF03WG01last" th:value="${WF03REQPARAM.last}" required="required">
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Day Type</label>
+							<select class="form-control select" id="WF03WG01type" name="WF03WG01type" th:value="${WF03REQPARAM.type}" required="required">
+								<option value="DAYS" th:selected="${WF03REQPARAM.type eq 'DAYS'}">Days</option>
+								<option value="MONTHS" th:selected="${WF03REQPARAM.type eq 'MONTHS'}">Months</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WF03WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WF03WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WF04 Widgets Section -->
+<div class="col-lg-6 col-xl-6" th:if="${WF04 eq 'Y'}" th:fragment="FRAG-WF04" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="m-0 p-0">Accounts Current Balance</h4>
+		</div>
+		<div class="card-body">
+			<form id="WF04WG01-form" class="form-validate-jquery" method="POST">
+
+				<div class="row">
+
+					<div class="col-md-6">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WF04WG01xbuid"
+										th:value="${WF04REQPARAM.xbuid ne null ? WF04REQPARAM.xbuid + ' - ' + WF04REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WF04WG01xbuid" th:value="${WF04REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WF04WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Account Type</label>
+							<select class="form-control select" id="WF04WG01type" name="WF04WG01type" th:value="${WF04REQPARAM.type}" required="required">
+								<option value="Asset" th:selected="${WF04REQPARAM.type eq 'Asset'}">Asset</option>
+								<option value="Expenditure" th:selected="${WF04REQPARAM.type eq 'Expenditure'}">Expenditure</option>
+								<option value="Income" th:selected="${WF04REQPARAM.type eq 'Income'}">Income</option>
+								<option value="Liability" th:selected="${WF04REQPARAM.type eq 'Liability'}">Liability</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WF04WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WF04WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WF05 Widgets Section -->
+<div class="col-lg-6 col-xl-6" th:if="${WF05 eq 'Y'}" th:fragment="FRAG-WF05" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header">
+			<h4 class="m-0 p-0">Profit & Loss View</h4>
+		</div>
+		<div class="card-body">
+			<form id="WF05WG01-form" class="form-validate-jquery" method="POST">
+
+				<div class="row">
+
+					<div class="col-md-6">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WF05WG01xbuid"
+										th:value="${WF05REQPARAM.xbuid ne null ? WF05REQPARAM.xbuid + ' - ' + WF05REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WF05WG01xbuid" th:value="${WF05REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WF05WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Last</label>
+							<input type="number" class="form-control numeric-only" name="WF05WG01last" th:value="${WF05REQPARAM.last}" required="required">
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Day Type</label>
+							<select class="form-control select" id="WF05WG01type" name="WF05WG01type" th:value="${WF05REQPARAM.type}" required="required">
+								<option value="DAYS" th:selected="${WF05REQPARAM.type eq 'DAYS'}">Days</option>
+								<option value="MONTHS" th:selected="${WF05REQPARAM.type eq 'MONTHS'}">Months</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WF05WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WF05WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WP01 -->
+<div class="col-lg-12 col-xl-12" th:if="${WP01 eq 'Y'}" th:fragment="FRAG-WP01" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0 text-center">Procurement Activity</h4>
+		</div>
+		<div class="card-body p-1">
+			<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+				<div class="flex-grow-1">
+					<div class="WP01WG01-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WP01WG01"></div>
+					</div>
+				</div>
+				<div class="flex-grow-1">
+					<div class="WP01WG02-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WP01WG02"></div>
+					</div>
+				</div>
+				<div class="flex-grow-1">
+					<div class="WP01WG03-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WP01WG03"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- WP02 -->
+<div class="col-lg-6 col-xl-6" th:if="${WP02 eq 'Y'}" th:fragment="FRAG-WP02" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Supplier Purchase View</h4>
+		</div>
+		<div class="card-body">
+			<form id="WP02WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WP02WG01xbuid"
+										th:value="${WP02REQPARAM.xbuid ne null ? WP02REQPARAM.xbuid + ' - ' + WP02REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WP02WG01xbuid" th:value="${WP02REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WP02WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Supplier</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WP02WG01xcus"
+										th:value="${WP02REQPARAM.xcus ne null ? WP02REQPARAM.xcus + ' - ' + WP02REQPARAM.supplierName : ''}">
+								<input 	type="hidden" class="search-val" name="WP02WG01xcus" th:value="${WP02REQPARAM.xcus}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA14/2?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WP02WG01xcus',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WP02WG01type" name="WP02WG01type" th:value="${WP02REQPARAM.type}" required="required">
+								<option value="DAYS" th:selected="${WP02REQPARAM.type eq 'DAYS'}">Days</option>
+								<option value="DATEBETWEEN" th:selected="${WP02REQPARAM.type eq 'DATEBETWEEN'}">Date Between</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-4 WP02WG01type-DAYS">
+						<div class="mb-3 form-group">
+							<label class="form-label">Last</label>
+							<input type="number" class="form-control numeric-only" name="WP02WG01last" th:value="${WP02REQPARAM.last}">
+						</div>
+					</div>
+
+					<div class="col-md-4 WP02WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WP02WG01xfdate" 
+										id="WP02WG01xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WP02REQPARAM.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WP02REQPARAM.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 WP02WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WP02WG01xtdate" 
+										id="WP02WG01xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WP02REQPARAM.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WP02REQPARAM.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WP02WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WP02WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WP03 -->
+<div class="col-lg-6 col-xl-6" th:if="${WP03 eq 'Y'}" th:fragment="FRAG-WP03" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Item Purchase Statement</h4>
+		</div>
+		<div class="card-body">
+			<form id="WP03WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WP03WG01xbuid"
+										th:value="${WP03REQPARAM.xbuid ne null ? WP03REQPARAM.xbuid + ' - ' + WP03REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WP03WG01xbuid" th:value="${WP03REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WP03WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Item</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WP03WG01xitem"
+										th:value="${WP03REQPARAM.xitem ne null ? WP03REQPARAM.xitem + ' - ' + WP03REQPARAM.itemName : ''}">
+								<input 	type="hidden" class="search-val" name="WP03WG01xcus" th:value="${WP03REQPARAM.xitem}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD12/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WP03WG01xitem',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WP03WG01type" name="WP03WG01type" th:value="${WP03REQPARAM.type}" required="required">
+								<option value="DAYS" th:selected="${WP03REQPARAM.type eq 'DAYS'}">Days</option>
+								<option value="DATEBETWEEN" th:selected="${WP03REQPARAM.type eq 'DATEBETWEEN'}">Date Between</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-4 WP03WG01type-DAYS">
+						<div class="mb-3 form-group">
+							<label class="form-label">Last</label>
+							<input type="number" class="form-control numeric-only" name="WP03WG01last" th:value="${WP03REQPARAM.last}">
+						</div>
+					</div>
+
+					<div class="col-md-4 WP03WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WP03WG01xfdate" 
+										id="WP03WG01xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WP03REQPARAM.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WP03REQPARAM.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 WP03WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WP03WG01xtdate" 
+										id="WP03WG01xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WP03REQPARAM.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WP03REQPARAM.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WP03WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WP03WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WP04 -->
+<div class="col-lg-6 col-xl-6" th:if="${WP04 eq 'Y'}" th:fragment="FRAG-WP04" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Top Suppliers Transaction</h4>
+		</div>
+		<div class="card-body">
+			<form id="WP04WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WP04WG01xbuid"
+										th:value="${WP04REQPARAM.xbuid ne null ? WP04REQPARAM.xbuid + ' - ' + WP04REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WP04WG01xbuid" th:value="${WP04REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WP04WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Top Supplier</label>
+							<input type="number" class="form-control numeric-only" name="WP04WG01topxcus" th:value="${WP04REQPARAM.topxcus}">
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WP04WG01type" name="WP04WG01type" th:value="${WP04REQPARAM.type}" required="required">
+								<option value="DAYS" th:selected="${WP04REQPARAM.type eq 'DAYS'}">Days</option>
+								<option value="DATEBETWEEN" th:selected="${WP04REQPARAM.type eq 'DATEBETWEEN'}">Date Between</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-4 WP04WG01type-DAYS">
+						<div class="mb-3 form-group">
+							<label class="form-label">Last</label>
+							<input type="number" class="form-control numeric-only" name="WP04WG01last" th:value="${WP04REQPARAM.last}">
+						</div>
+					</div>
+
+					<div class="col-md-4 WP04WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WP04WG01xfdate" 
+										id="WP04WG01xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WP04REQPARAM.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WP04REQPARAM.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 WP04WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WP04WG01xtdate" 
+										id="WP04WG01xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WP04REQPARAM.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WP04REQPARAM.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WP04WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WP04WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WP05 -->
+<div class="col-lg-6 col-xl-6" th:if="${WP05 eq 'Y'}" th:fragment="FRAG-WP05" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Top Item Purchase (Amount)</h4>
+		</div>
+		<div class="card-body">
+			<form id="WP05WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WP05WG01xbuid"
+										th:value="${WP05REQPARAM.xbuid ne null ? WP05REQPARAM.xbuid + ' - ' + WP05REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WP05WG01xbuid" th:value="${WP05REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WP05WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Top Items</label>
+							<input type="number" class="form-control numeric-only" name="WP05WG01topxitem" th:value="${WP05REQPARAM.topxitem}">
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WP05WG01type" name="WP05WG01type" th:value="${WP05REQPARAM.type}" required="required">
+								<option value="DAYS" th:selected="${WP05REQPARAM.type eq 'DAYS'}">Days</option>
+								<option value="DATEBETWEEN" th:selected="${WP05REQPARAM.type eq 'DATEBETWEEN'}">Date Between</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-4 WP05WG01type-DAYS">
+						<div class="mb-3 form-group">
+							<label class="form-label">Last</label>
+							<input type="number" class="form-control numeric-only" name="WP05WG01last" th:value="${WP05REQPARAM.last}">
+						</div>
+					</div>
+
+					<div class="col-md-4 WP05WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WP05WG01xfdate" 
+										id="WP05WG01xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WP05REQPARAM.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WP05REQPARAM.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 WP05WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WP05WG01xtdate" 
+										id="WP05WG01xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WP05REQPARAM.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WP05REQPARAM.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WP05WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WP05WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WS01 Column -->
+<div class="col-lg-12 col-xl-12" th:if="${WS01 eq 'Y'}" th:fragment="FRAG-WS01" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0 text-center">Sales Activity</h4>
+		</div>
+		<div class="card-body p-1">
+			<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+				<div class="flex-grow-1">
+					<div class="WS01WG01-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WS01WG01"></div>
+					</div>
+				</div>
+				<div class="flex-grow-1">
+					<div class="WS01WG02-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WS01WG02"></div>
+					</div>
+				</div>
+				<div class="flex-grow-1">
+					<div class="WS01WG03-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WS01WG03"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- WS02 -->
+<div class="col-lg-6 col-xl-6" th:if="${WS02 eq 'Y'}" th:fragment="FRAG-WS02" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Customer Sales Statement</h4>
+		</div>
+		<div class="card-body">
+			<form id="WS02WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WS02WG01xbuid"
+										th:value="${WS02REQPARAM.xbuid ne null ? WS02REQPARAM.xbuid + ' - ' + WS02REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WS02WG01xbuid" th:value="${WS02REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WS02WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Customer</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WS02WG01xcus"
+										th:value="${WS02REQPARAM.xcus ne null ? WS02REQPARAM.xcus + ' - ' + WS02REQPARAM.customerName : ''}">
+								<input 	type="hidden" class="search-val" name="WS02WG01xcus" th:value="${WS02REQPARAM.xcus}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA14/1?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WS02WG01xcus',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WS02WG01type" name="WS02WG01type" th:value="${WS02REQPARAM.type}" required="required">
+								<option value="DAYS" th:selected="${WS02REQPARAM.type eq 'DAYS'}">Days</option>
+								<option value="DATEBETWEEN" th:selected="${WS02REQPARAM.type eq 'DATEBETWEEN'}">Date Between</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-4 WS02WG01type-DAYS">
+						<div class="mb-3 form-group">
+							<label class="form-label">Last</label>
+							<input type="number" class="form-control numeric-only" name="WS02WG01last" th:value="${WS02REQPARAM.last}">
+						</div>
+					</div>
+
+					<div class="col-md-4 WS02WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WS02WG01xfdate" 
+										id="WS02WG01xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WS02REQPARAM.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WS02REQPARAM.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 WS02WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WS02WG01xtdate" 
+										id="WS02WG01xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WS02REQPARAM.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WS02REQPARAM.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WS02WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WS02WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WS03 -->
+<div class="col-lg-6 col-xl-6" th:if="${WS03 eq 'Y'}" th:fragment="FRAG-WS03" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Item Sales Statement</h4>
+		</div>
+		<div class="card-body">
+			<form id="WS03WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WS03WG01xbuid"
+										th:value="${WS03REQPARAM.xbuid ne null ? WS03REQPARAM.xbuid + ' - ' + WS03REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WS03WG01xbuid" th:value="${WS03REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WS03WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Item</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WS03WG01xitem"
+										th:value="${WS03REQPARAM.xitem ne null ? WS03REQPARAM.xitem + ' - ' + WS03REQPARAM.itemName : ''}">
+								<input 	type="hidden" class="search-val" name="WS03WG01xcus" th:value="${WS03REQPARAM.xitem}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD12/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WS03WG01xitem',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WS03WG01type" name="WS03WG01type" th:value="${WS03REQPARAM.type}" required="required">
+								<option value="DAYS" th:selected="${WS03REQPARAM.type eq 'DAYS'}">Days</option>
+								<option value="DATEBETWEEN" th:selected="${WS03REQPARAM.type eq 'DATEBETWEEN'}">Date Between</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-4 WS03WG01type-DAYS">
+						<div class="mb-3 form-group">
+							<label class="form-label">Last</label>
+							<input type="number" class="form-control numeric-only" name="WS03WG01last" th:value="${WS03REQPARAM.last}">
+						</div>
+					</div>
+
+					<div class="col-md-4 WS03WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WS03WG01xfdate" 
+										id="WS03WG01xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WS03REQPARAM.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WS03REQPARAM.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 WS03WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WS03WG01xtdate" 
+										id="WS03WG01xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WS03REQPARAM.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WS03REQPARAM.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WS03WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WS03WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WS04 -->
+<div class="col-lg-6 col-xl-6" th:if="${WS04 eq 'Y'}" th:fragment="FRAG-WS04" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Top Suppliers Transaction</h4>
+		</div>
+		<div class="card-body">
+			<form id="WS04WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WS04WG01xbuid"
+										th:value="${WS04REQPARAM.xbuid ne null ? WS04REQPARAM.xbuid + ' - ' + WS04REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WS04WG01xbuid" th:value="${WS04REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WS04WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Top Customer</label>
+							<input type="number" class="form-control numeric-only" name="WS04WG01topxcus" th:value="${WS04REQPARAM.topxcus}">
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WS04WG01type" name="WS04WG01type" th:value="${WS04REQPARAM.type}" required="required">
+								<option value="DAYS" th:selected="${WS04REQPARAM.type eq 'DAYS'}">Days</option>
+								<option value="DATEBETWEEN" th:selected="${WS04REQPARAM.type eq 'DATEBETWEEN'}">Date Between</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-4 WS04WG01type-DAYS">
+						<div class="mb-3 form-group">
+							<label class="form-label">Last</label>
+							<input type="number" class="form-control numeric-only" name="WS04WG01last" th:value="${WS04REQPARAM.last}">
+						</div>
+					</div>
+
+					<div class="col-md-4 WS04WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WS04WG01xfdate" 
+										id="WS04WG01xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WS04REQPARAM.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WS04REQPARAM.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 WS04WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WS04WG01xtdate" 
+										id="WS04WG01xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WS04REQPARAM.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WS04REQPARAM.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WS04WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WS04WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WS05 -->
+<div class="col-lg-6 col-xl-6" th:if="${WS05 eq 'Y'}" th:fragment="FRAG-WS05" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Top Item Purchase (Amount)</h4>
+		</div>
+		<div class="card-body">
+			<form id="WS05WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WS05WG01xbuid"
+										th:value="${WS05REQPARAM.xbuid ne null ? WS05REQPARAM.xbuid + ' - ' + WS05REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WS05WG01xbuid" th:value="${WS05REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WS05WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Top Items</label>
+							<input type="number" class="form-control numeric-only" name="WS05WG01topxitem" th:value="${WS05REQPARAM.topxitem}">
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WS05WG01type" name="WS05WG01type" th:value="${WS05REQPARAM.type}" required="required">
+								<option value="DAYS" th:selected="${WS05REQPARAM.type eq 'DAYS'}">Days</option>
+								<option value="DATEBETWEEN" th:selected="${WS05REQPARAM.type eq 'DATEBETWEEN'}">Date Between</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-4 WS05WG01type-DAYS">
+						<div class="mb-3 form-group">
+							<label class="form-label">Last</label>
+							<input type="number" class="form-control numeric-only" name="WS05WG01last" th:value="${WS05REQPARAM.last}">
+						</div>
+					</div>
+
+					<div class="col-md-4 WS05WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WS05WG01xfdate" 
+										id="WS05WG01xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WS05REQPARAM.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WS05REQPARAM.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 WS05WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WS05WG01xtdate" 
+										id="WS05WG01xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WS05REQPARAM.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WS05REQPARAM.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WS05WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WS05WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WS06 -->
+<div class="col-lg-6 col-xl-6" th:if="${WS06 eq 'Y'}" th:fragment="FRAG-WS06" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Top Profitable Items</h4>
+		</div>
+		<div class="card-body">
+			<form id="WS06WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WS06WG01xbuid"
+										th:value="${WS06REQPARAM.xbuid ne null ? WS06REQPARAM.xbuid + ' - ' + WS06REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WS06WG01xbuid" th:value="${WS06REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WS06WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Top Items</label>
+							<input type="number" class="form-control numeric-only" name="WS06WG01topxitem" th:value="${WS06REQPARAM.topxitem}">
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WS06WG01type" name="WS06WG01type" th:value="${WS06REQPARAM.type}" required="required">
+								<option value="DAYS" th:selected="${WS06REQPARAM.type eq 'DAYS'}">Days</option>
+								<option value="DATEBETWEEN" th:selected="${WS06REQPARAM.type eq 'DATEBETWEEN'}">Date Between</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-4 WS06WG01type-DAYS">
+						<div class="mb-3 form-group">
+							<label class="form-label">Last</label>
+							<input type="number" class="form-control numeric-only" name="WS06WG01last" th:value="${WS06REQPARAM.last}">
+						</div>
+					</div>
+
+					<div class="col-md-4 WS06WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WS06WG01xfdate" 
+										id="WS06WG01xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WS06REQPARAM.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WS06REQPARAM.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 WS06WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WS06WG01xtdate" 
+										id="WS06WG01xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WS06REQPARAM.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WS06REQPARAM.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WS06WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WS06WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WI01 -->
+<div class="col-lg-12 col-xl-12" th:if="${WI01 eq 'Y'}" th:fragment="FRAG-WI01" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0 text-center">Inventory Activity</h4>
+		</div>
+		<div class="card-body p-1">
+			<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+				<div class="flex-grow-1">
+					<div class="WI01WG01-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WI01WG01"></div>
+					</div>
+				</div>
+				<div class="flex-grow-1">
+					<div class="WI01WG02-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WI01WG02"></div>
+					</div>
+				</div>
+				<div class="flex-grow-1">
+					<div class="WI01WG03-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WI01WG03"></div>
+					</div>
+				</div>
+				<div class="flex-grow-1">
+					<div class="WI01WG04-container">
+						<div th:remove="tag" th:include="pages/DASH/DASH-fragments :: WI01WG04"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- WI02 -->
+<div class="col-lg-6 col-xl-6" th:if="${WI02 eq 'Y'}" th:fragment="FRAG-WI02" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Current Stock Status</h4>
+		</div>
+		<div class="card-body">
+			<form id="WI02WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WI02WG01xbuid"
+										th:value="${WI02REQPARAM.xbuid ne null ? WI02REQPARAM.xbuid + ' - ' + WI02REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WI02WG01xbuid" th:value="${WI02REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WI02WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Item Group</label>
+							<select class="form-control select" id="WI02WG01xgroup" name="WI02WG01xgroup" th:value="${WI02REQPARAM.xgroup}" required="required">
+								<option value="">-- Select --</option>
+								<option th:each="xcode : ${WI02REQPARAM.xcodes}" th:value="${xcode}" th:selected="${WI02REQPARAM.xgroup eq xcode}" th:text="${xcode}">Days</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Store</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WI02WG01xwh"
+										th:value="${WI02REQPARAM.xwh ne null ? WI02REQPARAM.xwh + ' - ' + WI02REQPARAM.storeName : ''}">
+								<input 	type="hidden" class="search-val" name="WI02WG01xwh" th:value="${WI02REQPARAM.xwh}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD11/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WI02WG01xwh',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WI02WG01type" name="WI02WG01type" th:value="${WI02REQPARAM.type}" required="required">
+								<option value="Quantity_n_Value" th:selected="${WI02REQPARAM.type eq 'Quantity_n_Value'}">Quantity & Value</option>
+								<option value="Quantity" th:selected="${WI02REQPARAM.type eq 'Quantity'}">Quantity</option>
+								<option value="Value" th:selected="${WI02REQPARAM.type eq 'Value'}">Value</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WI02WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WI02WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WI05 -->
+<div class="col-lg-6 col-xl-6" th:if="${WI05 eq 'Y'}" th:fragment="FRAG-WI05" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Production Costing View</h4>
+		</div>
+		<div class="card-body">
+			<form id="WI05WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WI05WG01xbuid"
+										th:value="${WI05REQPARAM.xbuid ne null ? WI05REQPARAM.xbuid + ' - ' + WI05REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WI05WG01xbuid" th:value="${WI05REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WI05WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label">Item</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WI05WG01xitem"
+										th:value="${WI05REQPARAM.xitem ne null ? WI05REQPARAM.xitem + ' - ' + WI05REQPARAM.itemName : ''}">
+								<input 	type="hidden" class="search-val" name="WI05WG01xitem" th:value="${WI05REQPARAM.xitem}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD12/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WI05WG01xitem',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WI05WG01type" name="WI05WG01type" th:value="${WI05REQPARAM.type}" required="required">
+								<option value="DATEBETWEEN" th:selected="${WI05REQPARAM.type eq 'DATEBETWEEN'}">Date Between</option>
+								<option value="BATCHES" th:selected="${WI05REQPARAM.type eq 'BATCHES'}">Batches</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-4 WI05WG01type-BATCHES">
+						<div class="mb-3 form-group">
+							<label class="form-label">Last</label>
+							<input type="number" class="form-control numeric-only" name="WI05WG01last" th:value="${WI05REQPARAM.last}">
+						</div>
+					</div>
+
+					<div class="col-md-4 WI05WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WI05WG01xfdate" 
+										id="WI05WG01xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WI05REQPARAM.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WI05REQPARAM.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-4 WI05WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WI05WG01xtdate" 
+										id="WI05WG01xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WI05REQPARAM.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WI05REQPARAM.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WI05WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WI05WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+<!-- WI03 -->
+<div class="col-lg-12 col-xl-12" th:if="${WI03 eq 'Y'}" th:fragment="FRAG-WI03" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Item Movement Frequency</h4>
+		</div>
+		<div class="card-body">
+			<form id="WI03WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-2">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WI03WG01xbuid"
+										th:value="${WI03REQPARAM.xbuid ne null ? WI03REQPARAM.xbuid + ' - ' + WI03REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WI03WG01xbuid" th:value="${WI03REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WI03WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-2">
+						<div class="mb-3 form-group">
+							<label class="form-label">Store</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WI03WG01xwh"
+										th:value="${WI03REQPARAM.xwh ne null ? WI03REQPARAM.xwh + ' - ' + WI03REQPARAM.storeName : ''}">
+								<input 	type="hidden" class="search-val" name="WI03WG01xwh" th:value="${WI03REQPARAM.xwh}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD11/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WI03WG01xwh',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-2">
+						<div class="mb-3 form-group">
+							<label class="form-label">Item</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WI03WG01xitem"
+										th:value="${WI03REQPARAM.xitem ne null ? WI03REQPARAM.xitem + ' - ' + WI03REQPARAM.itemName : ''}">
+								<input 	type="hidden" class="search-val" name="WI03WG01xitem" th:value="${WI03REQPARAM.xitem}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD12/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WI03WG01xitem',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-2 WI03WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WI03WG01xfdate" 
+										id="WI03WG01xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WI03REQPARAM.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WI03REQPARAM.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-2 WI03WG01type-DATEBETWEEN">
+						<div class="mb-3 form-group">
+							<label class="form-label">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="WI03WG01xtdate" 
+										id="WI03WG01xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required
+										th:value="${WI03REQPARAM.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(WI03REQPARAM.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-2">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WI03WG01type" name="WI03WG01type" th:value="${WI03REQPARAM.type}" required="required">
+								<option value="Pie Chart" th:selected="${WI03REQPARAM.type eq 'Pie Chart'}">Pie Chart</option>
+								<option value="Bar Chart" th:selected="${WI03REQPARAM.type eq 'Bar Chart'}">Bar Chart</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WI03WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer">
+			<div class="row WI03WG01_WG02">
+				<div class="col-md-6" id="WI03WG01-chart" style="height: 500px;"></div>
+				<div class="col-md-6" id="WI03WG02-chart" style="height: 500px;"></div>
+			</div>
+			<div class="row WI03WG03_WG04">
+				<div class="col-md-6" id="WI03WG03-chart" style="height: 500px;"></div>
+				<div class="col-md-6" id="WI03WG04-chart" style="height: 500px;"></div>
+			</div>
+			<div class="row WI03WG05_WG06 d-none">
+				<div class="col-md-6" id="WI03WG05-chart" style="height: 500px;"></div>
+				<div class="col-md-6" id="WI03WG06-chart" style="height: 500px;"></div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<!-- WI04 -->
+<div class="col-lg-12 col-xl-12" th:if="${WI04 eq 'Y'}" th:fragment="FRAG-WI04" xmlns:th="http://www.thymeleaf.org">
+
+	<div class="card">
+		<div class="card-header">
+			<h4 class="p-0 m-0">Inventory Age View</h4>
+		</div>
+		<div class="card-body">
+			<form id="WI04WG01-form" class="form-validate-jquery" method="POST" th:with="df=${'yyyy-MM-dd'}">
+
+				<div class="row">
+
+					<div class="col-md-2">
+						<div class="mb-3 form-group">
+							<label class="form-label">Business Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WI04WG01xbuid"
+										th:value="${WI04REQPARAM.xbuid ne null ? WI04REQPARAM.xbuid + ' - ' + WI04REQPARAM.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="WI04WG01xbuid" th:value="${WI04REQPARAM.xbuid}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WI04WG01xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-2">
+						<div class="mb-3 form-group">
+							<label class="form-label">Store</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WI04WG01xwh"
+										th:value="${WI04REQPARAM.xwh ne null ? WI04REQPARAM.xwh + ' - ' + WI04REQPARAM.storeName : ''}">
+								<input 	type="hidden" class="search-val" name="WI04WG01xwh" th:value="${WI04REQPARAM.xwh}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD11/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WI04WG01xwh',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-2">
+						<div class="mb-3 form-group">
+							<label class="form-label">Category</label>
+							<select class="form-control select" id="WI04WG01xcategory" name="WI04WG01xcategory">
+								<option value="">-- Select --</option>
+								<option th:each="xcode : ${WI04REQPARAM.xcodes}" th:value="${xcode}" th:selected="${WI04REQPARAM.xcategory eq xcode}" th:text="${xcode}">Days</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-2">
+						<div class="mb-3 form-group">
+							<label class="form-label">Item</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="WI04WG01xitem"
+										th:value="${WI04REQPARAM.xitem ne null ? WI04REQPARAM.xitem + ' - ' + WI04REQPARAM.itemName : ''}">
+								<input 	type="hidden" class="search-val" name="WI04WG01xitem" th:value="${WI04REQPARAM.xitem}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD12/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='WI04WG01xitem',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-2">
+						<div class="mb-3 form-group">
+							<label class="form-label">Age Between</label>
+							<div class="row">
+								<div class="col-md-5">
+									<input type="number" class="form-control numeric-only" name="WI04WG01xfdays" id="WI04WG01xfdays" th:value="${WI04REQPARAM.xfdays}"/>
+								</div>
+								<div class="col-md-2 text-center">
+									to
+								</div>
+								<div class="col-md-5">
+									<input type="number" class="form-control numeric-only" name="WI04WG01xtdays" id="WI04WG01xtdays" th:value="${WI04REQPARAM.xtdays}"/>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-2">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" id="WI04WG01type" name="WI04WG01type" th:value="${WI04REQPARAM.type}" required="required">
+								<option value="Quantity_n_Value" th:selected="${WI04REQPARAM.type eq 'Quantity_n_Value'}">Quantity & Value</option>
+								<option value="Quantity" th:selected="${WI04REQPARAM.type eq 'Quantity'}">Quantity</option>
+								<option value="Value" th:selected="${WI04REQPARAM.type eq 'Value'}">Value</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<button type="submit" class="btn btn-primary btn-sm btn-WI04WG01-submit"><i class="ph ph-arrows-clockwise me-2"></i> Refresh</button>
+						</div>
+					</div>
+
+				</div>
+
+			</form>
+		</div>
+
+		<div class="card-footer" id="WI04WG01-chart" style="height: 500px;">
+
+		</div>
+	</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div th:fragment="WA01WG01" xmlns:th="http://www.thymeleaf.org" class="d-flex" style="height: 100%">
+	<div class="card card-body m-0">
+		<div class="d-flex align-items-center">
+			<div class="flex-fill">
+				<h4 class="mb-0" th:text="${WA01WG01}">0</h4>
+				Total Users
+			</div>
+
+			<i class="ph-users-three ph-2x opacity-75 me-3"></i>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="WA01WG02" xmlns:th="http://www.thymeleaf.org" class="d-flex" style="height: 100%">
+	<div class="card card-body m-0">
+		<div class="d-flex align-items-center">
+			<div class="flex-fill">
+				<h4 class="mb-0" th:text="${WA01WG02}">0</h4>
+				Active Users
+			</div>
+
+			<i class="ph-users-three ph-2x opacity-75 me-3"></i>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="WA01WG03" xmlns:th="http://www.thymeleaf.org" class="d-flex" style="height: 100%">
+	<div class="card card-body m-0">
+		<div class="d-flex align-items-center">
+			<i class="ph-users-three ph-2x opacity-75 me-3"></i>
+
+			<div class="flex-fill text-end">
+				<h4 class="mb-0" th:text="${WA01WG03}">0</h4>
+				Today Loged-In Users
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="WA01WG04" xmlns:th="http://www.thymeleaf.org" class="d-flex" style="height: 100%">
+	<div class="card card-body m-0">
+		<div class="d-flex align-items-center">
+			<i class="ph-users-three ph-2x opacity-75 me-3"></i>
+
+			<div class="flex-fill text-end">
+				<h4 class="mb-0" th:text="${WA01WG04}">0</h4>
+				Current Loged-In Users
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="WA01WG05" xmlns:th="http://www.thymeleaf.org" class="d-flex" style="height: 100%">
+	<div class="card card-body m-0">
+		<h6>Profile Wise Users</h6>
+		<div class="table-responsive">
+			<table class="table table-stripped">
+				<thead>
+					<tr>
+						<th>Profile</th>
+						<th class="text-center">Total</th>
+						<th class="text-center">Active</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="row : ${WA01WG05}">
+						<td th:text="${row.profile}"></td>
+						<td class="text-center" th:text="${row.total}"></td>
+						<td class="text-center" th:text="${row.active}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+<div th:fragment="WF01WG01" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Total Vouchers</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="WF01WG02" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Open Vouchers</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div th:fragment="WF01WG03" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center  mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Suspended Vouchers</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="WF01WG04" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center  mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Waiting for Posting</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div th:fragment="WF01WG05" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Posted Vouchers</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div th:fragment="WP01WG01" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Purchase Order</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="WP01WG02" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">GRN & Direct Purchase</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div th:fragment="WP01WG03" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Purchase Return</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div th:fragment="WS01WG01" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Sales Order</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="WS01WG02" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Sales Invoice</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div th:fragment="WS01WG03" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Sales Return</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div th:fragment="WI01WG01" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Inventory Transfer</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="WI01WG02" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Batch Process</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+<div th:fragment="WI01WG03" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Inventory Issue</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>
+<div th:fragment="WI01WG04" xmlns:th="http://www.thymeleaf.org">
+	<div class="card card-body text-center mb-0 p-2">
+		<div class="mb-1">
+			<h6 class="mb-0 mt-1">Inventory Adjustment</h6>
+		</div>
+
+		<div class="row">
+			<div class="col-4">
+				<div class="fs-sm text-muted">Today</div>
+				<h6 class="mb-0" th:text="${today}">2,483</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Month</div>
+				<h6 class="mb-0" th:text="${thisMonth}">1,257</h6>
+			</div>
+
+			<div class="col-4">
+				<div class="fs-sm text-muted">This Year</div>
+				<h6 class="mb-0" th:text="${thisYear}">8,472</h6>
+			</div>
+		</div>
+	</div>
+</div>

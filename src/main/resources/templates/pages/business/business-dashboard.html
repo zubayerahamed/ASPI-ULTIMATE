@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>ASPI | Business Selection</title>
+	
+	<link th:href="@{/login-assets/images/favicon.ico}" rel="icon" type="image/x-icon" />
+
+	<!-- Global stylesheets -->
+	<link th:href="@{/login-assets/fonts/inter/inter.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/login-assets/icons/phosphor/styles.min.css}" rel="stylesheet" type="text/css">
+	<link th:href="@{/login-assets/css/all.min.css}" id="stylesheet" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script th:src="@{/login-assets/js/jquery/jquery.min.js}"></script>
+	<script th:src="@{/login-assets/js/bootstrap/bootstrap.bundle.min.js}"></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<script th:src="@{/login-assets/js/app.js}"></script>
+	<!-- /theme JS files -->
+
+</head>
+
+<body>
+
+	<div class="navbar navbar-dark navbar-static py-2">
+		<div class="container-fluid">
+			<div class="navbar-brand">
+				<a th:href="@{/business}" class="d-inline-flex align-items-center">
+					<img th:src="@{/assets/images/aspi_white.png}" alt="" style="height: 35px;" class="me-3">
+					<!-- <h3 class="m-0 p-0 text-white">ASPI</h3> -->
+				</a>
+			</div>
+
+			<div class="d-flex justify-content-end align-items-center ms-auto">
+				<ul class="navbar-nav flex-row">
+					<li class="nav-item">
+						<a th:href="@{/logout}" class="navbar-nav-link navbar-nav-link-icon rounded ms-1">
+							<div class="d-flex align-items-center mx-md-1">
+							<i class="ph-sign-out"></i>
+							<span class="d-none d-md-inline-block ms-2">Logout</span>
+						</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<!-- Page content -->
+	<div class="page-content">
+
+		<!-- Main content -->
+		<div class="content-wrapper">
+
+			<!-- Inner content -->
+			<div class="content" style="overflow-y: scroll;">
+
+
+				<div th:if="${param.error}" style="color: red; margin-top: 20px !important; font-size: 20px; text-align: center; margin-top: -10px;">Please don't tamper with data. This incident will be reported to the System Admin</div>
+
+				<!-- <h1 class="text-center mt-3">Choose Your Business</h1> -->
+
+				<!-- Content area -->
+				<div class="row justify-content-center align-items-center">
+
+					<h1 th:if="${#lists.isEmpty(businesses)}" class="text-center">You are not assigned with any Business</h1>
+
+					<h1 th:if="${not #lists.isEmpty(businesses)}" class="text-center">Select Business</h1>
+
+					<div th:each="business : ${businesses}" class="col-sm-6 col-xl-3">
+						<a class="p-4 business-submit-button card card-body bg-primary text-white align-items-center" th:href="@{/switchbusiness/} + ${business.zid}">
+							<h3 th:text="${business.zorg}" class="m-0 p-0"></h3>
+						</a>
+					</div>
+
+				</div>
+				<!-- /content area -->
+
+			</div>
+			<!-- /inner content -->
+
+		</div>
+		<!-- /main content -->
+
+	</div>
+	<!-- /page content -->
+
+</body>
+</html>

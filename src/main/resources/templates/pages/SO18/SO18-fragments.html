@@ -1,0 +1,399 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/SO18/store}" th:object="${opdoheader}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${opdoheader.xdornum ne null}" th:field="*{xdornum}">
+				<input type="hidden" th:field="*{xstatus}">
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="mb-3 form-group">
+							<label class="form-label">Invoice</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control  searchsuggest2"
+										name="xdornum"
+										th:value="${opdoheader.xdornum ne null ? opdoheader.xdornum : ''}"
+										disabled="disabled">
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LSO14/4?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xdornum',
+										data-mainscreen=true,
+										data-mainreloadurl='/SO18?xdornum=',
+										data-mainreloadid='main-form-container',
+										data-detailreloadurl='/SO18/detail-table?xrow=RESET&xdornum=',
+										data-detailreloadid='detail-table-container'" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-12" th:if="${opdoheader.xislock}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Unit</label>
+							<input type="text" class="form-control" th:value="${opdoheader.xbuid != null ? opdoheader.xbuid + ' - ' + opdoheader.businessUnitName : ''}" disabled>
+						</div>
+					</div>
+					<div class="col-md-12" th:if="${not opdoheader.xislock}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Unit</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control  searchsuggest2"
+										id="xbuid"
+										th:value="${opdoheader.xbuid != null ? opdoheader.xbuid + ' - ' + opdoheader.businessUnitName : ''}">
+								<input 	type="hidden" class="search-val" name="xbuid" th:value="*{xbuid}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD17/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xbuid',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-12" th:if="${opdoheader.xislock}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Outlet</label>
+							<input type="text" class="form-control" th:value="${opdoheader.xwh != null ? opdoheader.xwh + ' - ' + opdoheader.warehouseName : ''}" disabled>
+						</div>
+					</div>
+					<div class="col-md-12" th:if="${not opdoheader.xislock}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Outlet</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control  searchsuggest2"
+										id="xwh"
+										th:value="${opdoheader.xwh != null ? opdoheader.xwh + ' - ' + opdoheader.warehouseName : ''}">
+								<input 	type="hidden" class="search-val" name="xwh" th:value="*{xwh}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LMD11/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xwh',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					
+					<div class="col-md-12">
+						<div class="mb-3 form-group">
+							<label class="form-label">Total Amount</label>
+							<input type="number" class="form-control numeric-only fw-bold" id="xtotamt" th:value="*{xtotamt}" disabled>
+						</div>
+					</div>
+					
+					<div class="col-md-12">
+						<div class="mb-3 form-group">
+							<label class="form-label">Paid Amount</label>
+							<input type="number" class="form-control numeric-only fw-bold" id="xpaidamt" value="0.00" min="0">
+						</div>
+					</div>
+					
+					<div class="col-md-12">
+						<div class="mb-3 form-group">
+							<label class="form-label">Change Amount</label>
+							<input type="number" class="form-control numeric-only fw-bold" id="xchangeamt" value="0.00" disabled>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/SO18?xdornum=RESET' , data-reloadid='main-form-container', data-detailreloadurl='/SO18/detail-table?xdornum=RESET&xrow=RESET', data-detailreloadid='detail-table-container'" class="btn btn-light btn-sm btn-reset" title="Clear"><i class="ph ph-arrow-clockwise"></i></button>
+						<button th:if="${opdoheader.xdornum eq null or (opdoheader.xdornum ne null and opdoheader.xstatus eq 'Open')}" type="submit" class="btn btn-warning btn-sm btn-hold" title="Hold & Save"><i class="ph ph-hand-palm"></i></button>
+						<!-- <button th:if="${opdoheader.xdornum eq null}" type="submit" class="btn btn-info btn-sm btn-submit" title="Open new tab"><i class="ph ph-arrow-square-out"></i></button> -->
+					</div>
+					<div>
+						<button th:if="${opdoheader.xdornum ne null and opdoheader.xstatus ne 'Open'}" th:attr="data-url=@{/report/print}, data-param2=${opdoheader.xdornum}, data-rptcode='opposd'" type="button" class="btn btn-primary btn-sm btn-print btn-print-duplicate my-2 ms-3" title="Print Duplicate"><i class="ph-printer"></i></button>
+						<button th:if="${opdoheader.xdornum eq null or (opdoheader.xdornum ne null and opdoheader.xstatus eq 'Open')}" type="submit" class="btn btn-primary btn-sm btn-submit" title="Confirm & Print"><i class="ph ph-paper-plane"></i></button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+	</div>
+
+	<script type="text/javascript">
+		//var posItems = [];
+
+		$(document).ready(function(){
+			kit.ui.init();
+
+			//loadingMask2.show();
+			/* $.ajax({
+				url: getBasepath() + '/SO18/all-pos-items',
+				type: "GET",
+				success: function (data) {
+					loadingMask2.hide();
+					posItems = data;
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			}); */
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailreloadid'),
+					url : $(this).data('detailreloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				$('#xstatus').val('Confirmed');
+				submitMainForm();
+			});
+
+			$('.btn-hold').off('click').on('click', function(e){
+				e.preventDefault();
+				$('#xstatus').val('Open');
+				submitMainForm();
+			});
+
+			$('.btn-submit').keydown(function (e) {
+				if (e.key === 'Tab') {
+					e.preventDefault(); // Prevent the default Tab behavior
+					$('#xitem').focus(); // Move focus to the target input field
+				}
+			});
+
+		})
+	</script>
+</div>
+
+
+
+
+<div th:fragment="detail-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0" th:if="${opdoheader.xdornum eq null or (opdoheader.xdornum ne null and opdoheader.xstatus eq 'Open')}">
+			<div class="col-md-4 mt-2 mb-2">
+				<div class="form-group">
+					<div class="input-group">
+						<input 	type="text" 
+								class="form-control searchsuggest3 form-control-sm"
+								id="xitem"
+								placeholder="Search Items"
+								value=""
+								th:attr="data-searchcounturl='/SO18/search-item?searchText='">
+						<input 	type="hidden" class="search-val" name="xitem" value="" required/>
+						<span 	class="input-group-text btn-search" 
+								th:attr="
+								data-reloadurl='/search/table/LMD12/5?hint=',  
+								data-reloadid='search-suggest-results-container', 
+								data-fieldid='xitem',
+								data-mainscreen=true,
+								data-mainreloadurl='/SO18/detail-table?xdornum='+${opdoheader.xdornum eq null ? 'RESET' : opdoheader.xdornum}+'&xrow=RESET&xitem=',
+								data-mainreloadid='detail-table-container'" 
+								style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="5%" class="text-center">SL</th>
+						<th width="25%">Item</th>
+						<th width="15%" class="text-center d-none d-lg-table-cell">Unit</th>
+						<th width="25%" class="text-center">Qty</th>
+						<th width="15%" class="text-end d-none d-lg-table-cell">Rate</th>
+						<th width="15%" class="text-end d-none d-lg-table-cell">S. Total</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${#lists.isEmpty(detailList)}">
+						<td colspan="6" class="text-center">No items selected</td>
+					</tr>
+					<tr class="item-row"
+						th:if="${not #lists.isEmpty(detailList)}" 
+						th:each="x, c : ${detailList}" 
+						th:attr="
+							data-xrate=${x.xrate},
+							data-xlineamt=${x.xlineamt},
+							data-xrow=${x.xrow},
+							data-delete-url=@{/SO18/detail-table}">
+						<td th:text="${c.count}" class="text-center"></td>
+						<td th:attr="data-xrow=${x.xrow}">
+							<p class="p-0 m-0" th:text="${x.xitem + ' - ' + x.itemName}"></p>
+							<p class="p-0 m-0 text-muted d-lg-none" style="font-size: 12px;" th:text="${'Unit: ' + x.xunit}"></p>
+							<p class="p-0 m-0 text-muted d-lg-none" style="font-size: 12px;" th:text="${'Rate: ' + x.xrate}"></p>
+							<p class="p-0 m-0 text-muted d-lg-none span-xlineamt" style="font-size: 12px;" th:text="${'S. Total: ' + x.xrate}"></p>
+						</td>
+						<td th:text="${x.xunit}" class="text-center d-none d-lg-table-cell"></td>
+						<td class="text-center" th:if="${x.xdornum eq null or (opdoheader.xdornum ne null and opdoheader.xstatus eq 'Open')}">
+							<div class="col-md-12">
+								<div class="form-group">
+									<input type="number" class="form-control numeric-only text-center form-control-sm delete-on-keypress fw-bold" name="xqty" th:value="${x.xqty}" required="required" min="0" step="1">
+								</div>
+							</div>
+						</td>
+						<td class="text-center" th:if="${x.xdornum ne null and opdoheader.xstatus ne 'Open'}" th:text="${x.xqty}"></td>
+						<td th:text="${x.xrate}" class="text-end d-none d-lg-table-cell"></td>
+						<td th:text="${x.xlineamt}" class="text-end td-xlineamt d-none d-lg-table-cell"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		function loopEachItemRow(){
+
+			var totalAmt = 0;
+
+			$('.item-row').each(function(i, item){
+				var lineamt = $(this).data('xlineamt');
+				lineamt = Number(lineamt);
+				lineamt = lineamt < 0 ? 0 : lineamt;
+				totalAmt += Number(lineamt);
+			})
+
+			$('#xtotamt').val(totalAmt.toFixed(2));
+			$('#xpaidamt').val(totalAmt.toFixed(2));
+
+			var changeAmt = Number($('#xtotamt').val()) - Number($('#xpaidamt').val());
+			var color = 'green';
+			if(changeAmt > 0) {
+				color = 'red';
+				$('.btn-submit').addClass('d-none');
+			} else {
+				color = 'green';
+				$('.btn-submit').removeClass('d-none');
+			}
+			$('#xchangeamt').val(changeAmt.toFixed(2));
+			$('#xchangeamt').css('color', color);
+		}
+
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('#xitem').focus();
+
+			loopEachItemRow();
+
+			$('#xpaidamt').on('change', function(){
+				var changeAmt = Number($('#xtotamt').val()) - Number($('#xpaidamt').val());
+				var color = 'green';
+				if(changeAmt > 0) {
+					color = 'red';
+					$('.btn-submit').addClass('d-none');
+				} else {
+					color = 'green';
+					$('.btn-submit').removeClass('d-none');
+				}
+				$('#xchangeamt').val(changeAmt.toFixed(2));
+				$('#xchangeamt').css('color', color);
+			})
+
+			$('.delete-on-keypress').on("change", function (e) {
+				if (e.key === "Delete" || e.keyCode === 46) return;
+
+				var currentTd = $(this).parents('td');
+				var currentRow = $(this).parents('tr');
+				var currentRowXlientamt = $(currentTd).siblings('.td-xlineamt');
+				var currentRowSpanXlineamt = $(currentRow).find('.span-xlineamt');
+
+				var currentQty = $(this).val();
+
+				if(currentQty == null || currentQty == '') {
+					currentQty = 0;
+					$(this).val(currentQty);
+				}
+				var xrate = $(currentRow).data('xrate');
+
+				var newLineAmt = Number(currentQty) * Number(xrate);
+				newLineAmt = newLineAmt.toFixed(2);
+
+				// update qty on backend also
+				//loadingMask2.show();
+				$.ajax({
+					url: getBasepath() + '/SO18/update-qty?xrow=' + $(currentRow).data('xrow') + '&qty=' + currentQty,
+					type: "GET",
+					success: function (data) {
+						//loadingMask2.hide();
+						if(data === false){
+							//showMessage("error", 'Quantity update failed');
+						} else {
+
+							$(currentRowXlientamt).html(newLineAmt);
+							$(currentRowSpanXlineamt).html('S. Total: ' + newLineAmt);
+							$(currentRow).data('xlineamt', newLineAmt);
+
+							loopEachItemRow();
+
+						}
+					},
+					error: function (jqXHR, status, errorThrown) {
+						loadingMask2.hide();
+						if (jqXHR.status === 401) {
+							// Session is invalid, reload the url to go back to login page
+							location.reload();
+						} else {
+							showMessage("error", jqXHR.responseJSON.message);
+						}
+					},
+				});
+
+			})
+
+			$('.delete-on-keypress').on("keydown", function (e) {
+				// Check if the pressed key is 'Delete' (keyCode 46)
+				if (e.key === "Delete" || e.keyCode === 46) {
+					// Confirm deletion (optional)
+					if (confirm("Are you sure you want to delete this row?")) {
+						// Remove the closest table row
+						var xrow = $(this).closest("tr").data('xrow');
+						var deleteUrl = $(this).closest("tr").data('delete-url');
+
+						var data = {
+							'xrow' : xrow,
+						}
+						deleteRequest(deleteUrl, data);
+
+					}
+				}
+			});
+
+
+			$('.btn-detail-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+
+		})
+	</script>
+</div>

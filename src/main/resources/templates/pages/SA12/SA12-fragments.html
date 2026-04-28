@@ -1,0 +1,595 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div th:if="${not #strings.isEmpty(xscreens.xscreen)}" class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/SA12/store}" th:object="${xscreens}" method="POST">
+				<input type="hidden" th:field="*{submitFor}"/>
+				<input type="hidden" th:if="${not #strings.isEmpty(xscreens.xscreen)}" th:field="*{xscreen}">
+
+				<div class="row">
+					<div class="col-md-3" th:if="${#strings.isEmpty(xscreens.xscreen)}">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Screen Code</label>
+							<input type="text" class="form-control" th:field="*{xscreen}" required="required">
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${not #strings.isEmpty(xscreens.xscreen)}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Screen Code</label>
+							<input type="text" class="form-control" th:value="${xscreens.xscreen}" disabled="disabled">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Screen Title</label>
+							<input type="text" class="form-control" th:field="*{xtitle}" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Type</label>
+							<select class="form-control select" th:field="*{xtype}" required="required">
+								<option value="Screen">Screen</option>
+								<option value="Report">Report</option>
+								<option value="System">System</option>
+								<option value="Default">Default</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Starting From</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xnum}" min="0" step="1" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Icon</label>
+							<input type="text" class="form-control" th:field="*{xicon}">
+						</div>
+					</div>
+					
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Keywords</label>
+							<textarea rows="1" class="form-control" th:field="*{xkeywords}"></textarea>
+						</div>
+					</div>
+
+					<div class="col-md-3 d-none" id="reportFileSection">
+						<div class="mb-3 form-group">
+							<label class="form-label">Report File</label>
+							<input type="text" class="form-control" th:field="*{xfile}">
+						</div>
+					</div>
+					<div class="col-md-3 d-none" id="reportEngineSection">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Report Engine</label>
+							<select class="form-control select" th:field="*{xengine}">
+								<option value="CRYSTAL">Crystal Report</option>
+								<option value="FOP">FOP Report</option>
+								<option value="JASPER">Jasper Report</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" 
+							th:attr="
+								data-reloadurl='/SA12?xscreen=RESET', 
+								data-reloadid='main-form-container', 
+								data-detailid='header-table-container', 
+								data-detailurl='/SA12/header-table',
+								data-detailid2='detail-table-container', 
+								data-detailurl2='/SA12/detail-table?xscreen=RESET&xrow=RESET'" 
+							class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${not #strings.isEmpty(xscreens.xscreen)}" th:attr="data-url=@{/SA12?xscreen=} + ${xscreens.xscreen}" type="button" class="btn btn-danger btn-sm btn-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${not #strings.isEmpty(xscreens.xscreen)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${#strings.isEmpty(xscreens.xscreen)}" type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Add</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailid'),
+					url : $(this).data('detailurl')
+				});
+
+				sectionReloadAjaxReq({
+					id : $(this).data('detailid2'),
+					url : $(this).data('detailurl2')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+			$('.btn-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+
+			function toggleReportFields() {
+				const type = $('#xtype').val();
+				if (type === 'Report') {
+					$('#reportFileSection, #reportEngineSection').removeClass('d-none');
+					//$('#xfile, #xengine').attr('required', true);
+				} else {
+					$('#reportFileSection, #reportEngineSection').addClass('d-none');
+					//$('#xfile, #xengine').removeAttr('required').val('');
+				}
+			}
+
+			toggleReportFields(); // Run on load
+			$('#xtype').change(toggleReportFields); // Run on change
+		})
+	</script>
+</div>
+
+
+
+<div th:fragment="detail-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card" th:if="${xscreens.xscreen ne null and xscreens.xtype eq 'Report'}">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto" th:text="${'Report Fields'}"></h6>
+		</div>
+
+		<div class="card-body">
+			<form id="detailform" class="form-validate-jquery" th:action="@{/SA12/detail/store}" th:object="${xscreendetail}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" name="submitFor" th:value="*{submitFor}"/>
+				<input type="hidden" name="xscreen" th:value="*{xscreen}">
+				<input type="hidden" name="xrow" th:value="*{xrow}">
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Field Type</label>
+							<select class="form-control select field-xtype" th:field="*{xtype}" id="xtype2" required="required">
+								<option value="">-- Please Select --</option>
+								<option value="TEXT">Text</option>
+								<option value="NUMBER">Number</option>
+								<option value="DATE">Date</option>
+								<option value="TIME">Time</option>
+								<option value="DROPDOWN">Dropdown</option>
+								<option value="SELECT2">Dropdown (Searchable)</option>
+								<!-- <option value="SEARCH">Search</option> -->
+								<option value="SEARCH_ADVANCED">Search</option>
+								<option value="CHECKBOX">Checkbox</option>
+								<option value="RADIO">Radio</option>
+								<option value="DISABLED">Disabled</option>
+								<option value="HIDDEN">Hidden</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="col-md-3" id="parameter-id">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Rpt file parameter name</label>
+							<input type="text" class="form-control" th:field="*{xrparam}" required="required">
+						</div>
+					</div>
+
+					<div class="col-md-3" id="parameter-data-type">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Parameter Data Type</label>
+							<select class="form-control select" th:field="*{xparamtype}" data-minimum-results-for-search="Infinity" required="required">
+								<option value="">-- Please Select --</option>
+								<option value="STRING">String</option>
+								<option value="INTEGER">Integer</option>
+								<option value="DATE">Date</option>
+							</select>
+						</div>
+					</div>
+
+					
+
+					<div class="col-md-3" id="field-title">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Field Label</label>
+							<input type="text" class="form-control" th:field="*{xlabel}" required="required">
+						</div>
+					</div>
+
+					<div class="col-md-3" id="field-max">
+						<div class="mb-3 form-group">
+							<label class="form-label">Max</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xmax}">
+						</div>
+					</div>
+					<div class="col-md-3" id="field-min">
+						<div class="mb-3 form-group">
+							<label class="form-label">Min</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xmin}">
+						</div>
+					</div>
+					<div class="col-md-3" id="field-step">
+						<div class="mb-3 form-group">
+							<label class="form-label">Step</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xstep}">
+						</div>
+					</div>
+
+					<div class="col-md-6" id="field-options">
+						<div class="mb-3 form-group">
+							<label class="form-label">Options</label>
+							<textarea cols="" rows="3" class="form-control" th:field="*{xoptions}"></textarea>
+							<span class="text-info">Ex: val1:promp1|val2:promp2|val3:promp3</span>
+						</div>
+					</div>
+					<div class="col-md-6" id="field-options-query">
+						<div class="mb-3 form-group">
+							<label class="form-label">Options Query</label>
+							<textarea cols="" rows="3" class="form-control" th:field="*{xoptionsquery}"></textarea>
+							<span class="text-info">Ex: SELECT colA as DV, colB as DP from table where cond1='con' and cond2=##session##</span>
+						</div>
+					</div>
+
+					<div class="col-md-3" id="field-default-value">
+						<div class="mb-3 form-group">
+							<label class="form-label">Default Value</label>
+							<input type="text" class="form-control" th:field="*{xdefaultvalue}">
+							<span class="text-info" id="field-date-example">EX: (2025-05-08, today) for date field</span>
+						</div>
+					</div>
+
+					<div class="col-md-3" id="field-search-code">
+						<div class="mb-3 form-group">
+							<label class="form-label">Search Code</label>
+							<input type="text" class="form-control" th:field="*{xsearchcode}">
+						</div>
+					</div>
+
+					<div class="col-md-3" id="field-search-suffix">
+						<div class="mb-3 form-group">
+							<label class="form-label">Search Suffix</label>
+							<input type="text" class="form-control" th:field="*{xsearchsuffix}">
+						</div>
+					</div>
+
+					<div class="col-md-3" id="field-dependent-field-id">
+						<div class="mb-3 form-group">
+							<label class="form-label">Dependent Field ID</label>
+							<input type="text" class="form-control" th:field="*{xdependentfieldid}">
+						</div>
+					</div>
+
+					<div class="col-md-3" id="field-reset-field-id">
+						<div class="mb-3 form-group">
+							<label class="form-label">Reset Field ID</label>
+							<input type="text" class="form-control" th:field="*{xresetfieldid}">
+						</div>
+					</div>
+
+					<div class="col-md-3" id="field-is-disabled">
+						<div class="mb-3 form-group">
+							<label class="form-label d-block" for="xisdisable">Is Disabled?</label>
+							<input type="checkbox" id="xisdisable" th:field="*{xisdisable}">
+						</div>
+					</div>
+
+					<div class="col-md-3" id="field-is-required">
+						<div class="mb-3 form-group">
+							<label class="form-label d-block" for="xisrequired">Is Required?</label>
+							<input type="checkbox" id="xisrequired" th:field="*{xisrequired}">
+						</div>
+					</div>
+
+					<div class="col-md-3" id="field-is-start-date">
+						<div class="mb-3 form-group">
+							<label class="form-label d-block" for="xisstartdate">Is Start Date?</label>
+							<input type="checkbox" id="xisstartdate" th:field="*{xisstartdate}">
+						</div>
+					</div>
+
+					<div class="col-md-3" id="field-is-end-date">
+						<div class="mb-3 form-group">
+							<label class="form-label d-block" for="xisenddate">Is End Date?</label>
+							<input type="checkbox" id="xisenddate" th:field="*{xisenddate}">
+						</div>
+					</div>
+
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/SA12/detail-table?xscreen='+ ${xscreens.xscreen} +'&xrow=RESET', data-reloadid='detail-table-container'" class="btn btn-light btn-sm btn-detail-reset">Clear</button>
+					</div>
+					<div>
+						<button th:if="${xscreendetail.xrow ne 0}" th:attr="data-url=@{/SA12/detail-table?xscreen=} + ${xscreendetail.xscreen} + '&xrow=' + ${xscreendetail.xrow}" type="button" class="btn btn-danger btn-sm btn-detail-delete"><i class="ph-trash me-2"></i> Delete</button>
+						<button th:if="${xscreendetail.xrow ne 0}" type="submit" class="btn btn-primary btn-sm btn-detail-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+						<button th:if="${xscreendetail.xrow eq 0}" type="submit" class="btn btn-primary btn-sm btn-detail-submit"><i class="ph-plus me-2"></i> Add New</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="table-responsive" th:if="${not #lists.isEmpty(detailList)}">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Field Label</th>
+						<th>Field Type</th>
+						<th>Parameter Data Type</th>
+						<th>Rpt file parameter name</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="x : ${detailList}">
+						<td>
+							<a style="cursor: pointer;" data-bs-popup="tooltip" title="Sequence Up" th:if="${x.xseqn > 1}" th:attr="data-reloadid='detail-table-container', data-reloadurl='/SA12/detail-table/seqn/up?xscreen=' + ${x.xscreen} + '&xrow=' + ${x.xrow}" class="btn-detail-seqn"><i class="ph-arrow-fat-lines-up"></i></a>
+							<a style="cursor: pointer;" data-bs-popup="tooltip" title="Sequence Down" th:if="${x.xseqn < #lists.size(detailList)}" th:attr="data-reloadid='detail-table-container', data-reloadurl='/SA12/detail-table/seqn/down?xscreen=' + ${x.xscreen} + '&xrow=' + ${x.xrow}" class="btn-detail-seqn"><i class="ph-arrow-fat-lines-down"></i></a>
+							<span class="ps-3 pe-3" th:text="${x.xseqn}"></span>
+							<a class="detail-dataindex" th:attr="data-reloadid='detail-table-container', data-reloadurl='/SA12/detail-table?xscreen=' + ${x.xscreen} + '&xrow=' + ${x.xrow}" th:href="@{/SA12/detail-table?xscreen=} + ${x.xscreen} + '&xrow=' + ${x.xrow}" th:text="${x.xlabel}"></a>
+							<a class="detail-dataindex" th:attr="data-reloadid='detail-table-container', data-reloadurl='/SA12/detail-table?xscreen=' + ${x.xscreen} + '&xrow=' + ${x.xrow}" th:href="@{/SA12/detail-table?xscreen=} + ${x.xscreen} + '&xrow=' + ${x.xrow}" th:if="${x.xtype eq 'HIDDEN'}">HIDDEN FIELD</a>
+						</td>
+						<td th:text="${x.xtype}"></td>
+						<td th:text="${x.xparamtype}"></td>
+						<td th:text="${x.xrparam}"></td>
+						<td class="text-end">
+							<button th:attr="data-url=@{/SA12/detail-table?xscreen=} + ${x.xscreen} + '&xrow=' + ${x.xrow}" type="button" class="btn btn-danger btn-sm btn-detail-delete"><i class="ph-trash"></i></button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-detail-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-detail-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm(null, $('form#detailform'));
+			});
+
+			$('.btn-detail-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+
+			$('.btn-detail-seqn').off('click').on('click', function(e){
+				e.preventDefault();
+				sectionReloadAjaxPostReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+	
+			$('a.detail-dataindex').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			const fieldMap = {
+				HIDDEN: ['parameter-data-type', 'parameter-id', 'field-default-value'],
+				TEXT: ['parameter-data-type', 'parameter-id', 'field-title', 'field-default-value', 'field-is-disabled', 'field-is-required'],
+				NUMBER: ['parameter-data-type', 'parameter-id', 'field-title', 'field-default-value', 'field-is-disabled', 'field-is-required', 'field-max', 'field-min', 'field-step'],
+				DATE: ['parameter-data-type', 'parameter-id', 'field-title', 'field-default-value', 'field-is-disabled', 'field-is-required', 'field-is-start-date', 'field-is-end-date', 'field-date-example'],
+				TIME: ['parameter-data-type', 'parameter-id', 'field-title', 'field-default-value', 'field-is-disabled', 'field-is-required'],
+				DROPDOWN: ['parameter-data-type', 'parameter-id', 'field-title', 'field-default-value', 'field-is-disabled', 'field-is-required', 'field-options-query', 'field-options'],
+				SELECT2: ['parameter-data-type', 'parameter-id', 'field-title', 'field-default-value', 'field-is-disabled', 'field-is-required', 'field-options-query', 'field-options'],
+				SEARCH_ADVANCED: ['parameter-data-type', 'parameter-id', 'field-title', 'field-default-value', 'field-is-disabled', 'field-is-required', 'field-search-code', 'field-search-suffix', 'field-dependent-field-id', 'field-reset-field-id']
+			};
+
+			const requiredFields = ['parameter-data-type', 'field-title', 'parameter-id'];
+
+			function resetFields() {
+				// Hide all possible fields
+				$.each($('[id^="field-"], #parameter-data-type'), function () {
+					$(this).addClass('d-none');
+					$(this).find('input, select, textarea').prop('required', false);
+				});
+			}
+
+			function showFields(type) {
+				const fields = fieldMap[type] || [];
+				fields.forEach(function (id) {
+					$('#' + id).removeClass('d-none');
+
+					// Set required for relevant fields
+					if (requiredFields.includes(id)) {
+						$('#' + id).find('input, select, textarea').prop('required', true);
+					}
+				});
+			}
+
+			// Trigger on change
+			$('.field-xtype').on('change', function () {
+				const selectedType = $(this).val();
+				resetFields();
+				showFields(selectedType);
+			});
+
+			// Trigger once on page load if value is preselected
+			$('.field-xtype').trigger('change');
+		})
+	</script>
+</div>
+
+
+<div th:fragment="header-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">List of Screens</h6>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table datatable table-hover">
+				<thead>
+					<tr>
+						<th>Screen</th>
+						<th>Title</th>
+						<th>Type</th>
+						<th>Starting</th>
+						<th>Icon</th>
+						<th>Keyword</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			var columns = [
+				{
+					suffix : [0],
+					name : 'xscreen',
+					rendername : 'xscreen',
+					render: function(data, type, row, meta) {
+						return '<a style="text-decoration: underline; cursor: pointer;" class="dataindex" reloadid="main-form-container" detail-reloadid="detail-table-container" detail-reloadurl="/SA12/detail-table?xrow=RESET&xscreen=" href="/SA12?xscreen=" data-value="'+ data +'">' + data + '</a>';
+					}
+				}, {
+					suffix : [0],
+					name : 'xtitle',
+					rendername: 'xtitle',
+				}, {
+					suffix : [0],
+					name : 'xtype',
+					rendername: 'xtype',
+				}, {
+					suffix : [0],
+					class: 'text-end',
+					name : 'xnum',
+					rendername: 'xnum',
+				}, {
+					suffix : [0],
+					name : 'xicon',
+					rendername: 'xicon',
+				}, {
+					suffix : [0],
+					name : 'xkeywords',
+					rendername: 'xkeywords',
+				}, {
+					suffix : [0],
+					name : 'xscreen',
+					rendername: 'xscreen',
+					orderable: false,
+					searchable: false,
+					class: "text-end",
+					render: function(data, type, row, meta) {
+						return '<button data-url="/SA12?xscreen='+ row['xscreen'] +'" type="button" class="btn btn-danger btn-sm btn-table-delete"><i class="ph-trash"></i></button>';
+					}
+				}
+			];
+
+			var columnDefs = [];
+			var targetCounter = 0;
+			$.each(columns, function(index, el){
+				if(el.suffix.includes(0)) {
+					columnDefs.push({
+						name : el.name,
+						targets : targetCounter++,
+					});
+				} 
+			});
+
+			var dataRetreiver = [];
+			$.each(columns, function(index, el){
+				if(el.suffix.includes(0)) {
+					dataRetreiver.push({
+						data : el.rendername,
+						render : el.render,
+						class : el.class,
+						orderable: el.orderable == undefined ? true : el.orderable,
+						searchable: el.searchable == undefined ? true : el.searchable,
+					});
+				} 
+			});
+
+			var dt = $('.datatable').DataTable({
+				"deferLoading": true,
+				"processing" : true,
+				"serverSide" : true,
+				"order" : [0, 'asc'],
+				"columnDefs": columnDefs,
+				"ajax": {
+					"url": getBasepath() + "/search/LSA12/0",
+					"type": 'POST'
+				},
+				"columns": dataRetreiver,
+			});
+
+			dt.draw();
+
+			$('.datatable').on('click', 'button.btn-table-delete', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest(getBasepath() + $(this).data('url'));
+			});
+
+			$('.datatable').on('click', 'a.dataindex', function(e){
+				e.preventDefault();
+
+				e.preventDefault();
+
+				var mainreloadurl = $(this).attr('href');
+				var mainreloadid = $(this).attr('reloadid');
+				var value = $(this).data('value');
+
+				sectionReloadAjaxReq({
+					id : mainreloadid,
+					url : mainreloadurl + value
+				});
+
+				var detailreloadurl = $(this).attr('detail-reloadurl');
+				var detailreloadid = $(this).attr('detail-reloadid');
+				if(detailreloadid){
+					sectionReloadAjaxReq({
+						id : detailreloadid,
+						url : detailreloadurl + value
+					});
+				}
+			})
+		})
+	</script>
+</div>

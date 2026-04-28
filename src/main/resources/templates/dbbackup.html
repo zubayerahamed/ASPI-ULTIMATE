@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Database Backup</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1 class="text-center">Database Backup</h1>
+
+					<div class="card">
+						<div class="card-body">
+							<form id="mainform" class="form-validate-jquery" th:action="@{/developer/dbbackup/download}" th:object="${db}" method="POST">
+
+								<div class="row">
+									<div class="col-md-3">
+										<div class="mb-3 form-group">
+											<label class="form-label">Security Key</label>
+											<input type="text" class="form-control" th:field="*{xpassword}" required="required">
+										</div>
+									</div>
+								</div>
+
+								<div class="d-flex justify-content-between align-items-center">
+									<div>
+										<button type="submit" class="btn btn-warning btn-sm btn-submit"><i class="ph-cloud-arrow-down me-2"></i> Process</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+		$(document).ready(function(){
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+
+				var targettedForm = $('form#mainform');
+				var submitUrl = targettedForm.attr('action');
+				var submitType = targettedForm.attr('method');
+				var formData = $(targettedForm).serializeArray();
+
+				$.ajax({
+					url : submitUrl,
+					type :submitType,
+					data : formData,
+					success : function(data, status, xhr) {
+
+						// For file download
+						if(data.fileDownload == true){
+							if("application/octet-stream" == data.mediaType.type + '/' + data.mediaType.subtype){
+								var blob = new Blob([data.file], { type: data.mediaType.type + '/' + data.mediaType.subtype });
+								var url = window.URL.createObjectURL(blob);
+								var a = document.createElement('a');
+								a.href = url;
+								a.download = data.fileName;
+								document.body.appendChild(a);
+								a.click();
+								window.URL.revokeObjectURL(url);
+								return;
+							}
+						}
+
+					}, 
+					error : function(jqXHR, status, errorThrown){
+						
+					}
+				});
+				
+				
+			});
+
+		})
+	</script>
+	</body>
+</html>

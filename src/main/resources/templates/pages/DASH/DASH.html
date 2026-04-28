@@ -1,0 +1,2218 @@
+<!-- Inner content -->
+<div class="content-inner" xmlns:th="http://www.thymeleaf.org">
+	<input type="hidden" id="refreshTimeout" value="-1"/>
+	<input type="hidden" id="WA01" th:value="${WA01}"/>
+	<input type="hidden" id="WF01" th:value="${WF01}"/>
+	<input type="hidden" id="WF02" th:value="${WF02}"/>
+	<input type="hidden" id="WF03" th:value="${WF03}"/>
+	<input type="hidden" id="WF04" th:value="${WF04}"/>
+	<input type="hidden" id="WF05" th:value="${WF05}"/>
+	<input type="hidden" id="WP01" th:value="${WP01}"/>
+	<input type="hidden" id="WP02" th:value="${WP02}"/>
+	<input type="hidden" id="WP03" th:value="${WP03}"/>
+	<input type="hidden" id="WP04" th:value="${WP04}"/>
+	<input type="hidden" id="WP05" th:value="${WP05}"/>
+	<input type="hidden" id="WS01" th:value="${WS01}"/>
+	<input type="hidden" id="WS02" th:value="${WS02}"/>
+	<input type="hidden" id="WS03" th:value="${WS03}"/>
+	<input type="hidden" id="WS04" th:value="${WS04}"/>
+	<input type="hidden" id="WS05" th:value="${WS05}"/>
+	<input type="hidden" id="WS06" th:value="${WS06}"/>
+	<input type="hidden" id="WI01" th:value="${WI01}"/>
+	<input type="hidden" id="WI02" th:value="${WI02}"/>
+	<input type="hidden" id="WI03" th:value="${WI03}"/>
+	<input type="hidden" id="WI04" th:value="${WI04}"/>
+	<input type="hidden" id="WI05" th:value="${WI05}"/>
+
+	<!-- Page header -->
+	<div class="page-header-container">
+		<div th:remove="tag" th:include="commons :: page-header"></div>
+	</div>
+	<!-- /page header -->
+
+	<!-- Content area -->
+	<div class="content">
+
+		<div class="row">
+			<div th:each="dw : ${displayableWidgets}" th:remove="tag">
+				<input type="hidden" th:attr="id=${dw.xwidget + '-loaddefault'}" th:value="${dw.loaddefault == true ? 'Y' : 'N'}"/>
+
+				<div th:if="${'WA01' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WA01" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WF01' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WF01" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WF02' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WF02" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WF03' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WF03" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WF04' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WF04" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WF05' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WF05" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WP01' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WP01" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WP02' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WP02" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WP03' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WP03" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WP04' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WP04" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WP05' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WP05" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WS01' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WS01" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WS02' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WS02" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WS03' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WS03" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WS04' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WS04" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WS05' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WS05" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WS06' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WS06" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WI01' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WI01" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WI02' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WI02" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WI03' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WI03" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WI04' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WI04" th:remove="tag"></div>
+				</div>
+				<div th:if="${'WI05' eq dw.xwidget}" th:remove="tag">
+					<div th:replace="pages/DASH/DASH-fragments :: FRAG-WI05" th:remove="tag"></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- /content area -->
+
+	<!-- Footer -->
+	<div th:remove="tag" th:include="commons :: footer-section"></div>
+	<!-- /footer -->
+
+	<script type="text/javascript">
+		function loadWidgets(widgetparent, widgetno, intervaltime){
+			sectionReloadAjaxReq({
+				id : widgetparent+ widgetno +'-container',
+				url : '/DASH/'+ widgetparent +'/' + widgetno
+			}, null, true);
+
+			if(intervaltime != -1){
+				setInterval(() => {
+					sectionReloadAjaxReq({
+						id : widgetparent+ widgetno +'-container',
+						url : '/DASH/'+ widgetparent +'/' + widgetno
+					}, null, true);
+				}, intervaltime);
+			}
+		}
+
+		$(document).ready(function(){
+			kit.ui.init();
+
+			var refreshTimeout = $('#refreshTimeout').val();
+			var WA01 = $('#WA01').val();
+			var WF01 = $('#WF01').val();
+			var WF02 = $('#WF02').val();
+			var WF03 = $('#WF03').val();
+			var WF04 = $('#WF04').val();
+			var WF05 = $('#WF05').val();
+			var WP01 = $('#WP01').val();
+			var WP02 = $('#WP02').val();
+			var WP03 = $('#WP03').val();
+			var WP04 = $('#WP04').val();
+			var WP05 = $('#WP05').val();
+			var WS01 = $('#WS01').val();
+			var WS02 = $('#WS02').val();
+			var WS03 = $('#WS03').val();
+			var WS04 = $('#WS04').val();
+			var WS05 = $('#WS05').val();
+			var WS06 = $('#WS06').val();
+			var WI01 = $('#WI01').val();
+			var WI02 = $('#WI02').val();
+			var WI03 = $('#WI03').val();
+			var WI04 = $('#WI04').val();
+			var WI05 = $('#WI05').val();
+
+			// Initial Load Calling
+			if("Y" === WA01){
+				loadWidgets('WA01', 'WG01', refreshTimeout);
+				loadWidgets('WA01', 'WG02', refreshTimeout);
+				loadWidgets('WA01', 'WG03', refreshTimeout);
+				loadWidgets('WA01', 'WG04', refreshTimeout);
+				loadWidgets('WA01', 'WG05', refreshTimeout);
+			}
+
+			if("Y" === WF01){
+				loadWidgets('WF01', 'WG01', refreshTimeout);
+				loadWidgets('WF01', 'WG02', refreshTimeout);
+				loadWidgets('WF01', 'WG03', refreshTimeout);
+				loadWidgets('WF01', 'WG04', refreshTimeout);
+				loadWidgets('WF01', 'WG05', refreshTimeout);
+			}
+
+			if("Y" === WF02){
+				if("Y" === $('#WF02-loaddefault').val()){
+					loadWF02WG01();
+				}
+				$('.btn-WF02WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWF02WG01();
+				});
+			}
+
+			if("Y" === WF03){
+				if("Y" === $('#WF03-loaddefault').val()){
+					loadWF03WG01();
+				}
+				$('.btn-WF03WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWF03WG01();
+				});
+			}
+
+			if("Y" === WF04){
+				if("Y" === $('#WF04-loaddefault').val()){
+					loadWF04WG01();
+				}
+				$('.btn-WF04WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWF04WG01();
+				});
+			}
+
+			if("Y" === WF05){
+				if("Y" === $('#WF05-loaddefault').val()){
+					loadWF05WG01();
+				}
+				$('.btn-WF05WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWF05WG01();
+				});
+			}
+
+			if("Y" === WP01){
+				loadWidgets('WP01', 'WG01', refreshTimeout);
+				loadWidgets('WP01', 'WG02', refreshTimeout);
+				loadWidgets('WP01', 'WG03', refreshTimeout);
+			}
+
+			if("Y" === WP02){
+				function toggleWP02WG01type(){
+					var typeValue =  $('#WP02WG01type').val();
+					if('DAYS' === typeValue){
+						$('.WP02WG01type-DAYS').removeClass('d-none');
+						$('.WP02WG01type-DATEBETWEEN').addClass('d-none');
+					} else {
+						$('.WP02WG01type-DAYS').addClass('d-none');
+						$('.WP02WG01type-DATEBETWEEN').removeClass('d-none');
+					}
+				}
+
+				$('#WP02WG01type').on('change', function(){
+					toggleWP02WG01type();
+				});
+				toggleWP02WG01type();
+
+				if("Y" === $('#WP02-loaddefault').val()){
+					loadWP02WG01();
+				}
+				$('.btn-WP02WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWP02WG01();
+				});
+			}
+
+			if("Y" === WP03){
+				function toggleWP03WG01type(){
+					var typeValue =  $('#WP03WG01type').val();
+					if('DAYS' === typeValue){
+						$('.WP03WG01type-DAYS').removeClass('d-none');
+						$('.WP03WG01type-DATEBETWEEN').addClass('d-none');
+					} else {
+						$('.WP03WG01type-DAYS').addClass('d-none');
+						$('.WP03WG01type-DATEBETWEEN').removeClass('d-none');
+					}
+				}
+
+				$('#WP03WG01type').on('change', function(){
+					toggleWP03WG01type();
+				});
+				toggleWP03WG01type();
+
+				if("Y" === $('#WP03-loaddefault').val()){
+					loadWP03WG01();
+				}
+				$('.btn-WP03WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWP03WG01();
+				});
+			}
+
+			if("Y" === WP04){
+				function toggleWP04WG01type(){
+					var typeValue =  $('#WP04WG01type').val();
+					if('DAYS' === typeValue){
+						$('.WP04WG01type-DAYS').removeClass('d-none');
+						$('.WP04WG01type-DATEBETWEEN').addClass('d-none');
+					} else {
+						$('.WP04WG01type-DAYS').addClass('d-none');
+						$('.WP04WG01type-DATEBETWEEN').removeClass('d-none');
+					}
+				}
+
+				$('#WP04WG01type').on('change', function(){
+					toggleWP04WG01type();
+				});
+				toggleWP04WG01type();
+
+				if("Y" === $('#WP04-loaddefault').val()){
+					loadWP04WG01();
+				}
+				$('.btn-WP04WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWP04WG01();
+				});
+			}
+
+			if("Y" === WP05){
+				function toggleWP05WG01type(){
+					var typeValue =  $('#WP05WG01type').val();
+					if('DAYS' === typeValue){
+						$('.WP05WG01type-DAYS').removeClass('d-none');
+						$('.WP05WG01type-DATEBETWEEN').addClass('d-none');
+					} else {
+						$('.WP05WG01type-DAYS').addClass('d-none');
+						$('.WP05WG01type-DATEBETWEEN').removeClass('d-none');
+					}
+				}
+
+				$('#WP05WG01type').on('change', function(){
+					toggleWP05WG01type();
+				});
+				toggleWP05WG01type();
+
+				if("Y" === $('#WP05-loaddefault').val()){
+					loadWP05WG01();
+				}
+				$('.btn-WP05WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWP05WG01();
+				});
+			}
+
+			if("Y" === WS01){
+				loadWidgets('WS01', 'WG01', refreshTimeout);
+				loadWidgets('WS01', 'WG02', refreshTimeout);
+				loadWidgets('WS01', 'WG03', refreshTimeout);
+			}
+
+			if("Y" === WS02){
+				function toggleWS02WG01type(){
+					var typeValue =  $('#WS02WG01type').val();
+					if('DAYS' === typeValue){
+						$('.WS02WG01type-DAYS').removeClass('d-none');
+						$('.WS02WG01type-DATEBETWEEN').addClass('d-none');
+					} else {
+						$('.WS02WG01type-DAYS').addClass('d-none');
+						$('.WS02WG01type-DATEBETWEEN').removeClass('d-none');
+					}
+				}
+
+				$('#WS02WG01type').on('change', function(){
+					toggleWS02WG01type();
+				});
+				toggleWS02WG01type();
+
+				if("Y" === $('#WS02-loaddefault').val()){
+					loadWS02WG01();
+				}
+				$('.btn-WS02WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWS02WG01();
+				});
+			}
+
+			if("Y" === WS03){
+				function toggleWS03WG01type(){
+					var typeValue =  $('#WS03WG01type').val();
+					if('DAYS' === typeValue){
+						$('.WS03WG01type-DAYS').removeClass('d-none');
+						$('.WS03WG01type-DATEBETWEEN').addClass('d-none');
+					} else {
+						$('.WS03WG01type-DAYS').addClass('d-none');
+						$('.WS03WG01type-DATEBETWEEN').removeClass('d-none');
+					}
+				}
+
+				$('#WS03WG01type').on('change', function(){
+					toggleWS03WG01type();
+				});
+				toggleWS03WG01type();
+
+				if("Y" === $('#WS03-loaddefault').val()){
+					loadWS03WG01();
+				}
+				$('.btn-WS03WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWS03WG01();
+				});
+			}
+
+			if("Y" === WS04){
+				function toggleWS04WG01type(){
+					var typeValue =  $('#WS04WG01type').val();
+					if('DAYS' === typeValue){
+						$('.WS04WG01type-DAYS').removeClass('d-none');
+						$('.WS04WG01type-DATEBETWEEN').addClass('d-none');
+					} else {
+						$('.WS04WG01type-DAYS').addClass('d-none');
+						$('.WS04WG01type-DATEBETWEEN').removeClass('d-none');
+					}
+				}
+
+				$('#WS04WG01type').on('change', function(){
+					toggleWS04WG01type();
+				});
+				toggleWS04WG01type();
+
+				if("Y" === $('#WS04-loaddefault').val()){
+					loadWS04WG01();
+				}
+				$('.btn-WS04WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWS04WG01();
+				});
+			}
+
+			if("Y" === WS05){
+				function toggleWS05WG01type(){
+					var typeValue =  $('#WS05WG01type').val();
+					if('DAYS' === typeValue){
+						$('.WS05WG01type-DAYS').removeClass('d-none');
+						$('.WS05WG01type-DATEBETWEEN').addClass('d-none');
+					} else {
+						$('.WS05WG01type-DAYS').addClass('d-none');
+						$('.WS05WG01type-DATEBETWEEN').removeClass('d-none');
+					}
+				}
+
+				$('#WS05WG01type').on('change', function(){
+					toggleWS05WG01type();
+				});
+				toggleWS05WG01type();
+
+				if("Y" === $('#WS05-loaddefault').val()){
+					loadWS05WG01();
+				}
+				$('.btn-WS05WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWS05WG01();
+				});
+			}
+
+			if("Y" === WS06){
+				function toggleWS06WG01type(){
+					var typeValue =  $('#WS06WG01type').val();
+					if('DAYS' === typeValue){
+						$('.WS06WG01type-DAYS').removeClass('d-none');
+						$('.WS06WG01type-DATEBETWEEN').addClass('d-none');
+					} else {
+						$('.WS06WG01type-DAYS').addClass('d-none');
+						$('.WS06WG01type-DATEBETWEEN').removeClass('d-none');
+					}
+				}
+
+				$('#WS06WG01type').on('change', function(){
+					toggleWS06WG01type();
+				});
+				toggleWS06WG01type();
+
+				if("Y" === $('#WS06-loaddefault').val()){
+					loadWS06WG01();
+				}
+				$('.btn-WS06WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWS06WG01();
+				});
+			}
+
+
+
+			if("Y" === WI01){
+				loadWidgets('WI01', 'WG01', refreshTimeout);
+				loadWidgets('WI01', 'WG02', refreshTimeout);
+				loadWidgets('WI01', 'WG03', refreshTimeout);
+				loadWidgets('WI01', 'WG04', refreshTimeout);
+			}
+
+			if("Y" === WI02){
+				if("Y" === $('#WI02-loaddefault').val()){
+					loadWI02WG01();
+				}
+				$('.btn-WI02WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWI02WG01();
+				});
+			}
+
+			if("Y" === WI03){
+				if("Y" === $('#WI03-loaddefault').val()){
+					loadWI03WG01();
+				}
+				$('.btn-WI03WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWI03WG01();
+				});
+			}
+
+			if("Y" === WI04){
+				if("Y" === $('#WI04-loaddefault').val()){
+					loadWI04WG01();
+				}
+				$('.btn-WI04WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWI04WG01();
+				});
+			}
+
+			if("Y" === WI05){
+				function toggleWI05WG01type(){
+					var typeValue =  $('#WI05WG01type').val();
+					if('BATCHES' === typeValue){
+						$('.WI05WG01type-BATCHES').removeClass('d-none');
+						$('.WI05WG01type-DATEBETWEEN').addClass('d-none');
+					} else {
+						$('.WI05WG01type-BATCHES').addClass('d-none');
+						$('.WI05WG01type-DATEBETWEEN').removeClass('d-none');
+					}
+				}
+
+				$('#WI05WG01type').on('change', function(){
+					toggleWI05WG01type();
+				});
+				toggleWI05WG01type();
+
+				if("Y" === $('#WI05-loaddefault').val()){
+					loadWI05WG01();
+				}
+				$('.btn-WI05WG01-submit').off('click').on('click', function(e){
+					e.preventDefault();
+					loadWI05WG01();
+				});
+			}
+
+		})
+
+		function loadWF02WG01(){
+			var xbuid = $('input[name="WF02WG01xbuid"]').val();
+			var xacc = $('input[name="WF02WG01xacc"]').val();
+			var last = $('input[name="WF02WG01last"]').val()
+			var type = $('select[name="WF02WG01type"]').val()
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			if(xacc == null || xacc == ''){
+				showMessage("error", "Account selection required");
+				return;
+			}
+
+			if(last == null || last == ''){
+				showMessage("error", "Last "+ type +" required");
+				return;
+			}
+
+			if(last < 0) last = 0;
+			if("DAYS" === type){
+				if(last > 100) {
+					$('input[name="WF02WG01last"]').val("100");
+					last = 100;
+				}
+			} else {
+				if(last > 30) {
+					$('input[name="WF02WG01last"]').val("30");
+					last = 30;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WF02/WG01?xbuid='+ xbuid +'&xacc='+ xacc +'&last='+ last +'&type=' + type,
+				type: "GET",
+				success: function (data) {
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WF02WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.yaxistitle = 'Amount';
+					barchartPrepareData.xaxistitle = function(value, type){
+						if(type === 'MONTHS') {
+							const trimmedValue = value.trim();
+							const yearMatch = trimmedValue.match(/Year\s*:\s*\d+/);
+							const periodMatch = trimmedValue.match(/Period\s*:\s*\d+/);
+
+							const year = yearMatch ? yearMatch[0].trim() : '';
+							const period = periodMatch ? periodMatch[0].trim() : '';
+
+							return `${period}\n${year}`;
+						} else if (type === 'DAYS'){
+							const date = new Date(value);
+							const day = date.getDate();
+							const month = date.toLocaleString('en-US', { month: 'short' });
+							const year = date.getFullYear();
+							return `${day} ${month}\n${year}`; // '\n' breaks line in ECharts
+						} else {
+							return value;
+						}
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.xdate);
+						barchartPrepareData.ydata.push(d.amount);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+		function loadWF03WG01(){
+			var xbuid = $('input[name="WF03WG01xbuid"]').val();
+			var xsub = $('input[name="WF03WG01xsub"]').val();
+			var last = $('input[name="WF03WG01last"]').val()
+			var type = $('select[name="WF03WG01type"]').val()
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			if(xsub == null || xsub == ''){
+				showMessage("error", "Sub account selection required");
+				return;
+			}
+
+			if(last == null || last == ''){
+				showMessage("error", "Last "+ type +" required");
+				return;
+			}
+
+			if(last < 0) last = 0;
+			if("DAYS" === type){
+				if(last > 100) {
+					$('input[name="WF03WG01last"]').val("100");
+					last = 100;
+				}
+			} else {
+				if(last > 30) {
+					$('input[name="WF03WG01last"]').val("30");
+					last = 30;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WF03/WG01?xbuid='+ xbuid +'&xsub='+ xsub +'&last='+ last +'&type=' + type,
+				type: "GET",
+				success: function (data) {
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WF03WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.yaxistitle = 'Amount';
+					barchartPrepareData.xaxistitle = function(value, type){
+						if(type === 'MONTHS') {
+							const trimmedValue = value.trim();
+							const yearMatch = trimmedValue.match(/Year\s*:\s*\d+/);
+							const periodMatch = trimmedValue.match(/Period\s*:\s*\d+/);
+
+							const year = yearMatch ? yearMatch[0].trim() : '';
+							const period = periodMatch ? periodMatch[0].trim() : '';
+
+							return `${period}\n${year}`;
+						} else if (type === 'DAYS'){
+							const date = new Date(value);
+							const day = date.getDate();
+							const month = date.toLocaleString('en-US', { month: 'short' });
+							const year = date.getFullYear();
+							return `${day} ${month}\n${year}`; // '\n' breaks line in ECharts
+						} else {
+							return value;
+						}
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.xdate);
+						barchartPrepareData.ydata.push(d.amount);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+		function loadWF04WG01(){
+			var xbuid = $('input[name="WF04WG01xbuid"]').val();
+			var type = $('select[name="WF04WG01type"]').val()
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WF04/WG01?xbuid='+ xbuid + '&type=' + type,
+				type: "GET",
+				success: function (data) {
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WF04WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.yaxistitle = 'Amount';
+					barchartPrepareData.xaxistitle = function(value, type){
+						return value;
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.accountName);
+						barchartPrepareData.ydata.push(d.amount);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+
+
+		function loadWF05WG01(){
+			var xbuid = $('input[name="WF05WG01xbuid"]').val();
+			var last = $('input[name="WF05WG01last"]').val()
+			var type = $('select[name="WF05WG01type"]').val()
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			if(last == null || last == ''){
+				showMessage("error", "Last "+ type +" required");
+				return;
+			}
+
+			if(last < 0) last = 0;
+			if("DAYS" === type){
+				if(last > 100) {
+					$('input[name="WF05WG01last"]').val("100");
+					last = 100;
+				} 
+			} else {
+				if(last > 30) {
+					$('input[name="WF05WG01last"]').val("30");
+					last = 30;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WF05/WG01?xbuid='+ xbuid +'&last='+ last +'&type=' + type,
+				type: "GET",
+				success: function (data) {
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WF05WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.yaxistitle = 'Amount';
+					barchartPrepareData.xaxistitle = function(value, type){
+						if(type === 'MONTHS') {
+							const trimmedValue = value.trim();
+							const yearMatch = trimmedValue.match(/Year\s*:\s*\d+/);
+							const periodMatch = trimmedValue.match(/Period\s*:\s*\d+/);
+
+							const year = yearMatch ? yearMatch[0].trim() : '';
+							const period = periodMatch ? periodMatch[0].trim() : '';
+
+							return `${period}\n${year}`;
+						} else if (type === 'DAYS'){
+							const date = new Date(value);
+							const day = date.getDate();
+							const month = date.toLocaleString('en-US', { month: 'short' });
+							const year = date.getFullYear();
+							return `${day} ${month}\n${year}`; // '\n' breaks line in ECharts
+						} else {
+							return value;
+						}
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.xdate);
+						barchartPrepareData.ydata.push(d.amount);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+		function loadWP02WG01(){
+			var xbuid = $('input[name="WP02WG01xbuid"]').val();
+			var xcus = $('input[name="WP02WG01xcus"]').val();
+			var type = $('select[name="WP02WG01type"]').val();
+			var last = $('input[name="WP02WG01last"]').val();
+			var xfdate = $('input[name="WP02WG01xfdate"]').val();
+			var xtdate = $('input[name="WP02WG01xtdate"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			if(xcus == null || xcus == '') xcus = -1;
+
+			if('DAYS' === type){
+				if(last == null || last == ''){
+					showMessage("error", "Last "+ type +" required");
+					return;
+				}
+				if(last < 0) last = 0;
+				if(last > 100) {
+					$('input[name="WP02WG01last"]').val("100");
+					last = 100;
+				}
+			} else {
+				if(xfdate == null || xfdate == '') {
+					showMessage("error", "From date required");
+					return;
+				}
+				if(xtdate == null || xtdate == '') {
+					showMessage("error", "To date required");
+					return;
+				}
+
+				// Convert to Date objects
+				let fromDate = new Date(xfdate);
+				let toDate = new Date(xtdate);
+
+				// Check if From date is after To date
+				if (fromDate > toDate) {
+					showMessage("error", "From date must be earlier than or equal to To date");
+					return;
+				}
+
+				// Calculate day difference
+				let dayDiff = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
+
+				if (dayDiff > 100) {
+					showMessage("error", "Date range must be 100 days or less");
+					return;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WP02/WG01?xbuid='+ xbuid +'&xcus='+ xcus +'&last='+ last +'&type=' + type + '&xfdate=' + xfdate + '&xtdate=' + xtdate,
+				type: "GET",
+				success: function (data) {
+
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WP02WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.yaxistitle = 'Amount';
+					barchartPrepareData.xaxistitle = function(value, type){
+						const date = new Date(value);
+						const day = date.getDate();
+						const month = date.toLocaleString('en-US', { month: 'short' });
+						const year = date.getFullYear();
+						return `${day} ${month}\n${year}`; // '\n' breaks line in ECharts
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.xdate);
+						barchartPrepareData.ydata.push(d.amount);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+
+		function loadWP03WG01(){
+			var xbuid = $('input[name="WP03WG01xbuid"]').val();
+			var xitem = $('input[name="WP03WG01xitem"]').val();
+			var type = $('select[name="WP03WG01type"]').val();
+			var last = $('input[name="WP03WG01last"]').val();
+			var xfdate = $('input[name="WP03WG01xfdate"]').val();
+			var xtdate = $('input[name="WP03WG01xtdate"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			if(xitem == null || xitem == '') xitem = -1;
+
+			if('DAYS' === type){
+				if(last == null || last == ''){
+					showMessage("error", "Last "+ type +" required");
+					return;
+				}
+				if(last < 0) last = 0;
+				if(last > 100) {
+					$('input[name="WP03WG01last"]').val("100");
+					last = 100;
+				}
+			} else {
+				if(xfdate == null || xfdate == '') {
+					showMessage("error", "From date required");
+					return;
+				}
+				if(xtdate == null || xtdate == '') {
+					showMessage("error", "To date required");
+					return;
+				}
+
+				// Convert to Date objects
+				let fromDate = new Date(xfdate);
+				let toDate = new Date(xtdate);
+
+				// Check if From date is after To date
+				if (fromDate > toDate) {
+					showMessage("error", "From date must be earlier than or equal to To date");
+					return;
+				}
+
+				// Calculate day difference
+				let dayDiff = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
+
+				if (dayDiff > 100) {
+					showMessage("error", "Date range must be 100 days or less");
+					return;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WP03/WG01?xbuid='+ xbuid +'&xitem='+ xitem +'&last='+ last +'&type=' + type + '&xfdate=' + xfdate + '&xtdate=' + xtdate,
+				type: "GET",
+				success: function (data) {
+
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WP03WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.yaxistitle = 'Quantity';
+					barchartPrepareData.xaxistitle = function(value, type){
+						const date = new Date(value);
+						const day = date.getDate();
+						const month = date.toLocaleString('en-US', { month: 'short' });
+						const year = date.getFullYear();
+						return `${day} ${month}\n${year}`; // '\n' breaks line in ECharts
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.xdate);
+						barchartPrepareData.ydata.push(d.amount);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+		function loadWP04WG01(){
+			var xbuid = $('input[name="WP04WG01xbuid"]').val();
+			var topxcus = $('input[name="WP04WG01topxcus"]').val();
+			var type = $('select[name="WP04WG01type"]').val();
+			var last = $('input[name="WP04WG01last"]').val();
+			var xfdate = $('input[name="WP04WG01xfdate"]').val();
+			var xtdate = $('input[name="WP04WG01xtdate"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			if(topxcus == null || topxcus == '') {
+				showMessage("error", "Top Supplier Number Required");
+				return;
+			}
+			if(topxcus < 1) topxcus = 1;
+			if(topxcus > 100) topxcus = 100;
+			$('input[name="WP04WG01topxcus"]').val(topxcus);
+
+			if('DAYS' === type){
+				if(last == null || last == ''){
+					showMessage("error", "Last "+ type +" required");
+					return;
+				}
+				if(last < 1) {
+					last = 1;
+					$('input[name="WP04WG01last"]').val(last);
+				}
+				if(last > 100) {
+					$('input[name="WP04WG01last"]').val(last);
+					last = 100;
+				}
+			} else {
+				if(xfdate == null || xfdate == '') {
+					showMessage("error", "From date required");
+					return;
+				}
+				if(xtdate == null || xtdate == '') {
+					showMessage("error", "To date required");
+					return;
+				}
+
+				// Convert to Date objects
+				let fromDate = new Date(xfdate);
+				let toDate = new Date(xtdate);
+
+				// Check if From date is after To date
+				if (fromDate > toDate) {
+					showMessage("error", "From date must be earlier than or equal to To date");
+					return;
+				}
+
+				// Calculate day difference
+				let dayDiff = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
+
+				if (dayDiff > 100) {
+					showMessage("error", "Date range must be 100 days or less");
+					return;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WP04/WG01?xbuid='+ xbuid +'&topxcus='+ topxcus +'&last='+ last +'&type=' + type + '&xfdate=' + xfdate + '&xtdate=' + xtdate,
+				type: "GET",
+				success: function (data) {
+
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WP04WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.yaxistitle = 'Amount';
+					barchartPrepareData.xaxistitle = function(value, type){
+						return value;
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.supplier);
+						barchartPrepareData.ydata.push(d.amount);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+		function loadWP05WG01(){
+			var xbuid = $('input[name="WP05WG01xbuid"]').val();
+			var topxitem = $('input[name="WP05WG01topxitem"]').val();
+			var type = $('select[name="WP05WG01type"]').val();
+			var last = $('input[name="WP05WG01last"]').val();
+			var xfdate = $('input[name="WP05WG01xfdate"]').val();
+			var xtdate = $('input[name="WP05WG01xtdate"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			if(topxitem == null || topxitem == '') {
+				showMessage("error", "Top Items Number Required");
+				return;
+			}
+			if(topxitem < 1) topxitem = 1;
+			if(topxitem > 100) topxitem = 100;
+			$('input[name="WP05WG01topxitem"]').val(topxitem);
+
+			if('DAYS' === type){
+				if(last == null || last == ''){
+					showMessage("error", "Last "+ type +" required");
+					return;
+				}
+				if(last < 1) {
+					last = 1;
+					$('input[name="WP05WG01last"]').val(last);
+				}
+				if(last > 100) {
+					$('input[name="WP05WG01last"]').val(last);
+					last = 100;
+				}
+			} else {
+				if(xfdate == null || xfdate == '') {
+					showMessage("error", "From date required");
+					return;
+				}
+				if(xtdate == null || xtdate == '') {
+					showMessage("error", "To date required");
+					return;
+				}
+
+				// Convert to Date objects
+				let fromDate = new Date(xfdate);
+				let toDate = new Date(xtdate);
+
+				// Check if From date is after To date
+				if (fromDate > toDate) {
+					showMessage("error", "From date must be earlier than or equal to To date");
+					return;
+				}
+
+				// Calculate day difference
+				let dayDiff = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
+
+				if (dayDiff > 100) {
+					showMessage("error", "Date range must be 100 days or less");
+					return;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WP05/WG01?xbuid='+ xbuid +'&topxitem='+ topxitem +'&last='+ last +'&type=' + type + '&xfdate=' + xfdate + '&xtdate=' + xtdate,
+				type: "GET",
+				success: function (data) {
+
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WP05WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.ydata2 = [];
+					barchartPrepareData.yaxistitle = 'Amount';
+					barchartPrepareData.yaxistitle2 = 'Quantity';
+					barchartPrepareData.xaxistitle = function(value, type){
+						return value;
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.item);
+						barchartPrepareData.ydata.push(d.amount);
+						barchartPrepareData.ydata2.push(d.quantity);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+
+		function loadWS02WG01(){
+			var xbuid = $('input[name="WS02WG01xbuid"]').val();
+			var xcus = $('input[name="WS02WG01xcus"]').val();
+			var type = $('select[name="WS02WG01type"]').val();
+			var last = $('input[name="WS02WG01last"]').val();
+			var xfdate = $('input[name="WS02WG01xfdate"]').val();
+			var xtdate = $('input[name="WS02WG01xtdate"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			if(xcus == null || xcus == '') xcus = -1;
+
+			if('DAYS' === type){
+				if(last == null || last == ''){
+					showMessage("error", "Last "+ type +" required");
+					return;
+				}
+				if(last < 0) last = 0;
+				if(last > 100) {
+					$('input[name="WS02WG01last"]').val("100");
+					last = 100;
+				}
+			} else {
+				if(xfdate == null || xfdate == '') {
+					showMessage("error", "From date required");
+					return;
+				}
+				if(xtdate == null || xtdate == '') {
+					showMessage("error", "To date required");
+					return;
+				}
+
+				// Convert to Date objects
+				let fromDate = new Date(xfdate);
+				let toDate = new Date(xtdate);
+
+				// Check if From date is after To date
+				if (fromDate > toDate) {
+					showMessage("error", "From date must be earlier than or equal to To date");
+					return;
+				}
+
+				// Calculate day difference
+				let dayDiff = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
+
+				if (dayDiff > 100) {
+					showMessage("error", "Date range must be 100 days or less");
+					return;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WS02/WG01?xbuid='+ xbuid +'&xcus='+ xcus +'&last='+ last +'&type=' + type + '&xfdate=' + xfdate + '&xtdate=' + xtdate,
+				type: "GET",
+				success: function (data) {
+
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WS02WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.yaxistitle = 'Amount';
+					barchartPrepareData.xaxistitle = function(value, type){
+						const date = new Date(value);
+						const day = date.getDate();
+						const month = date.toLocaleString('en-US', { month: 'short' });
+						const year = date.getFullYear();
+						return `${day} ${month}\n${year}`; // '\n' breaks line in ECharts
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.xdate);
+						barchartPrepareData.ydata.push(d.amount);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+
+		function loadWS03WG01(){
+			var xbuid = $('input[name="WS03WG01xbuid"]').val();
+			var xitem = $('input[name="WS03WG01xitem"]').val();
+			var type = $('select[name="WS03WG01type"]').val();
+			var last = $('input[name="WS03WG01last"]').val();
+			var xfdate = $('input[name="WS03WG01xfdate"]').val();
+			var xtdate = $('input[name="WS03WG01xtdate"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			if(xitem == null || xitem == '') xitem = -1;
+
+			if('DAYS' === type){
+				if(last == null || last == ''){
+					showMessage("error", "Last "+ type +" required");
+					return;
+				}
+				if(last < 0) last = 0;
+				if(last > 100) {
+					$('input[name="WS03WG01last"]').val("100");
+					last = 100;
+				}
+			} else {
+				if(xfdate == null || xfdate == '') {
+					showMessage("error", "From date required");
+					return;
+				}
+				if(xtdate == null || xtdate == '') {
+					showMessage("error", "To date required");
+					return;
+				}
+
+				// Convert to Date objects
+				let fromDate = new Date(xfdate);
+				let toDate = new Date(xtdate);
+
+				// Check if From date is after To date
+				if (fromDate > toDate) {
+					showMessage("error", "From date must be earlier than or equal to To date");
+					return;
+				}
+
+				// Calculate day difference
+				let dayDiff = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
+
+				if (dayDiff > 100) {
+					showMessage("error", "Date range must be 100 days or less");
+					return;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WS03/WG01?xbuid='+ xbuid +'&xitem='+ xitem +'&last='+ last +'&type=' + type + '&xfdate=' + xfdate + '&xtdate=' + xtdate,
+				type: "GET",
+				success: function (data) {
+
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WS03WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.yaxistitle = 'Quantity';
+					barchartPrepareData.xaxistitle = function(value, type){
+						const date = new Date(value);
+						const day = date.getDate();
+						const month = date.toLocaleString('en-US', { month: 'short' });
+						const year = date.getFullYear();
+						return `${day} ${month}\n${year}`; // '\n' breaks line in ECharts
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.xdate);
+						barchartPrepareData.ydata.push(d.amount);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+
+		function loadWS04WG01(){
+			var xbuid = $('input[name="WS04WG01xbuid"]').val();
+			var topxcus = $('input[name="WS04WG01topxcus"]').val();
+			var type = $('select[name="WS04WG01type"]').val();
+			var last = $('input[name="WS04WG01last"]').val();
+			var xfdate = $('input[name="WS04WG01xfdate"]').val();
+			var xtdate = $('input[name="WS04WG01xtdate"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			if(topxcus == null || topxcus == '') {
+				showMessage("error", "Top Customer Number Required");
+				return;
+			}
+			if(topxcus < 1) topxcus = 1;
+			if(topxcus > 100) topxcus = 100;
+			$('input[name="WS04WG01topxcus"]').val(topxcus);
+
+			if('DAYS' === type){
+				if(last == null || last == ''){
+					showMessage("error", "Last "+ type +" required");
+					return;
+				}
+				if(last < 1) {
+					last = 1;
+					$('input[name="WS04WG01last"]').val(last);
+				}
+				if(last > 100) {
+					$('input[name="WS04WG01last"]').val(last);
+					last = 100;
+				}
+			} else {
+				if(xfdate == null || xfdate == '') {
+					showMessage("error", "From date required");
+					return;
+				}
+				if(xtdate == null || xtdate == '') {
+					showMessage("error", "To date required");
+					return;
+				}
+
+				// Convert to Date objects
+				let fromDate = new Date(xfdate);
+				let toDate = new Date(xtdate);
+
+				// Check if From date is after To date
+				if (fromDate > toDate) {
+					showMessage("error", "From date must be earlier than or equal to To date");
+					return;
+				}
+
+				// Calculate day difference
+				let dayDiff = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
+
+				if (dayDiff > 100) {
+					showMessage("error", "Date range must be 100 days or less");
+					return;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WS04/WG01?xbuid='+ xbuid +'&topxcus='+ topxcus +'&last='+ last +'&type=' + type + '&xfdate=' + xfdate + '&xtdate=' + xtdate,
+				type: "GET",
+				success: function (data) {
+
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WS04WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.yaxistitle = 'Amount';
+					barchartPrepareData.xaxistitle = function(value, type){
+						return value;
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.supplier);
+						barchartPrepareData.ydata.push(d.amount);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+		function loadWS05WG01(){
+			var xbuid = $('input[name="WS05WG01xbuid"]').val();
+			var topxitem = $('input[name="WS05WG01topxitem"]').val();
+			var type = $('select[name="WS05WG01type"]').val();
+			var last = $('input[name="WS05WG01last"]').val();
+			var xfdate = $('input[name="WS05WG01xfdate"]').val();
+			var xtdate = $('input[name="WS05WG01xtdate"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			if(topxitem == null || topxitem == '') {
+				showMessage("error", "Top Items Number Required");
+				return;
+			}
+			if(topxitem < 1) topxitem = 1;
+			if(topxitem > 100) topxitem = 100;
+			$('input[name="WS05WG01topxitem"]').val(topxitem);
+
+			if('DAYS' === type){
+				if(last == null || last == ''){
+					showMessage("error", "Last "+ type +" required");
+					return;
+				}
+				if(last < 1) {
+					last = 1;
+					$('input[name="WS05WG01last"]').val(last);
+				}
+				if(last > 100) {
+					$('input[name="WS05WG01last"]').val(last);
+					last = 100;
+				}
+			} else {
+				if(xfdate == null || xfdate == '') {
+					showMessage("error", "From date required");
+					return;
+				}
+				if(xtdate == null || xtdate == '') {
+					showMessage("error", "To date required");
+					return;
+				}
+
+				// Convert to Date objects
+				let fromDate = new Date(xfdate);
+				let toDate = new Date(xtdate);
+
+				// Check if From date is after To date
+				if (fromDate > toDate) {
+					showMessage("error", "From date must be earlier than or equal to To date");
+					return;
+				}
+
+				// Calculate day difference
+				let dayDiff = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
+
+				if (dayDiff > 100) {
+					showMessage("error", "Date range must be 100 days or less");
+					return;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WS05/WG01?xbuid='+ xbuid +'&topxitem='+ topxitem +'&last='+ last +'&type=' + type + '&xfdate=' + xfdate + '&xtdate=' + xtdate,
+				type: "GET",
+				success: function (data) {
+
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WS05WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.ydata2 = [];
+					barchartPrepareData.yaxistitle = 'Amount';
+					barchartPrepareData.yaxistitle2 = 'Quantity';
+					barchartPrepareData.xaxistitle = function(value, type){
+						return value;
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.item);
+						barchartPrepareData.ydata.push(d.amount);
+						barchartPrepareData.ydata2.push(d.quantity);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+
+		function loadWS06WG01(){
+			var xbuid = $('input[name="WS06WG01xbuid"]').val();
+			var topxitem = $('input[name="WS06WG01topxitem"]').val();
+			var type = $('select[name="WS06WG01type"]').val();
+			var last = $('input[name="WS06WG01last"]').val();
+			var xfdate = $('input[name="WS06WG01xfdate"]').val();
+			var xtdate = $('input[name="WS06WG01xtdate"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+
+			if(topxitem == null || topxitem == '') {
+				showMessage("error", "Top Items Number Required");
+				return;
+			}
+			if(topxitem < 1) topxitem = 1;
+			if(topxitem > 100) topxitem = 100;
+			$('input[name="WS06WG01topxitem"]').val(topxitem);
+
+			if('DAYS' === type){
+				if(last == null || last == ''){
+					showMessage("error", "Last "+ type +" required");
+					return;
+				}
+				if(last < 1) {
+					last = 1;
+					$('input[name="WS06WG01last"]').val(last);
+				}
+				if(last > 100) {
+					$('input[name="WS06WG01last"]').val(last);
+					last = 100;
+				}
+			} else {
+				if(xfdate == null || xfdate == '') {
+					showMessage("error", "From date required");
+					return;
+				}
+				if(xtdate == null || xtdate == '') {
+					showMessage("error", "To date required");
+					return;
+				}
+
+				// Convert to Date objects
+				let fromDate = new Date(xfdate);
+				let toDate = new Date(xtdate);
+
+				// Check if From date is after To date
+				if (fromDate > toDate) {
+					showMessage("error", "From date must be earlier than or equal to To date");
+					return;
+				}
+
+				// Calculate day difference
+				let dayDiff = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
+
+				if (dayDiff > 100) {
+					showMessage("error", "Date range must be 100 days or less");
+					return;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WS06/WG01?xbuid='+ xbuid +'&topxitem='+ topxitem +'&last='+ last +'&type=' + type + '&xfdate=' + xfdate + '&xtdate=' + xtdate,
+				type: "GET",
+				success: function (data) {
+
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WS06WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.ydata2 = [];
+					barchartPrepareData.yaxistitle = 'Amount';
+					barchartPrepareData.yaxistitle2 = 'Quantity';
+					barchartPrepareData.xaxistitle = function(value, type){
+						return value;
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.item);
+						barchartPrepareData.ydata.push(d.amount);
+						barchartPrepareData.ydata2.push(d.quantity);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+
+		function loadWI02WG01(){
+			var xbuid = $('input[name="WI02WG01xbuid"]').val();
+			var xgroup = $('select[name="WI02WG01xgroup"]').val();
+			var xwh = $('input[name="WI02WG01xwh"]').val();
+			var type = $('select[name="WI02WG01type"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+			if(xgroup == null || xgroup == '') xgroup = '';
+			if(xwh == null || xwh == '') xwh = -1;
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WI02/WG01?xbuid='+ xbuid +'&xgroup='+ xgroup +'&xwh='+ xwh +'&type='+ type,
+				type: "GET",
+				success: function (data) {
+
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WI02WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.ydata2 = [];
+					barchartPrepareData.yaxistitle = 'Quantity';
+					barchartPrepareData.yaxistitle2 = 'Value';
+					barchartPrepareData.xaxistitle = function(value, type){
+						return value;
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.category);
+						barchartPrepareData.ydata.push(d.quantity);
+						barchartPrepareData.ydata2.push(d.amount);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+		function loadWI03WG01(){
+			var xbuid = $('input[name="WI03WG01xbuid"]').val();
+			var xitem = $('input[name="WI03WG01xitem"]').val();
+			var xwh = $('input[name="WI03WG01xwh"]').val();
+			var xfdate = $('input[name="WI03WG01xfdate"]').val();
+			var xtdate = $('input[name="WI03WG01xtdate"]').val();
+			var type = $('select[name="WI03WG01type"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+			if(xitem == null || xitem == '') xitem = -1;
+			if(xwh == null || xwh == '') xwh = -1;
+
+			if(xfdate == null || xfdate == '') {
+				showMessage("error", "From date required");
+				return;
+			}
+			if(xtdate == null || xtdate == '') {
+				showMessage("error", "To date required");
+				return;
+			}
+	
+			// Convert to Date objects
+			let fromDate = new Date(xfdate);
+			let toDate = new Date(xtdate);
+	
+			// Check if From date is after To date
+			if (fromDate > toDate) {
+				showMessage("error", "From date must be earlier than or equal to To date");
+				return;
+			}
+	
+			// Calculate day difference
+			let dayDiff = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
+	
+			if (dayDiff > 100) {
+				showMessage("error", "Date range must be 100 days or less");
+				return;
+			}
+
+			if(type === 'Pie Chart'){
+				$('.WI03WG01_WG02').removeClass('d-none');
+				$('.WI03WG03_WG04').removeClass('d-none');
+				$('.WI03WG05_WG06').addClass('d-none');
+			} else {
+				$('.WI03WG01_WG02').addClass('d-none');
+				$('.WI03WG03_WG04').addClass('d-none');
+				$('.WI03WG05_WG06').removeClass('d-none');
+			}
+
+			if(type === 'Pie Chart'){
+				$.ajax({
+					url: getBasepath() + '/DASH/WI03/WG01_WG02?xbuid='+ xbuid +'&xitem='+ xitem +'&xwh='+ xwh +'&xfdate='+ xfdate +'&xtdate='+ xtdate +'&type='+ type,
+					type: "GET",
+					success: function (data) {
+	
+						piechartPrepareData = {};
+						piechartPrepareData.title = 'Inward';
+						piechartPrepareData.subtitle = 'Quantity Chart';
+						piechartPrepareData.containerid = 'WI03WG01-chart';
+						piechartPrepareData.seriestitle = 'Quantity';
+						piechartPrepareData.seriesdata = [];
+						$.each(data, function(i, d){
+							piechartPrepareData.seriesdata.push(
+								{ 
+									value: d.quantity, 
+									name: d.xdoctype
+								}
+							);
+						});
+						preparePieChart(piechartPrepareData);
+	
+	
+						piechartPrepareData = {};
+						piechartPrepareData.title = 'Inward';
+						piechartPrepareData.subtitle = 'Value Chart';
+						piechartPrepareData.containerid = 'WI03WG02-chart';
+						piechartPrepareData.seriestitle = 'Value';
+						piechartPrepareData.seriesdata = [];
+						$.each(data, function(i, d){
+							piechartPrepareData.seriesdata.push(
+								{ 
+									value: d.value, 
+									name: d.xdoctype 
+								}
+							);
+						});
+						preparePieChart(piechartPrepareData);
+					},
+					error: function (jqXHR, status, errorThrown) {
+						loadingMask2.hide();
+						if (jqXHR.status === 401) {
+							// Session is invalid, reload the url to go back to login page
+							location.reload();
+						} else {
+							showMessage("error", jqXHR.responseJSON.message);
+						}
+					},
+				});
+	
+				$.ajax({
+					url: getBasepath() + '/DASH/WI03/WG03_WG04?xbuid='+ xbuid +'&xitem='+ xitem +'&xwh='+ xwh +'&xfdate='+ xfdate +'&xtdate='+ xtdate +'&type='+ type,
+					type: "GET",
+					success: function (data) {
+	
+						piechartPrepareData = {};
+						piechartPrepareData.title = 'Outward';
+						piechartPrepareData.subtitle = 'Quantity Chart';
+						piechartPrepareData.containerid = 'WI03WG03-chart';
+						piechartPrepareData.seriestitle = 'Quantity';
+						piechartPrepareData.seriesdata = [];
+						$.each(data, function(i, d){
+							piechartPrepareData.seriesdata.push(
+								{ 
+									value: d.quantity, 
+									name: d.xdoctype
+								}
+							);
+						});
+						preparePieChart(piechartPrepareData);
+	
+	
+						piechartPrepareData = {};
+						piechartPrepareData.title = 'Outward';
+						piechartPrepareData.subtitle = 'Value Chart';
+						piechartPrepareData.containerid = 'WI03WG04-chart';
+						piechartPrepareData.seriestitle = 'Value';
+						piechartPrepareData.seriesdata = [];
+						$.each(data, function(i, d){
+							piechartPrepareData.seriesdata.push(
+								{ 
+									value: d.value, 
+									name: d.xdoctype 
+								}
+							);
+						});
+						preparePieChart(piechartPrepareData);
+					},
+					error: function (jqXHR, status, errorThrown) {
+						loadingMask2.hide();
+						if (jqXHR.status === 401) {
+							// Session is invalid, reload the url to go back to login page
+							location.reload();
+						} else {
+							showMessage("error", jqXHR.responseJSON.message);
+						}
+					},
+				});
+			} else {
+				$.ajax({
+					url: getBasepath() + '/DASH/WI03/WG05?xbuid='+ xbuid +'&xitem='+ xitem +'&xwh='+ xwh +'&xfdate='+ xfdate +'&xtdate='+ xtdate +'&type='+ type,
+					type: "GET",
+					success: function (data) {
+	
+						barchartPrepareData = {};
+						barchartPrepareData.title = 'Quantity';
+						barchartPrepareData.containerid = 'WI03WG05-chart';
+						barchartPrepareData.type = type;
+						barchartPrepareData.xdata = [];
+						barchartPrepareData.ydata = [];
+						barchartPrepareData.ydata2 = [];
+						barchartPrepareData.yaxistitle = 'Inward Quantity';
+						barchartPrepareData.yaxistitle2 = 'Outward Quantity';
+						barchartPrepareData.xaxistitle = function(value, type){
+							return value;
+						}
+	
+						$.each(data, function(i, d){
+							barchartPrepareData.xdata.push(d.xdoctype);
+							barchartPrepareData.ydata.push(d.quantity);
+							barchartPrepareData.ydata2.push(d.value);
+						});
+	
+						prepareBarChart(barchartPrepareData);
+					},
+					error: function (jqXHR, status, errorThrown) {
+						loadingMask2.hide();
+						if (jqXHR.status === 401) {
+							// Session is invalid, reload the url to go back to login page
+							location.reload();
+						} else {
+							showMessage("error", jqXHR.responseJSON.message);
+						}
+					},
+				});
+
+				$.ajax({
+					url: getBasepath() + '/DASH/WI03/WG06?xbuid='+ xbuid +'&xitem='+ xitem +'&xwh='+ xwh +'&xfdate='+ xfdate +'&xtdate='+ xtdate +'&type='+ type,
+					type: "GET",
+					success: function (data) {
+	
+						barchartPrepareData = {};
+						barchartPrepareData.title = 'Value';
+						barchartPrepareData.containerid = 'WI03WG06-chart';
+						barchartPrepareData.type = type;
+						barchartPrepareData.xdata = [];
+						barchartPrepareData.ydata = [];
+						barchartPrepareData.ydata2 = [];
+						barchartPrepareData.yaxistitle = 'Inward Value';
+						barchartPrepareData.yaxistitle2 = 'Outward Value';
+						barchartPrepareData.xaxistitle = function(value, type){
+							return value;
+						}
+	
+						$.each(data, function(i, d){
+							barchartPrepareData.xdata.push(d.xdoctype);
+							barchartPrepareData.ydata.push(d.quantity);
+							barchartPrepareData.ydata2.push(d.value);
+						});
+	
+						prepareBarChart(barchartPrepareData);
+					},
+					error: function (jqXHR, status, errorThrown) {
+						loadingMask2.hide();
+						if (jqXHR.status === 401) {
+							// Session is invalid, reload the url to go back to login page
+							location.reload();
+						} else {
+							showMessage("error", jqXHR.responseJSON.message);
+						}
+					},
+				});
+
+			}
+
+		}
+
+
+		function loadWI04WG01(){
+			var xbuid = $('input[name="WI04WG01xbuid"]').val();
+			var xwh = $('input[name="WI04WG01xwh"]').val();
+			var xcategory = $('select[name="WI04WG01xcategory"]').val();
+			var xitem = $('input[name="WI04WG01xitem"]').val();
+			var xfdays = $('input[name="WI04WG01xfdays"]').val();
+			var xtdays = $('input[name="WI04WG01xtdays"]').val();
+			var type = $('select[name="WI04WG01type"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+			if(xitem == null || xitem == '') xitem = -1;
+			if(xwh == null || xwh == '') xwh = -1;
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WI04/WG01?xbuid='+ xbuid +'&xitem='+ xitem +'&xcategory='+ xcategory +'&xwh='+ xwh +'&xfdays='+ xfdays +'&xtdays='+ xtdays +'&type='+ type,
+				type: "GET",
+				success: function (data) {
+
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WI04WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.ydata2 = [];
+					barchartPrepareData.yaxistitle = 'Quantity';
+					barchartPrepareData.yaxistitle2 = 'Value';
+					barchartPrepareData.xaxistitle = function(value, type){
+						return value;
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.duration);
+						barchartPrepareData.ydata.push(d.quantity);
+						barchartPrepareData.ydata2.push(d.value);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+
+		function loadWI05WG01(){
+			var xbuid = $('input[name="WI05WG01xbuid"]').val();
+			var xitem = $('input[name="WI05WG01xitem"]').val();
+			var type = $('select[name="WI05WG01type"]').val();
+			var last = $('input[name="WI05WG01last"]').val();
+			var xfdate = $('input[name="WI05WG01xfdate"]').val();
+			var xtdate = $('input[name="WI05WG01xtdate"]').val();
+
+			if(xbuid == null || xbuid == '') xbuid = -1;
+			if(xitem == null || xitem == '') xitem = -1;
+
+			if('BATCHES' === type){
+				if(last == null || last == ''){
+					showMessage("error", "Last "+ type +" required");
+					return;
+				}
+				if(last < 1) {
+					last = 1;
+					$('input[name="WI05WG01last"]').val(last);
+				}
+				if(last > 100) {
+					$('input[name="WI05WG01last"]').val(last);
+					last = 100;
+				}
+			} else {
+				if(xfdate == null || xfdate == '') {
+					showMessage("error", "From date required");
+					return;
+				}
+				if(xtdate == null || xtdate == '') {
+					showMessage("error", "To date required");
+					return;
+				}
+
+				// Convert to Date objects
+				let fromDate = new Date(xfdate);
+				let toDate = new Date(xtdate);
+
+				// Check if From date is after To date
+				if (fromDate > toDate) {
+					showMessage("error", "From date must be earlier than or equal to To date");
+					return;
+				}
+
+				// Calculate day difference
+				let dayDiff = Math.floor((toDate - fromDate) / (1000 * 60 * 60 * 24));
+
+				if (dayDiff > 100) {
+					showMessage("error", "Date range must be 100 days or less");
+					return;
+				}
+			}
+
+			$.ajax({
+				url: getBasepath() + '/DASH/WI05/WG01?xbuid='+ xbuid +'&xitem='+ xitem +'&last='+ last +'&type=' + type + '&xfdate=' + xfdate + '&xtdate=' + xtdate,
+				type: "GET",
+				success: function (data) {
+
+					barchartPrepareData = {};
+					barchartPrepareData.title = '';
+					barchartPrepareData.containerid = 'WI05WG01-chart';
+					barchartPrepareData.type = type;
+					barchartPrepareData.xdata = [];
+					barchartPrepareData.ydata = [];
+					barchartPrepareData.ydata2 = [];
+					barchartPrepareData.yaxistitle = 'Quantity';
+					barchartPrepareData.yaxistitle2 = 'Rate';
+					barchartPrepareData.xaxistitle = function(value, type){
+						return value;
+					}
+
+					$.each(data, function(i, d){
+						barchartPrepareData.xdata.push(d.batch);
+						barchartPrepareData.ydata.push(d.quantity);
+						barchartPrepareData.ydata2.push(d.rate);
+					});
+
+					prepareBarChart(barchartPrepareData);
+				},
+				error: function (jqXHR, status, errorThrown) {
+					loadingMask2.hide();
+					if (jqXHR.status === 401) {
+						// Session is invalid, reload the url to go back to login page
+						location.reload();
+					} else {
+						showMessage("error", jqXHR.responseJSON.message);
+					}
+				},
+			});
+		}
+
+
+
+		var barchartPrepareData = {};
+		var piechartPrepareData = {};
+
+		function preparePieChart(piechartPrepareData){
+			if (typeof echarts == 'undefined') {
+				console.warn('Warning - echarts.min.js is not loaded.');
+				return;
+			}
+
+			var dom = document.getElementById(piechartPrepareData.containerid);
+			var myChart = echarts.init(dom);
+			var option;
+
+			option = {
+				title: {
+					text: piechartPrepareData.title,
+					subtext: piechartPrepareData.subtitle,
+					left: 'center'
+				},
+				tooltip: {
+					trigger: 'item',
+					formatter: '<b>{a}</b> <br/>{b} : {c} ({d}%)'
+				},
+				legend: {
+					orient: 'vertical',
+					left: 'left'
+				},
+				series: [
+					{
+						name: piechartPrepareData.seriestitle,
+						type: 'pie',
+						radius: '50%',
+						data: piechartPrepareData.seriesdata,
+						emphasis: {
+							itemStyle: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						}
+					}
+				]
+			};
+
+
+			if (option && typeof option === 'object') {
+				myChart.setOption(option);
+			}
+
+			window.addEventListener('resize', myChart.resize);
+		}
+
+		function prepareBarChart(barchartPrepareData){
+			if (typeof echarts == 'undefined') {
+				console.warn('Warning - echarts.min.js is not loaded.');
+				return;
+			}
+
+			var dom = document.getElementById(barchartPrepareData.containerid);
+			var myChart = echarts.init(dom, null, {
+				renderer: 'canvas',
+				useDirtyRect: false
+			});
+			var app = {};
+			var option;
+
+			const labelRight = {
+				position: 'right'
+			};
+
+			option = {
+				title: {
+					text: barchartPrepareData.title
+				},
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'shadow'
+					}
+				},
+				grid: {
+					left: '0%',
+					right: '0%',
+					bottom: '3%',
+					containLabel: true
+				},
+				xAxis: [
+					{
+						type: 'category',
+						data: barchartPrepareData.xdata,
+						axisTick: {
+							alignWithLabel: true
+						}, 
+						axisLabel: {
+							formatter: function (value) {
+								return barchartPrepareData.xaxistitle(value, barchartPrepareData.type);
+							},
+							align: 'center'
+						}
+					}
+				],
+				yAxis: [
+					{
+						type: 'value',
+					},
+				],
+				series: [
+					{
+						name: barchartPrepareData.yaxistitle,
+						type: 'bar',
+						barWidth: '40%',
+						data: barchartPrepareData.ydata,
+					},
+				]
+			}; // END OPTION
+
+			if(barchartPrepareData.ydata2 != undefined && barchartPrepareData.ydata2 != null && barchartPrepareData.ydata2.length>0){
+				option.series.push(
+					{
+						name: barchartPrepareData.yaxistitle2,
+						type: 'bar',
+						barWidth: '40%',
+						data: barchartPrepareData.ydata2,
+					}
+				);
+			}
+
+			if (option && typeof option === 'object') {
+				myChart.setOption(option);
+			}
+
+			window.addEventListener('resize', myChart.resize);
+		}
+	</script>
+
+</div>
+<!-- /inner content -->

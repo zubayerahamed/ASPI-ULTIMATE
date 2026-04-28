@@ -1,0 +1,388 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/SA17/store}" th:object="${searchParam}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<div class="row">
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">From Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="xfdate" 
+										id="xfdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required="required"
+										th:value="${searchParam.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(searchParam.xfdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">To Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="xtdate" 
+										id="xtdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required="required"
+										th:value="${searchParam.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(searchParam.xtdate, df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">User ID</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="zemail">
+								<input 	type="hidden" class="search-val" name="zemail" th:value="${searchParam.zemail != null ? searchParam.zemail : ''}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LAD13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='zemail',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label">Employee</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xstaff">
+								<input 	type="hidden" class="search-val" name="xstaff" th:value="${searchParam.xstaff ne null ? searchParam.xstaff + ' - ' + searchParam.employeeName : ''}"/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA14/3?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xstaff',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Data Type</label>
+							<select class="form-control select" th:field="*{xtype}" required="required">
+								<option value="Moderate">Moderate</option>
+								<option value="Advance">Advance</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/SA17', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button th:attr="data-url='/report/print'" class="btn btn-light btn-sm btn-print-logs ms-1"><i class="ph ph-printer me-2"></i> Print</button>
+						<button type="submit" class="btn btn-danger btn-sm btn-delete-logs ms-1"><i class="ph ph-trash me-2"></i> Delete</button>
+						<button type="submit" class="btn btn-primary btn-sm btn-search-logs ms-1"><i class="ph-magnifying-glass me-2"></i> View</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				$('.header-table-container').html("");
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-search-logs').off('click').on('click', function(e){
+				e.preventDefault();
+				console.log("here");
+
+				var targettedForm = $('form#mainform');
+				if(!targettedForm.smkValidate()) return;
+
+				sectionReloadAjaxPostReq({
+					id : 'header-table-container',
+					url : '/SA17/header-table'
+				},{
+					"xfdate" : $('#xfdate').val(),
+					"xtdate" : $('#xtdate').val(),
+					"zemail" : $('input[name="zemail"]').val(),
+					"xstaff" : $('input[name="xstaff"]').val(),
+					"xtype" :  $('#xtype').val(),
+				});
+			});
+
+			$('.btn-print-logs').off('click').on('click', function(e){
+				e.preventDefault();
+
+				var xtype = $('#xtype').val();
+				var rptcode = 'xlogssm';
+				if(xtype === 'Advance') rptcode = 'xlogsdt';
+
+				var url = getBasepath() + $(this).data('url');
+
+				var params = {};
+				params.reportCode = rptcode;
+				params.reportType = "PDF";
+				params.param1 = $("#businessZid").val();
+				params.param2 = $('#xfdate').val();
+				params.param3 = $('#xtdate').val();
+				params.param4 = $('input[name="zemail"]').val();
+				params.param5 = $('input[name="xstaff"]').val();
+
+				generateOnScreenReport(url, params);
+			});
+
+			$('.btn-delete-logs').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure?")){
+					return;
+				}
+
+				actionPostRequest(getBasepath() + '/SA17/delete', {
+					"xfdate" : $('#xfdate').val(),
+					"xtdate" : $('#xtdate').val(),
+					"zemail" : $('input[name="zemail"]').val(),
+					"xstaff" : $('input[name="xstaff"]').val(),
+					"xtype" : $('#xtype').val()
+				});
+			});
+		})
+	</script>
+</div>
+
+
+
+
+<div th:fragment="header-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<input type="hidden" id="s-xfdate" th:with="df=${'yyyy-MM-dd'}" th:value="${searchParam.xfdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(searchParam.xfdate, df)}"/>
+		<input type="hidden" id="s-xtdate"  th:with="df=${'yyyy-MM-dd'}" th:value="${searchParam.xtdate == null ? #dates.format(#dates.createNow(), df) : #dates.format(searchParam.xtdate, df)}"/>
+		<input type="hidden" id="s-zemail" th:value="${searchParam.zemail}"/>
+		<input type="hidden" id="s-xstaff" th:value="${searchParam.xstaff}"/>
+		<input type="hidden" id="s-xtype" th:value="${searchParam.xtype}"/>
+
+		<div class="table-responsive">
+			<table class="table datatable" style="white-space: nowrap;">
+				<thead th:if="${searchParam.xtype eq 'Moderate'}">
+					<tr>
+						<td>SN.</td>
+						<th>Business ID</th>
+						<th>Session ID</th>
+						<th>User IP Address</th>
+						<th>User ID</th>
+						<th>Profile ID</th>
+						<th>Staff ID</th>
+						<th>Action Type</th>
+						<th>Time</th>
+						<th>User Agent</th>
+					</tr>
+				</thead>
+				<thead th:if="${searchParam.xtype eq 'Advance'}">
+					<tr>
+						<td>SN.</td>
+						<th>Business</th>
+						<th>Session ID</th>
+						<th>User ID</th>
+						<th>Staff ID</th>
+						<th>Activity</th>
+						<th>Screen</th>
+						<th>Function</th>
+						<th>Source</th>
+						<th>Data Table</th>
+						<th>Data</th>
+						<th>Log Detail</th>
+						<th>Action Result</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			kit.ui.init();
+
+			var xfdate = $("#s-xfdate").val();
+			var xtdate = $("#s-xtdate").val();
+			var zemail = $("#s-zemail").val();
+			var xstaff = $("#s-xstaff").val();
+			var xtype = $("#s-xtype").val();
+
+			var moderateColumnDefs = [
+				{ "name": "xid",   "targets": 0 },
+				{ "name": "zid",   "targets": 1 },
+				{ "name": "xsession",   "targets": 2 },
+				{ "name": "xcip",  "targets": 3 },
+				{ "name": "zemail",  "targets": 4 },
+				{ "name": "xprofile",  "targets": 5 },
+				{ "name": "xstaff",  "targets": 6 },
+				{ "name": "xaction",  "targets": 7 },
+				{ "name": "ztime",  "targets": 8 },
+				{ "name": "xuseragent",  "targets": 9 },
+			];
+
+			var advanceColumnDefs = [
+				{ "name": "xid",   "targets": 0 },
+				{ "name": "zid",   "targets": 1 },
+				{ "name": "xsession",   "targets": 2 },
+				{ "name": "zemail",  "targets": 3 },
+				{ "name": "xstaff",  "targets": 4 },
+				{ "name": "ztime",  "targets": 5 },
+				{ "name": "xscreen",  "targets": 6 },
+				{ "name": "xfunc",  "targets": 7 },
+				{ "name": "xsource",  "targets": 8 },
+				{ "name": "xtable",  "targets": 9 },
+				{ "name": "xdata",  "targets": 10 },
+				{ "name": "xstatement",  "targets": 11 },
+				{ "name": "xresult",  "targets": 12 },
+			];
+
+			var moderateCol = [
+				{ "data": "xid" },
+				{ "data": "zid" },
+				{ "data": "xsession" },
+				{ "data": "xcip" },
+				{ "data": "zemail" },
+				{ "data": "xprofile"},
+				{ "data": "xstaff" },
+				{ "data": "xaction" },
+				{ 
+					"data": "ztime",
+					render: function(data, type, row, meta) {
+						return moment(data).format("DD MMM YYYY, hh:mm A");
+					},
+				},
+				{ "data": "xuseragent" },
+			];
+
+			var advanceCol = [
+				{ "data": "xid" },
+				{ "data": "zid" },
+				{ "data": "xsession" },
+				{ "data": "zemail" },
+				{ "data": "xstaff" },
+				{
+					"data": "ztime",
+					render: function(data, type, row, meta) {
+						return moment(data).format("DD MMM YYYY, hh:mm A");
+					},
+				},
+				{ "data": "xscreen" },
+				{ "data": "xfunc" },
+				{ "data": "xsource" },
+				{ "data": "xtable" },
+				{ "data": "xdata" },
+				{ "data": "xstatement" },
+				{ "data": "xresult" },
+			];
+
+			var dt = $('.datatable').DataTable({
+				"deferLoading": true,
+				"processing" : true,
+				"serverSide" : true,
+				"stateSave" : true,
+				"order" : [0, 'desc'],
+				"responsive": true,
+				"lengthChange": true,
+				"columnDefs": (xtype == 'Moderate' ? moderateColumnDefs : advanceColumnDefs),
+				"ajax": {
+					"url": getBasepath() + "/SA17/all",
+					"type": 'POST',
+					"data": function(d) {
+						// Include the default DataTables parameters
+						d.xfdate = xfdate;
+						d.xtdate = xtdate;
+						d.zemail = zemail;
+						d.xstaff = xstaff;
+						d.xtype = xtype;
+					}
+				},
+				"columns": (xtype == 'Moderate' ? moderateCol : advanceCol),
+			});
+
+			dt.draw();
+
+			$('.datatable').on('click', '.btn-print', function(e){
+				e.preventDefault();
+
+				var params = {};
+				params.reportCode = $(this).data('rptcode');
+				params.reportType = "PDF";
+				params.param1 = $("#businessZid").val();
+
+				var i = 2;
+				while(i <= 30){
+					params['param' + i] = $(this).data('param' + i);
+					i++;
+				}
+
+				generateOnScreenReport(getBasepath() + $(this).data('url'), params);
+			});
+
+
+			$('.datatable').on('click', 'a.btn-dismiss-order', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to dismiss this order?")){
+					return;
+				}
+
+				actionPostRequest(getBasepath() + '/SA17/dismiss-order', {
+					"xpornum" : $(this).data('xpornum'),
+					"xfdate" : xfdate,
+					"xtdate" : xtdate,
+					"xbuid" : xbuid,
+					"xwh" : xwh,
+					"xcus" : xcus,
+					"xstatusord" : xstatusord
+				});
+			});
+
+			$('.datatable').on('click', 'a.btn-create-grn', function(e){
+				e.preventDefault();
+
+				actionPostRequest(getBasepath() + '/SA17/create-grn', {
+					"xpornum" : $(this).data('xpornum'),
+					"xfdate" : xfdate,
+					"xtdate" : xtdate,
+					"xbuid" : xbuid,
+					"xwh" : xwh,
+					"xcus" : xcus,
+					"xstatusord" : xstatusord
+				});
+			});
+
+		})
+	</script>
+</div>

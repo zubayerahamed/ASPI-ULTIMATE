@@ -1,0 +1,115 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/FA11/store}" th:object="${acdef}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<input type="hidden" th:field="*{submitFor}"/>
+
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Fiscal year</label>
+							<select class="form-control select" th:field="*{xoffset}" required="required">
+								<option value="0">Jan - Dec</option>
+								<option value="1">Feb - Jan</option>
+								<option value="2">Mar - Feb</option>
+								<option value="3">Apr - Mar</option>
+								<option value="4">May - Apr</option>
+								<option value="5">June - May</option>
+								<option value="6">Jul - Jun</option>
+								<option value="7">Aug - Jul</option>
+								<option value="8">Sep - Aug</option>
+								<option value="9">Oct - Sep</option>
+								<option value="10">Nov - Oct</option>
+								<option value="11">Dec - Nov</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Retained Earnings Acc.</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xaccpl"
+										th:value="${acdef.xaccpl != null ? acdef.xaccpl + ' - ' + acdef.accountName : ''}">
+								<input 	type="hidden" class="search-val" name="xaccpl" th:value="*{xaccpl}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xaccpl',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Closed Year</label>
+							<input type="number" class="form-control numeric-only" th:field="*{xclyear}" required="required">
+						</div>
+					</div>
+					<div class="col-md-3" th:if="${acdef.zid != null}">
+						<div class="mb-3 form-group">
+							<label class="form-label">Closed On</label>
+							<input type="text" class="form-control" th:value="*{xcldate}" disabled>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Markup Cost Account</label>
+							<div class="input-group">
+								<input 	type="text" 
+										class="form-control searchsuggest2"
+										id="xaccmc"
+										th:value="${acdef.xaccmc != null ? acdef.xaccmc + ' - ' + acdef.costAccountName : ''}">
+								<input 	type="hidden" class="search-val" name="xaccmc" th:value="*{xaccmc}" required/>
+								<span 	class="input-group-text btn-search" 
+										th:attr="
+										data-reloadurl='/search/table/LFA13/0?hint=', 
+										data-reloadid='search-suggest-results-container', 
+										data-fieldid='xaccmc',
+										data-mainscreen=false" 
+										style="cursor: pointer;"><i class="ph-magnifying-glass"></i></span>
+								<span 	class="input-group-text btn-search-clear" 
+										style="cursor: pointer;"><i class="ph-arrow-counter-clockwise"></i></span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/FA11', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+		})
+	</script>
+</div>

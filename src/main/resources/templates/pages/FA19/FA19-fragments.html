@@ -1,0 +1,68 @@
+<div th:fragment="main-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/FA19/store}" method="POST" th:with="df=${'yyyy-MM-dd'}">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Year</label>
+							<select class="form-control select" name="xyear" required>
+								<option value="">-- Select Year --</option>
+								<option th:each="year : ${years}" th:value="${year}" th:text="${year}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">GL Date</label>
+							<div class="input-group">
+								<input 	type="text" 
+										name="xdate" 
+										id="xdate" 
+										class="form-control datepicker-date-format" 
+										placeholder="yyyy-mm-dd format" 
+										required="required"
+										th:value="${#dates.format(#dates.createNow(), df)}">
+								<span class="input-group-text">
+									<i class="ph-calendar"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center mt-2">
+					<div>
+						<button type="reset" th:attr="data-reloadurl='/FA19', data-reloadid='main-form-container'" class="btn btn-light btn-sm btn-reset">Clear</button>
+					</div>
+					<div>
+						<button type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-calendar-check me-2"></i> Confirm Process</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you confirm?")){
+					return;
+				}
+				submitMainForm();
+			});
+	
+		})
+	</script>
+</div>

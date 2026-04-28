@@ -1,0 +1,203 @@
+<div th:fragment="info-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-flex align-items-center">
+			<h5 class="mb-0">Profile Details</h5>
+		</div>
+
+		<div class="card-body">
+			<table class="table table-bordered">
+				<tbody>
+					<tr th:if="${user.xstaff ne null}">
+						<th>Username</th>
+						<td width="5px" class="text-center">:</td>
+						<td th:text="${user.zemail}"></td>
+					</tr>
+					<tr th:if="${user.xstaff ne null}">
+						<th>ID</th>
+						<td width="5px" class="text-center">:</td>
+						<td th:text="${user.xstaff}"></td>
+					</tr>
+					<tr th:if="${user.xstaff ne null}">
+						<th>Name</th>
+						<td width="5px" class="text-center">:</td>
+						<td th:text="${user.employeeName}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div th:fragment="cp-form" xmlns:th="http://www.thymeleaf.org">
+	<div class="card">
+		<div class="card-header d-flex align-items-center">
+			<h5 class="mb-0">Change Password</h5>
+		</div>
+
+		<div class="card-body">
+			<form id="mainform" class="form-validate-jquery" th:action="@{/AD15/cp/store}" th:object="${user}" method="POST">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Old Password</label>
+							<input type="password" class="form-control" name="oldPass" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">New Password</label>
+							<input type="password" class="form-control" name="newPass" required="required">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="mb-3 form-group">
+							<label class="form-label required">Confirm Password</label>
+							<input type="password" class="form-control" name="confirmPass" required="required">
+						</div>
+					</div>
+				</div>
+
+				<div class="d-flex justify-content-between align-items-center">
+					<div>
+						<button type="submit" class="btn btn-primary btn-sm btn-submit"><i class="ph-floppy-disk me-2"></i> Update</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm();
+			});
+
+		})
+	</script>
+</div>
+
+
+
+
+
+
+
+
+<div th:fragment="widget-table" xmlns:th="http://www.thymeleaf.org">
+	<div class="card" th:if="${not #lists.isEmpty(detailList)}">
+		<div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+			<h6 class="py-sm-3 mb-sm-auto">My Widgets</h6>
+		</div>
+
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="100px">Sequence</th>
+						<th width="200px">Widget Title</th>
+						<th class="text-center">Is Default?</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="x : ${detailList}">
+						<td>
+							<span class="ps-3 pe-3" th:text="${x.xsequence}"></span>
+							<a 	style="cursor: pointer;" 
+								data-bs-popup="tooltip" 
+								title="Sequence Up" 
+								th:if="${x.xsequence > 1}" 
+								th:attr="
+									data-reloadid='widget-table-container', 
+									data-reloadurl='/AD15/widget-table/seqn/up?xsequence=' + ${x.xsequence - 1} + '&zemail=' + ${x.zemail} + '&xwidget=' + ${x.xwidget}
+								" 
+								class="btn-detail-seqn">
+								<i class="ph-arrow-fat-lines-up"></i>
+							</a>
+
+							<a 	style="cursor: pointer;" 
+								data-bs-popup="tooltip" 
+								title="Sequence Down" 
+								th:if="${x.xsequence < #lists.size(detailList)}" 
+								th:attr="
+									data-reloadid='widget-table-container', 
+									data-reloadurl='/AD15/widget-table/seqn/down?xsequence=' + ${x.xsequence + 1} + '&zemail=' + ${x.zemail} + '&xwidget=' + ${x.xwidget}" 
+								class="btn-detail-seqn">
+								<i class="ph-arrow-fat-lines-down"></i>
+							</a>
+						</td>
+						<td th:text="${x.widgetTitle}"></td>
+						<td class="text-center">
+							<input 	class="widget-default-checkbox" 
+									type="checkbox" 
+									th:attr="
+										data-reloadid='widget-table-container', 
+										data-reloadurl='/AD15/widget-table/defaulttoggle?zemail=' + ${x.zemail} + '&xwidget=' + ${x.xwidget}
+									" 
+									th:checked="${x.xisdefault != null and x.xisdefault}"
+							/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			kit.ui.init();
+
+			$('.btn-widget-reset').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-widget-submit').off('click').on('click', function(e){
+				e.preventDefault();
+				submitMainForm(null, $('form#widgetform'));
+			});
+
+			$('.btn-widget-delete').off('click').on('click', function(e){
+				e.preventDefault();
+				if(!confirm("Are you sure, to delete this?")){
+					return;
+				}
+				deleteRequest($(this).data('url'));
+			});
+	
+			$('a.widget-dataindex').off('click').on('click', function(e){
+				e.preventDefault();
+
+				sectionReloadAjaxReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.btn-detail-seqn').off('click').on('click', function(e){
+				e.preventDefault();
+				sectionReloadAjaxPostReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl')
+				});
+			});
+
+			$('.widget-default-checkbox').on('change', function() {
+				// Get the checkbox state
+				let isChecked = $(this).is(':checked');
+
+				sectionReloadAjaxPostReq({
+					id : $(this).data('reloadid'),
+					url : $(this).data('reloadurl') + '&isdefault=' + (isChecked ? 'Y' : 'N')
+				});
+
+			});
+
+		})
+	</script>
+</div>
